@@ -16,6 +16,7 @@ return new class extends Migration
             $table->longText('subtitle')->nullable(true);
             $table->integer('like')->default(0);
             $table->string('image')->nullable(true);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post');
+        Schema::dropIfExists('posts');
     }
 };
