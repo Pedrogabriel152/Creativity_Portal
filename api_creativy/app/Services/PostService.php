@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Post;
 use App\Repositories\PostRespository;
 
 class PostService 
@@ -73,10 +74,55 @@ class PostService
             }
 
             $post = PostRespository::update($postExist, $args['post']);
+
+            if(!$post) {
+                return [
+                    'message' => 'Erro ao atualizar post',
+                    'code' => 500
+                ];
+            }
+
+            return [
+                'message' => 'Post atualizado com sucesso',
+                'code' => 200
+            ];
             
         } catch (\Throwable $th) {
             return [
                 'message' => 'Erro ao atualizar post',
+                'code' => 500
+            ];
+        }
+    }
+
+    public static function like(int $id) {
+        try {
+            $postExist = Post::find($id);
+
+            if(!$postExist){
+                return [
+                    'message' => 'Post não encontrado',
+                    'code' => 404
+                ];
+            }
+
+            $post = PostRespository::like($postExist);
+
+            if(!$post) {
+                return [
+                    'message' => 'Erro ao atualizar post',
+                    'code' => 500
+                ];
+            }
+
+            return [
+                'message' => 'Post atualizado com sucesso',
+                'code' => 200
+            ];
+            
+        } catch (\Throwable $th) {
+            return [
+                'message' => 'Erro ao dar like',
                 'code' => 500
             ];
         }

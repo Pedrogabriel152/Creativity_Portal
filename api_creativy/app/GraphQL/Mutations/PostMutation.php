@@ -32,4 +32,10 @@ final class PostMutation
         $response = PostService::update($args);
         return $response;
     }
+
+    public function like($_, array $args)
+    {
+        $response = PostService::like($args['id']);
+        return $response;
+    }
 }

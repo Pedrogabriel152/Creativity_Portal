@@ -58,4 +58,11 @@ class PostRespository
             $post->save();
         });
     }
+
+    public static function like(Post $post) {
+        return DB::transaction(function () use ($post) {
+            $post->like = $post->like+1;
+            $post->save();
+        });
+    }
 }

@@ -27,4 +27,5 @@ type Mutation @guard {
     create(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
     delete(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
     update(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
+    like(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }
