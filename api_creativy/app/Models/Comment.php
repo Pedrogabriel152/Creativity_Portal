@@ -14,5 +14,6 @@ class Comment extends Model
         'likes',
         'user_id',
         'post_id',
+        'flag',
     ];
 }

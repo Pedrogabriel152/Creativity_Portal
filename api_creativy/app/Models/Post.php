@@ -14,6 +14,7 @@ class Post extends Model
         'likes',
         'image',
         'user_id',
+        'flag'
     ];
 
     public function comments() {

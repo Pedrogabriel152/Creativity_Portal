@@ -61,7 +61,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email ou senha incorreta'], 404);
         }
 
-        if(!!password_verify($request->password, $userExist->password)) {
+        if(!password_verify($request->password, $userExist->password)) {
             return response()->json(['message' => 'Email ou senha incorreta'], 404);
         }
 

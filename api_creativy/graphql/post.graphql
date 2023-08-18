@@ -1,10 +1,30 @@
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
 type Post {
     id: ID!
     subtitle: String!
     like: Int!
     image: String
     user_id: Int!
+    flag: Boolean
+}
+
+input PostInput {
+    id: ID
+    subtitle: String!
+    like: Int
+    image: Upload
+    user_id: Int!
+}
+
+type Query @guard {
+    post(where: _ @whereConditions(columns: ["id", "user_id", "flag"])): Post @find
+    posts(
+        where: _ @whereConditions(columns: ["user_id", "flag"]),
+        orderBy: _ @orderBy(columns: ["created_at"])
+    ): [Post]! @paginate(defaultCount: 10)
+}
+
+type Mutation @guard {
+    create(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
+    delete(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
+    update(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
 }
