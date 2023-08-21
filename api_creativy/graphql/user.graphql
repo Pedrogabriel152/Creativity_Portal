@@ -28,7 +28,7 @@ input UserInput {
   "Unique email address."
   email: String!
 
-  image: String
+  image: Upload
 
   password: String
 }
@@ -38,7 +38,7 @@ type Response {
   message: String!
 }
 
-type Query {
+extend type Query {
   "Find a single user by an identifying attribute."
   user(
     "Search by primary key."
@@ -52,9 +52,9 @@ type Query {
   users(
     "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
     name: String @where(operator: "like")
-  ): [User!]! @paginate(defaultCount: 10)
+  ): [User!]! @paginate(defaultCount: 10) 
 }
 
-type Mutation @guard {
+extend type Mutation @guard {
   editUser(id: ID!, user: UserInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@update")
 }

@@ -66,4 +66,12 @@ class PostRespository
             return $post;
         });
     }
+
+    public static function getPostById(int $id) {
+        $post = Post::where([
+            ['id', '=', $id],
+            ['flag', '=', true]
+        ])->first();
+        return $post;
+    }
 }

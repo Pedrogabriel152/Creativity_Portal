@@ -32,4 +32,10 @@ final class CommentMutation
         $response = CommentService::like($args['id'], $args['post_id']);
         return $response;
     }
+
+    public function delete($_, array $args)
+    {
+        $response = CommentService::delete($args);
+        return $response;
+    }
 }

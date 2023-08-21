@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\CommentRepository;
+use App\Repositories\PostRespository;
 
 class CommentService
 {
@@ -88,6 +89,47 @@ class CommentService
         } catch (\Throwable $th) {
             return [
                 'message' => 'Erro ao dar like',
+                'code' => 500
+            ];
+        }
+    }
+
+    public static function delete(array $args) {
+        try {
+            $postExist = PostRespository::getPostById($args['post_id']);
+
+            if(!$postExist) {
+                return [
+                    'message' => 'Post não encontrado',
+                    'code' => 404
+                ];
+            }
+
+            $commentExist = CommentRepository::getCommentPost($args['id'], $args['post_id']);
+
+            if(!$commentExist){
+                return [
+                    'message' => 'Comentário não encontrado',
+                    'code' => 404
+                ];
+            }
+
+            $comment = CommentRepository::delete($commentExist);
+
+            if(!$comment) {
+                return [
+                    'message' => 'Erro ao deletar comentário',
+                    'code' => 500
+                ];
+            }
+
+            return [
+                'message' => 'Comentário deletado com sucesso',
+                'code' => 200
+            ];
+        } catch (\Throwable $th) {
+            return [
+                'message' => 'Erro ao deletar comentário',
                 'code' => 500
             ];
         }

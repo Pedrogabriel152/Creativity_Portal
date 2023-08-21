@@ -55,4 +55,12 @@ class CommentRepository
 
         return $comment;
     }
+
+    public static function delete(Comment $comment) {
+        return DB::transaction(function () use ($comment) {
+            $comment->flag = false;
+            $comment->save();
+            return $comment;
+        });
+    }
 }
