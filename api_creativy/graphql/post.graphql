@@ -5,6 +5,7 @@ type Post {
     image: String
     user_id: Int!
     flag: Boolean
+    user: User! @belongsTo
 }
 
 input PostInput {
@@ -15,7 +16,7 @@ input PostInput {
     user_id: Int!
 }
 
-type Query @guard {
+extend type Query @guard {
     post(where: _ @whereConditions(columns: ["id", "user_id", "flag"])): Post @find
     posts(
         where: _ @whereConditions(columns: ["user_id", "flag"]),
@@ -23,9 +24,9 @@ type Query @guard {
     ): [Post]! @paginate(defaultCount: 10)
 }
 
-type Mutation @guard {
-    create(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
-    delete(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
-    update(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
-    like(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
+extend type Mutation @guard {
+    createPost(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
+    deletePost(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
+    updatePost(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
+    likePost(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }

@@ -1,0 +1,33 @@
+type Comment {
+    id: ID!
+    text: String!
+    likes: Int!
+    user_id: ID!
+    post_id: ID!
+    flag: Boolean
+    user: User! @belongsTo
+    # post: Post! @belongsTo
+}
+
+input CommentInput {
+    id: ID
+    text: String!
+    likes: Int
+    user_id: ID!
+    post_id: ID!
+}
+
+extend type Query @guard{
+    comment(where: _ @whereConditions(columns: ["id", "user_id", "post_id", "flag"])): Comment @find
+    comments(
+        where: _ @whereConditions(columns: ["post_id", "flag"]),
+        orderBy: _ @orderBy(columns: ["created_at"])
+    ): [Comment]! @paginate(defaultCount: 10)
+}
+
+extend type Mutation @guard {
+    createComment(comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@create")
+    deleteComment(id: ID!, user_id: ID!, post_id: ID!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
+    updateComment(id: ID!, user_id: ID!, post_id: ID!, comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@update")
+    likeComment(id: ID!, post_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@like")
+}

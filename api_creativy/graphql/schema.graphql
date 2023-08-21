@@ -5,3 +5,4 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 #import user.graphql
 #import post.graphql
+#import comment.graphql

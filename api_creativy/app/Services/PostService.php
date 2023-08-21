@@ -110,7 +110,7 @@ class PostService
 
             if(!$post) {
                 return [
-                    'message' => 'Erro ao atualizar post',
+                    'message' => 'Erro ao dar like',
                     'code' => 500
                 ];
             }
@@ -119,7 +119,6 @@ class PostService
                 'message' => 'Post atualizado com sucesso',
                 'code' => 200
             ];
-            
         } catch (\Throwable $th) {
             return [
                 'message' => 'Erro ao dar like',
