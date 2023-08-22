@@ -15,8 +15,8 @@ import Footer from '../Components/Footer';
 import { post1, post2, post3 } from '../Posts/posts';
 
 const sections = [
-  { title: 'Technology', url: '#' },
-  { title: 'Design', url: '#' },
+  { title: 'Home', url: '/' },
+  { title: 'Perfil', url: '/profile' },
   { title: 'Culture', url: '#' },
   { title: 'Business', url: '#' },
   { title: 'Politics', url: '#' },

@@ -12,7 +12,6 @@ class PostRespository
             $post = Post::create([
                 'title' => $args['title'],
                 'subtitle' => $args['subtitle'],
-                'like' => 0,
                 'user_id' => $args['user_id']
             ]);
 
@@ -47,7 +46,7 @@ class PostRespository
 
     public static function update(Post $post, array $newData) {
         return DB::transaction(function () use ($post, $newData) {
-            $post->title = $newData['title'];
+            $post->title = $newData['title  '];
             $post->subtitle = $newData['subtitle'];
             if(array_key_exists('image', $newData)){
                 $image = $newData['image'];
@@ -62,6 +61,19 @@ class PostRespository
 
     public static function like(Post $post) {
         return DB::transaction(function () use ($post) {
+            $userLikeExists = UserPostRepository::get($post->user_id, $post->id);
+
+            if($userLikeExists) {
+                UserPostRepository::delete($userLikeExists);
+                return $post;
+            }
+
+            $userLike = UserPostRepository::create($post->user_id, $post->id);
+
+            if(!$userLike){
+                return DB::rollBack();
+            }
+
             $post->like = $post->like+1;
             $post->save();
             return $post;

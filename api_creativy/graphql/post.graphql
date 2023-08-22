@@ -1,3 +1,9 @@
+type UserPost {
+    id: ID!
+    user_id: Int!
+    post_id: Int!
+}
+
 type Post {
     id: ID!
     subtitle: String!
@@ -7,6 +13,7 @@ type Post {
     title: String!
     flag: Boolean
     user: User! @belongsTo
+    user_post: [UserPost]! @hasMany
 }
 
 input PostInput {
@@ -30,5 +37,5 @@ extend type Mutation @guard {
     createPost(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
     deletePost(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
     updatePost(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
-    likePost(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
+    likePost(id: ID!, user_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }

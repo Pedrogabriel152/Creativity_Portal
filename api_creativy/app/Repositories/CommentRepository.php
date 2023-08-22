@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Comment;
+use App\Models\UserComment;
 use Illuminate\Support\Facades\DB;
 
 class CommentRepository
@@ -14,6 +15,15 @@ class CommentRepository
                 'user_id' => $args['user_id'],
                 'post_id' => $args['post_id'],
             ]);
+
+            $userComment = UserComment::create([
+                'user_id' => $args['user_id'],
+                'comment_id' => $comment->id,
+            ]);
+
+            if(!$userComment){
+                DB::rollBack();
+            }
 
             return $comment;
         });
@@ -40,7 +50,7 @@ class CommentRepository
 
     public static function like(Comment $comment) {
         return DB::transaction(function () use ($comment) {
-            $comment->likes = $comment->likes+1;
+            $comment->like = $comment->like+1;
             $comment->save();
             return $comment;
         });

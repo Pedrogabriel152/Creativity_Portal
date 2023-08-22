@@ -11,7 +11,7 @@ class Comment extends Model
 
     protected $fillable = [
         'text',
-        'likes',
+        'like_id',
         'user_id',
         'post_id',
         'flag',

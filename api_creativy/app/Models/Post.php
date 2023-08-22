@@ -12,7 +12,7 @@ class Post extends Model
     protected $fillable = [
         'subtitle',
         'title',
-        'likes',
+        'like_id',
         'image',
         'user_id',
         'flag'
@@ -24,5 +24,9 @@ class Post extends Model
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function user_post(){
+        return $this->hasMany(UserPost::class, 'post_id', 'id');
     }
 }
