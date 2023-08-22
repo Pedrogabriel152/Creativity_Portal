@@ -10,9 +10,9 @@ class PostRespository
     public static function create(array $args){
         return DB::transaction(function() use($args) {
             $post = Post::create([
+                'title' => $args['title'],
                 'subtitle' => $args['subtitle'],
                 'like' => 0,
-                'image' => array_key_exists('image', $args)? $args['image'] : null,
                 'user_id' => $args['user_id']
             ]);
 
@@ -32,7 +32,7 @@ class PostRespository
     public static function getPost(int $id, int $user_id){
         $post = Post::where([
             ['id', '=', $id],
-            ['user_id', '=', $user_id]
+            ['user_id', '=', $user_id],
         ])->first();
         return $post;
     }
@@ -47,6 +47,7 @@ class PostRespository
 
     public static function update(Post $post, array $newData) {
         return DB::transaction(function () use ($post, $newData) {
+            $post->title = $newData['title'];
             $post->subtitle = $newData['subtitle'];
             if(array_key_exists('image', $newData)){
                 $image = $newData['image'];

@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Laravel\Sanctum\Sanctum;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -66,8 +64,7 @@ class AuthController extends Controller
         if(!password_verify($request->password, $userExist->password)) {
             return response()->json(['message' => 'Email ou senha incorreta'], 404);
         }
-
-        dd($request->user());
+        
         $token = TokenService::createToken($userExist);
 
         return response()->json([

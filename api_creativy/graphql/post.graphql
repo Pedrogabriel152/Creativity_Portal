@@ -4,12 +4,14 @@ type Post {
     like: Int!
     image: String
     user_id: Int!
+    title: String!
     flag: Boolean
     user: User! @belongsTo
 }
 
 input PostInput {
     id: ID
+    title: String!
     subtitle: String!
     like: Int
     image: Upload
