@@ -95,8 +95,8 @@ class PostService
         }
     }
 
-    public static function like(int $id) {
-        // try {
+    public static function like(int $id, int $user_id) {
+        try {
             $postExist = Post::find($id);
 
             if(!$postExist){
@@ -106,7 +106,7 @@ class PostService
                 ];
             }
 
-            $post = PostRespository::like($postExist);
+            $post = PostRespository::like($postExist, $user_id);
 
             if(!$post) {
                 return [
@@ -119,11 +119,11 @@ class PostService
                 'message' => 'Post atualizado com sucesso',
                 'code' => 200
             ];
-        // } catch (\Throwable $th) {
-        //     return [
-        //         'message' => 'Erro ao dar like',
-        //         'code' => 500
-        //     ];
-        // }
+        } catch (\Throwable $th) {
+            return [
+                'message' => 'Erro ao dar like',
+                'code' => 500
+            ];
+        }
     }
 }

@@ -29,7 +29,7 @@ final class CommentMutation
 
     public function like($_, array $args)
     {
-        $response = CommentService::like($args['id'], $args['post_id']);
+        $response = CommentService::like($args['id'], $args['post_id'], $args['user_id']);
         return $response;
     }
 

@@ -59,16 +59,16 @@ class PostRespository
         });
     }
 
-    public static function like(Post $post) {
-        return DB::transaction(function () use ($post) {
-            $userLikeExists = UserPostRepository::get($post->user_id, $post->id);
+    public static function like(Post $post, int $user_id) {
+        return DB::transaction(function () use ($post, $user_id) {
+            $userLikeExists = UserPostRepository::get($user_id, $post->id);
 
             if($userLikeExists) {
                 UserPostRepository::delete($userLikeExists);
                 return $post;
             }
 
-            $userLike = UserPostRepository::create($post->user_id, $post->id);
+            $userLike = UserPostRepository::create($user_id, $post->id);
 
             if(!$userLike){
                 return DB::rollBack();

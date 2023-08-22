@@ -62,7 +62,7 @@ class CommentService
         } 
     }
 
-    public static function like(int $id, int $post_id) {
+    public static function like(int $id, int $post_id, int $user_id) {
         try {
             $commentExist = CommentRepository::getCommentPost($id, $post_id);
 
@@ -73,7 +73,7 @@ class CommentService
                 ];
             }
 
-            $comment = CommentRepository::like($commentExist);
+            $comment = CommentRepository::like($commentExist, $user_id);
 
             if(!$comment) {
                 return [
