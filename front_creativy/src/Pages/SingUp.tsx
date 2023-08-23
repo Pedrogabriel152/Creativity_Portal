@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAppDispatch, useAppSelector } from '../Hooks/hooks';
+import { IRegister } from '../interfaces/IRegister';
+import { createUser } from '../Redux/User/userSlice';
 
 function Copyright(props: any) {
   return (
@@ -30,14 +33,27 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+    const dispatch = useAppDispatch();
+    const user = useAppSelector((state) => state.user);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const user: IRegister = {
             name: `${data.get('firstName')} ${data.get('lastName')}`,
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+            email: `${data.get('email')}`,
+            password: `${data.get('password')}`,
+            confirmPassword: `${data.get('confirmPassword')}`,
+        }
+        // console.log({
+        //     name: `${data.get('firstName')} ${data.get('lastName')}`,
+        //     email: data.get('email'),
+        //     password: data.get('password'),
+        //     confirmPassword: data.get('confirmPassword'),
+        // });
+
+        dispatch(createUser(user));
+
     };
 
     return (
@@ -100,6 +116,17 @@ export default function SignUp() {
                         type="password"
                         id="password"
                         autoComplete="new-password"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                        required
+                        fullWidth
+                        name="confirmPassword"
+                        label="Confirme a Senha"
+                        type="password"
+                        id="confirmPassword"
+                        autoComplete="new-confirmpassword"
                         />
                     </Grid>
                     </Grid>

@@ -65,6 +65,8 @@ class PostRespository
 
             if($userLikeExists) {
                 UserPostRepository::delete($userLikeExists);
+                $post->like = $post->like-1;
+                $post->save();
                 return $post;
             }
 
@@ -85,6 +87,11 @@ class PostRespository
             ['id', '=', $id],
             ['flag', '=', true]
         ])->first();
+        return $post;
+    }
+
+    public static function mainPost() {
+        $post = Post::whereFlag(true)->orderBy('like', 'desc')->first();
         return $post;
     }
 }

@@ -31,6 +31,7 @@ extend type Query @guard {
         where: _ @whereConditions(columns: ["user_id", "flag"]),
         orderBy: _ @orderBy(columns: ["created_at"])
     ): [Post]! @paginate(defaultCount: 10)
+    mainPost: Post @field(resolver: "App\\GraphQL\\Queries\\PostQuery@mainPost")
 }
 
 extend type Mutation @guard {

@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Comment;
-use App\Models\UserComment;
 use Illuminate\Support\Facades\DB;
 
 class CommentRepository
@@ -45,13 +44,12 @@ class CommentRepository
 
             if($userCommentExist) {
                 UserCommentRopository::delete($userCommentExist);
+                $comment->like = $comment->like-1;
+                $comment->save();
                 return $comment;
             }
             
-            $userComment = UserCommentRopository::create([
-                'user_id' => $comment->user_id,
-                'comment_id' => $comment->id,
-            ]);
+            $userComment = UserCommentRopository::create($comment->id, $user_id);
 
             if(!$userComment){
                 return DB::rollBack();

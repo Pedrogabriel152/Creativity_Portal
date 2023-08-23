@@ -1,7 +1,7 @@
 type Comment {
     id: ID!
     text: String!
-    likes: Int!
+    like: Int!
     user_id: ID!
     post_id: ID!
     flag: Boolean
@@ -12,7 +12,7 @@ type Comment {
 input CommentInput {
     id: ID
     text: String!
-    likes: Int
+    like: Int
     user_id: ID!
     post_id: ID!
 }

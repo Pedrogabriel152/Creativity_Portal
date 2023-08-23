@@ -126,4 +126,9 @@ class PostService
             ];
         }
     }
+
+    public static function mainPost() {
+        $post = PostRespository::mainPost();
+        return $post;
+    }
 }
