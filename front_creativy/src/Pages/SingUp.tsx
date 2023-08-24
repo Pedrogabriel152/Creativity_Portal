@@ -14,7 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppDispatch, useAppSelector } from '../Hooks/hooks';
 import { IRegister } from '../interfaces/IRegister';
-import { createUser } from '../Redux/User/userSlice';
+import { getAuth, selectUser } from '../Redux/User/userSlice';
+import { useSelector } from 'react-redux';
+import { AuthContext } from '../Context/AuthContext';
 
 function Copyright(props: any) {
   return (
@@ -33,26 +35,30 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+    const user = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
-    const user = useAppSelector((state) => state.user);
+    const { createUser }: any = React.useContext(AuthContext);
+    
+    React.useEffect(() => {
+        console.log("Effect",user);
+    }, [user]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const user: IRegister = {
+        const newUser: IRegister = {
             name: `${data.get('firstName')} ${data.get('lastName')}`,
             email: `${data.get('email')}`,
             password: `${data.get('password')}`,
             confirmPassword: `${data.get('confirmPassword')}`,
         }
-        // console.log({
-        //     name: `${data.get('firstName')} ${data.get('lastName')}`,
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        //     confirmPassword: data.get('confirmPassword'),
-        // });
+        await createUser(newUser);
 
-        dispatch(createUser(user));
+        const auth = localStorage.getItem('@auth');
+
+        if(auth){
+            dispatch(getAuth(newUser));
+        }
 
     };
 
@@ -68,6 +74,7 @@ export default function SignUp() {
                     alignItems: 'center',
                 }}
             >
+                <h1>{user.code}</h1>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                 </Avatar>

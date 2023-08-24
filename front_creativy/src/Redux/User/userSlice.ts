@@ -6,48 +6,35 @@ import { IRegister } from '../../interfaces/IRegister';
 
 const initialState: IUser = {
     token: '',
-    loading: false
+    loading: false,
+    code: 500,
+    user_id: 0
 };
 
-const createUserFunc = (state: any, action: PayloadAction<IRegister>) => {
-    if(!action.payload.email || !action.payload.name || !action.payload.password || !action.payload.confirmPassword){
-        alert('Preença todos os campos');
-        return;
+const getAuthFunc = (state: any, action: PayloadAction<IRegister>) => {
+    const infos = localStorage.getItem('@auth');
+    console.log("Infos",infos);
+    
+    if(infos){
+        const auth = JSON.parse(infos);
+        console.log(auth, state)
+        if(auth) {
+            return {
+                ...state,
+                code: auth.code,
+                token: auth.token,
+                user_id: auth.user_id,
+                loading: auth.loading
+            }
+        }
     }
-
-    if(action.payload.password !== action.payload.confirmPassword) {
-        alert('As senhas precisam ser iguais!.');
-        return;
-    }
-
-    console.log(action.payload)
-
-    api.get('/sanctum/csrf-cookie').then(response => { 
-        api.post('/api/register', {
-            name: action.payload.name,
-            email: action.payload.email,
-            password: action.payload.password
-        })
-        .then((res: any) => {
-            console.log(res.data);
-        })
-        .catch((error: any) => {
-            console.log(error)
-            // return {
-            //     ...state,
-            //     user: {
-            //         token: res.
-            //     }
-            // }
-        })
-    });
 }
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        createUser: createUserFunc,
+        getAuth: getAuthFunc,
     }
     // initialState: {
     //   value: 0,
@@ -71,7 +58,7 @@ export const userSlice = createSlice({
   })
   
   // Action creators are generated for each case reducer function
-  export const { createUser } = userSlice.actions
+  export const { getAuth } = userSlice.actions
 
   export const selectUser = (state: RootState) => state.user
   
