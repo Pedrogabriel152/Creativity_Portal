@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,38 +11,44 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAppDispatch, useAppSelector } from '../Hooks/hooks';
 import { IRegister } from '../interfaces/IRegister';
-import { getAuth, selectUser } from '../Redux/User/userSlice';
-import { useSelector } from 'react-redux';
-import { AuthContext } from '../Context/AuthContext';
+import { useAuthContext } from '../Context/AuthContext';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Copyright from '../Components/Copyright';
+import { api } from '../Utils/Api';
+import { saveLocalStorage } from '../Utils/functions';
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://github.com/Pedrogabriel152/Creativity_Portal">
-        Pedro Gabriel
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright(props: any) {
+//   return (
+//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://github.com/Pedrogabriel152/Creativity_Portal">
+//         Pedro Gabriel
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-    const user = useAppSelector(selectUser);
-    const dispatch = useAppDispatch();
-    const { createUser }: any = React.useContext(AuthContext);
-    
-    React.useEffect(() => {
-        console.log("Effect",user);
-    }, [user]);
+    const { createUser, getLocalStorage } = useAuthContext();
+    const [auth, setAuth] = useState<any>(getLocalStorage());
+    const navigate = useNavigate();
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        if(auth?.code == 200){
+            navigate('/');
+            toast.success('Bem vindo ao Creativy Portal!');
+        }
+    }, [auth]); 
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const newUser: IRegister = {
@@ -52,14 +57,39 @@ export default function SignUp() {
             password: `${data.get('password')}`,
             confirmPassword: `${data.get('confirmPassword')}`,
         }
-        await createUser(newUser);
+        // createUser(newUser, setAuth);
 
-        const auth = localStorage.getItem('@auth');
+        // const auth = getLocalStorage();
+        // console.log(auth);
 
-        if(auth){
-            dispatch(getAuth(newUser));
-        }
+        // if(auth?.code === 200) {
+        //     navigate('/');
+        //     toast.success('Bem vindo ao Creativy Portal!');
+        // }
 
+        api.get('/sanctum/csrf-cookie').then(response => { 
+            api.post('/api/register', {
+                name: newUser.name,
+                email: newUser.email,
+                password: newUser.password
+            })
+            .then((res: any) => {
+                if(localStorage.getItem('@auth')){
+                    localStorage.removeItem('@auth');
+                }
+
+                saveLocalStorage(res.data);
+                navigate('/');
+                toast.success('Bem vindo ao Creativy Portal!');
+            })
+            .catch((error: any) => {
+                if(localStorage.getItem('@auth')){
+                    localStorage.removeItem('@auth');
+                }
+                
+                toast.error(error.response.data.message);
+            })
+        });
     };
 
     return (
@@ -74,7 +104,6 @@ export default function SignUp() {
                     alignItems: 'center',
                 }}
             >
-                <h1>{user.code}</h1>
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                 </Avatar>

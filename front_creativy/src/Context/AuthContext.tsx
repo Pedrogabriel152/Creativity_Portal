@@ -1,31 +1,38 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // API
 import { api } from "../Utils/Api";
 import { IRegister } from "../interfaces/IRegister";
 import { saveLocalStorage } from "../Utils/functions";
+import { IUser } from "../interfaces/IUser";
+import { IAuthContext } from "../interfaces/IAuthContext";
+import { toast } from "react-toastify";
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext<IAuthContext>({
+    createUser: () => null,
+    getLocalStorage: () => null,
+    loading: false
+});
 
 const AuthProvider = ({children}: any) => {
-    const [auth, setAuth] = useState<any>({});
-    const [loading, setLoading] = useState<boolean>(true);
+    const [auth, setAuth] = useState<IUser>();
+    const [loading, setLoading] = useState<boolean>(false);
+    
 
-    const createUser = (newUser: IRegister) => {
+    const createUser = (newUser: IRegister, setUser: any) => {
         if(!newUser.email || !newUser.name || !newUser.password || !newUser.confirmPassword){
-            alert('Preença todos os campos');
+            toast.error('Preença todos os campos');
             return;
         }
     
         if(newUser.password !== newUser.confirmPassword) {
-            alert('As senhas precisam ser iguais!.');
+            toast.error('As senhas precisam ser iguais!');
             return;
         }
-        setAuth({
-            loading: true
-        });
-    
+
+        setLoading(true);
+
         api.get('/sanctum/csrf-cookie').then(response => { 
             api.post('/api/register', {
                 name: newUser.name,
@@ -42,7 +49,10 @@ const AuthProvider = ({children}: any) => {
                     loading: false 
                 });
 
-                saveLocalStorage(auth);
+                if(auth) {
+                    saveLocalStorage(auth);
+                    setUser(auth);
+                }
             })
             .catch((error: any) => {
                 console.log(error)
@@ -53,21 +63,37 @@ const AuthProvider = ({children}: any) => {
                     user_id: 0,
                     loading: false 
                 });
+
+                if(auth) {
+                    saveLocalStorage(auth);
+                    setUser(auth);
+                }
             })
         });
+    }
+
+    const getLocalStorage = () => {
+        const infos = localStorage.getItem('@auth');
+        if(infos) {
+            return JSON.parse(infos);
+        }
     }
 
     return (
         <AuthContext.Provider 
             value={{ 
-                auth,
                 loading,
-                createUser
+                createUser, 
+                getLocalStorage
             }}
         >
             {children}
         </AuthContext.Provider>
     );
+}
+
+export const useAuthContext = () => {
+    return useContext(AuthContext);
 }
 
 export default AuthProvider;
