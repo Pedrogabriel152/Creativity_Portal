@@ -57,15 +57,6 @@ export default function SignUp() {
             password: `${data.get('password')}`,
             confirmPassword: `${data.get('confirmPassword')}`,
         }
-        // createUser(newUser, setAuth);
-
-        // const auth = getLocalStorage();
-        // console.log(auth);
-
-        // if(auth?.code === 200) {
-        //     navigate('/');
-        //     toast.success('Bem vindo ao Creativy Portal!');
-        // }
 
         api.get('/sanctum/csrf-cookie').then(response => { 
             api.post('/api/register', {
@@ -78,7 +69,7 @@ export default function SignUp() {
                     localStorage.removeItem('@auth');
                 }
 
-                saveLocalStorage(res.data);
+                saveLocalStorage(res);
                 navigate('/');
                 toast.success('Bem vindo ao Creativy Portal!');
             })

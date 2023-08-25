@@ -4,6 +4,7 @@ import RoutesApp from './Routes';
 import ABApolloClient from './Components/ApolloClient';
 import AuthProvider from './Context/AuthContext';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
