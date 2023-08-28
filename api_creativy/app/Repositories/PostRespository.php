@@ -46,7 +46,7 @@ class PostRespository
 
     public static function update(Post $post, array $newData) {
         return DB::transaction(function () use ($post, $newData) {
-            $post->title = $newData['title  '];
+            $post->title = $newData['title'];
             $post->subtitle = $newData['subtitle'];
             if(array_key_exists('image', $newData)){
                 $image = $newData['image'];
@@ -56,6 +56,8 @@ class PostRespository
                 $post->image = "img/posts/$post->id/$imageName";     
             }
             $post->save();
+
+            return $post;
         });
     }
 

@@ -14,8 +14,13 @@ import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
 import { post1, post2, post3 } from '../Posts/posts';
 import { sections } from '../Utils/variable';
+import { useGetMainPost } from '../GraphQL/Hooks/postHooks';
+import { useReactiveVar } from '@apollo/client';
+import { getMainPostVar } from '../GraphQL/States/postState';
 
 const Home = () => {
+  useGetMainPost();
+  const mainPost = useReactiveVar(getMainPostVar);
     // const count = useAppSelector((state) => state.counter.value)
     // const dispatch = useAppDispatch()
     const mainFeaturedPost = {
@@ -45,6 +50,10 @@ const Home = () => {
           imageLabel: 'Image Text',
         },
     ];
+
+    if(!mainPost)  {
+      return <div></div>
+    }
     
     // TODO remove, this demo shouldn't need to reset the theme.
     const defaultTheme = createTheme();
@@ -55,7 +64,7 @@ const Home = () => {
         <Container maxWidth="lg">
             <Header title="Blog" sections={sections} />
             <main>
-            <MainFeaturedPost post={mainFeaturedPost} />
+            <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} />
             <Grid container spacing={4}>
                 {featuredPosts.map((post) => (
                 <FeaturedPost key={post.title} post={post} />

@@ -1,18 +1,20 @@
-import { IUser } from "../interfaces/IUser";
-import { api } from "./Api";
+export const saveLocalStorage = (state: any) => {
+    const authObj = {
+        token: state.data.token,
+        user_id: state.data.user_id,
+        message: state.data.message,
+        code: state.status
+    };
 
-export const saveLocalStorage = (state: IUser) => {
-    const auth = JSON.stringify(state);
+    const authStr = JSON.stringify(authObj);
 
-    const getLocal = localStorage.getItem('@auth');
+    removeLocalStorage();
 
-    if(getLocal) {
-        removeLocalStorage();
-    }
-
-    localStorage.setItem('@auth', auth);
+    localStorage.setItem('@auth', authStr);
 }
 
 export const removeLocalStorage = () => {
-    localStorage.removeItem('@auth');
+    if(localStorage.getItem('@auth')){
+        localStorage.removeItem('@auth');
+    }
 }

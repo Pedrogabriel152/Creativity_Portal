@@ -1,4 +1,6 @@
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
+import { GETMAINPOST } from "../Queries/postQuery";
+import { getMainPostVar } from "../States/postState";
 // import { GETEXPENSES, GETACTIVEEXPENSES, GETIDLEEXPENSES, CREATEEXPENSE, GETEXPENSE, UPDATEEXPENSE, PAYINSTALLMENT } from "./queries";
 // import { GETFINANCE, GETFINANCIALSUMMARY, GETMONTHLYSUMMARY } from "../Finance/queries";
 // import { createExpenseVar, getActiveExpenseVar, getExpenseVar, getExpensesVar, getIdleExpenseVar, payInstallmentExpenseVar, updateExpenseVar } from "./state";
@@ -7,31 +9,19 @@ import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 // Context
 // import { useUserContext } from "../../Context/UserContext";
 
-// // Interfaces
-// import { IPaginate } from "../../Interfaces/IPaginate";
-// import { IResponse } from "../../Interfaces/IResponse";
-// import { IExpense } from "../../Interfaces/IExpense";
+// Interfaces
+import { IMainPost } from "../../interfaces/IMainPost";
 
-// export const useGetExpenses = (page: number) => {
-//     const {getAuthentication} = useUserContext();
-//     const auth = getAuthentication();
-//     const client = useApolloClient();
-
-//     updateLink(`http://localhost/graphql?page=${page}`, auth, client);
-
-//     return useQuery<{ getAllExpense: IPaginate }>(GETEXPENSES, {
-//         variables: {
-//             user_id: auth?.user_id ? auth.user_id : 0,
-//             first: page,
-//         },
-//         onCompleted(data) {
-//             if (data) {
-//                 getExpensesVar(data.getAllExpense);
-//             }
-//         },
-//         fetchPolicy: 'cache-and-network',
-//     });
-// };
+export const useGetMainPost = () => {
+    return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
+        onCompleted(data) {
+            if (data) {
+                getMainPostVar(data.mainPost);
+            }
+        },
+        fetchPolicy: 'cache-and-network',
+    });
+};
 
 // export const useGetActiveExpenses = (page: number) => {
 //     const {getAuthentication} = useUserContext();

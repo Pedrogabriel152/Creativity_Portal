@@ -1,15 +1,19 @@
 import { gql } from "@apollo/client";
 
-export const GETEXPENSES = gql`
+export const GETMAINPOST = gql`
     query MainPost{
         mainPost {
             id
             like
             flag
             image
+            subtitle
             user {
                 email
                 created_at
+            }
+            user_post{
+                user_id
             }
         }
     }

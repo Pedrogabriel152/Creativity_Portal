@@ -14,6 +14,8 @@ type Post {
     flag: Boolean
     user: User! @belongsTo
     user_post: [UserPost]! @hasMany
+    created_at: DateTime!
+    updated_at: DateTime!
 }
 
 input PostInput {
@@ -32,6 +34,10 @@ extend type Query @guard {
         orderBy: _ @orderBy(columns: ["created_at"])
     ): [Post]! @paginate(defaultCount: 10)
     mainPost: Post @field(resolver: "App\\GraphQL\\Queries\\PostQuery@mainPost")
+    featuredPosts(
+        where: _ @whereConditions(columns: ["flag"]),
+        orderBy: _ @orderBy(columns: ["created_at"])
+    ): [Post]! @paginate(defaultCount: 10)
 }
 
 extend type Mutation @guard {

@@ -4,20 +4,15 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { useGetMainPost } from '../GraphQL/Hooks/postHooks';
+import { useReactiveVar } from '@apollo/client';
+import { getMainPostVar } from '../GraphQL/States/postState';
+import { IconButton } from '@mui/material';
+import { IMainFeatured } from '../interfaces/IMainFeatured';
 
-interface MainFeaturedPostProps {
-  post: {
-    description: string;
-    image: string;
-    imageText: string;
-    linkText: string;
-    title: string;
-  };
-}
-
-export default function MainFeaturedPost(props: MainFeaturedPostProps) {
-  const { post } = props;
-
+export default function MainFeaturedPost(mainPost: IMainFeatured) {
   return (
     <Paper
       sx={{
@@ -28,11 +23,11 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: `url(${post.image})`,
+        backgroundImage: `url(${process.env.REACT_APP_API_URL}/${mainPost.image})`,
       }}
     >
       {/* Increase the priority of the hero background image */}
-      {<img style={{ display: 'none' }} src={post.image} alt={post.imageText} />}
+      {<img style={{ display: 'none' }} src={mainPost.image} alt={mainPost.title} />}
       <Box
         sx={{
           position: 'absolute',
@@ -53,13 +48,13 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
             }}
           >
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              {post.title}
+              {mainPost.title}
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              {post.description}
+              {mainPost.subtitle.substring(0,150)}
             </Typography>
             <Link variant="subtitle1" href="#">
-              {post.linkText}
+              Continue Lendo...
             </Link>
           </Box>
         </Grid>

@@ -91,7 +91,7 @@ export default function Blog() {
       <Container maxWidth="lg">
         <Header title="Blog" sections={sections} />
         <main>
-          <MainFeaturedPost post={mainFeaturedPost} />
+          {/* <MainFeaturedPost post={mainFeaturedPost} /> */}
           <Grid container spacing={4}>
             {featuredPosts.map((post) => (
               <FeaturedPost key={post.title} post={post} />

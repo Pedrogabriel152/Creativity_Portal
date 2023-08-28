@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Copyright from '../Components/Copyright';
 import { api } from '../Utils/Api';
-import { saveLocalStorage } from '../Utils/functions';
+import { removeLocalStorage, saveLocalStorage } from '../Utils/functions';
 
 // function Copyright(props: any) {
 //   return (
@@ -65,18 +65,13 @@ export default function SignUp() {
                 password: newUser.password
             })
             .then((res: any) => {
-                if(localStorage.getItem('@auth')){
-                    localStorage.removeItem('@auth');
-                }
-
+                removeLocalStorage();
                 saveLocalStorage(res);
                 navigate('/');
                 toast.success('Bem vindo ao Creativy Portal!');
             })
             .catch((error: any) => {
-                if(localStorage.getItem('@auth')){
-                    localStorage.removeItem('@auth');
-                }
+                removeLocalStorage();
                 
                 toast.error(error.response.data.message);
             })

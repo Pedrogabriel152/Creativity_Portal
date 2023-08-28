@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,30 +11,42 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://github.com/Pedrogabriel152/Creativity_Portal">
-        Pedro Gabriel
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { api } from '../Utils/Api';
+import { removeLocalStorage, saveLocalStorage } from '../Utils/functions';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { ILogin } from '../interfaces/ILogin';
+import Copyright from '../Components/Copyright';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const newUser: ILogin = {
+      email: `${data.get('email')}`,
+      password: `${data.get('password')}`,
+    }
+
+    api.get('/sanctum/csrf-cookie').then(response => { 
+      api.post('/api/login', {
+        email: newUser.email,
+        password: newUser.password
+      })
+      .then(res => {
+        removeLocalStorage();
+        saveLocalStorage(res);
+        navigate('/');
+        toast.success('Bem vindo de volta!');
+      })
+      .catch(error => {
+        removeLocalStorage();
+        toast.error(error.response.data.message);
+      })
     });
   };
 
@@ -55,7 +66,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Login
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
