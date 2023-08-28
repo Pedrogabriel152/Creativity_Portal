@@ -37,7 +37,7 @@ extend type Query @guard {
     featuredPosts(
         where: _ @whereConditions(columns: ["flag"]),
         orderBy: _ @orderBy(columns: ["created_at"])
-    ): [Post]! @paginate(defaultCount: 10)
+    ): [Post!]! @all
 }
 
 extend type Mutation @guard {

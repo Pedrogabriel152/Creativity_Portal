@@ -19,21 +19,15 @@ export const GETMAINPOST = gql`
     }
 `;
 
-export const GETACTIVEEXPENSES = gql`
-    query ActiveExpenses($user_id: ID!, $first: Int!) {
-        getActiveExpense(user_id: $user_id, first: $first){
-            data{
-                id
-                establishment
-                expires
-                value_installment
-                paid_expense
-            }
-            paginatorInfo{
-                count
-                currentPage
-                lastPage
-            }
+export const FEATUREDPOSTS = gql`
+    query{
+        featuredPosts (orderBy: [{ column: CREATED_AT, order: DESC }]) {
+            id
+            title
+            subtitle
+            created_at
+            like
+            image
         }
     }
 `;

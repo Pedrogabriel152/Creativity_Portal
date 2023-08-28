@@ -1,6 +1,6 @@
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
-import { GETMAINPOST } from "../Queries/postQuery";
-import { getMainPostVar } from "../States/postState";
+import { FEATUREDPOSTS, GETMAINPOST } from "../Queries/postQuery";
+import { getFeaturedPostsVar, getMainPostVar } from "../States/postState";
 // import { GETEXPENSES, GETACTIVEEXPENSES, GETIDLEEXPENSES, CREATEEXPENSE, GETEXPENSE, UPDATEEXPENSE, PAYINSTALLMENT } from "./queries";
 // import { GETFINANCE, GETFINANCIALSUMMARY, GETMONTHLYSUMMARY } from "../Finance/queries";
 // import { createExpenseVar, getActiveExpenseVar, getExpenseVar, getExpensesVar, getIdleExpenseVar, payInstallmentExpenseVar, updateExpenseVar } from "./state";
@@ -11,6 +11,7 @@ import { getMainPostVar } from "../States/postState";
 
 // Interfaces
 import { IMainPost } from "../../interfaces/IMainPost";
+import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -23,26 +24,17 @@ export const useGetMainPost = () => {
     });
 };
 
-// export const useGetActiveExpenses = (page: number) => {
-//     const {getAuthentication} = useUserContext();
-//     const auth = getAuthentication();
-//     const client = useApolloClient();
-
-//     updateLink(`http://localhost/graphql?page=${page}`, auth, client);
-
-//     return useQuery<{ getActiveExpense: IPaginate }>(GETACTIVEEXPENSES, {
-//         variables: {
-//             user_id: auth?.user_id ? auth.user_id : 0,
-//             first: page,
-//         },
-//         onCompleted(data) {
-//             if (data) {
-//                 getActiveExpenseVar(data.getActiveExpense);
-//             }
-//         },
-//         fetchPolicy: 'cache-and-network',
-//     });
-// };
+export const useGetFeaturedPosts = () => {
+        return useQuery<{ featuredPosts: IFeaturedPosts[] }>(FEATUREDPOSTS, {
+        onCompleted(data) {
+            if (data) {
+                console.log(data)
+                // getFeaturedPostsVar(data.featuredPosts);/*  */
+            }
+        },
+        fetchPolicy: 'cache-and-network',
+    });
+};
 
 // export const useGetIdleExpenses = (page: number) => {
 //     const {getAuthentication} = useUserContext();
