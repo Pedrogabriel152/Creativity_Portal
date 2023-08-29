@@ -13,6 +13,11 @@ import Main from '../Components/Main';
 import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
 import { post1, post2, post3 } from '../Posts/posts';
+import { useParams } from 'react-router-dom';
+import { useGetPost } from '../GraphQL/Hooks/postHooks';
+import { useReactiveVar } from '@apollo/client';
+import { getPostVar } from '../GraphQL/States/postState';
+import { Avatar, Typography } from '@mui/material';
 
 const sections = [
   { title: 'Home', url: '/' },
@@ -25,34 +30,6 @@ const sections = [
   { title: 'Health', url: '#' },
   { title: 'Style', url: '#' },
   { title: 'Travel', url: '#' },
-];
-
-const mainFeaturedPost = {
-  title: 'Teste post',
-  description:
-    "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image: 'https://source.unsplash.com/random?wallpapers',
-  imageText: 'main image description',
-  linkText: 'Continue reading…',
-};
-
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random?wallpapers',
-    imageLabel: 'Image Text',
-  },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random?wallpapers',
-    imageLabel: 'Image Text',
-  },
 ];
 
 const posts = [post1, post2, post3];
@@ -84,22 +61,40 @@ const sidebar = {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Blog() {
+export default function Post() {
+  const {id} = useParams();
+  useGetPost(id? parseInt(id) : 0);
+  const post = useReactiveVar(getPostVar);
+  console.log(post)
+
+  if(!post) {
+    return <div></div>
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header title="Blog" sections={sections} />
+        <Header title="Creativy Portal" sections={sections} />
         <main>
-          {/* <MainFeaturedPost post={mainFeaturedPost} /> */}
-          <Grid container spacing={4}>
-            {/* {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
-            ))} */}
-          </Grid>
           <Grid container spacing={5} sx={{ mt: 3 }}>
-            <Main title="From the firehose" posts={posts} />
-            <Sidebar
+            <Grid
+              item
+              xs={6}
+              md={12}
+              sx={{
+                '& .markdown': {
+                  py: 3,
+                },
+              }}
+            >
+              <Typography variant="subtitle2" gutterBottom>
+                <Avatar alt={post.user?.name} src={`${process.env.REACT_APP_API_URL}/${post.user?.image}`} />
+                {post.user?.name}
+              </Typography>
+            </Grid>
+            <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} />
+            <Sidebar 
               title={sidebar.title}
               description={sidebar.description}
               archives={sidebar.archives}

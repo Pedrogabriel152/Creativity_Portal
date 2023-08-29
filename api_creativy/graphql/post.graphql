@@ -28,7 +28,7 @@ input PostInput {
 }
 
 extend type Query @guard {
-    post(where: _ @whereConditions(columns: ["id", "user_id", "flag"])): Post @find
+    post(where: _ @whereConditions(columns: ["id", "flag"])): Post @find
     posts(
         where: _ @whereConditions(columns: ["user_id", "flag"]),
         orderBy: _ @orderBy(columns: ["created_at"])

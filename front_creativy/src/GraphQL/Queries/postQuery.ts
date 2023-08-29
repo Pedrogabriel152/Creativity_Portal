@@ -38,26 +38,28 @@ export const FEATUREDPOSTS = gql`
     }
 `;
 
-export const GETIDLEEXPENSES = gql`
-    query IdleExpenses($user_id: ID!, $first: Int!) {
-        getIdleExpense(user_id: $user_id, first: $first){
-            data{
-                id
-                establishment
-                expires
-                value_installment
-                paid_expense
-            }
-            paginatorInfo{
-                count
-                currentPage
-                lastPage
+export const GETPOST = gql`
+    query GetPost($id: Mixed!, $flag: Mixed!){
+        post(where: {AND: [
+                { column: ID, operator: EQ, value: $id },
+                { column: FLAG, operator: EQ, value: $flag}
+        ]}){
+            id
+            subtitle
+            like
+            flag
+            user_id
+            created_at
+            title
+            user{
+                image
+                name
             }
         }
     }
 `;
 
-export const CREATEEXPENSE = gql`
+export const CREATEEXPENSE = gql`   
     mutation CreateExpense($expense: ExpenseInput!){
         createExpense(expense: $expense){
             code

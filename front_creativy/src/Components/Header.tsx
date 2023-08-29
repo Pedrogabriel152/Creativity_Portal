@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -18,7 +18,7 @@ export default function Header(props: HeaderProps) {
   const { sections, title } = props;
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Button size="small">Subscribe</Button>
         <Typography
@@ -56,6 +56,6 @@ export default function Header(props: HeaderProps) {
           </Link>
         ))}
       </Toolbar>
-    </React.Fragment>
+    </Fragment>
   );
 }

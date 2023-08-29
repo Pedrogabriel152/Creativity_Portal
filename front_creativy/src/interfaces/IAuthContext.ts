@@ -1,5 +1,4 @@
 import { IRegister } from "./IRegister";
-import { IUser } from "./IUser";
 
 export interface IAuthContext {
     loading: boolean
