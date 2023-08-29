@@ -20,14 +20,20 @@ export const GETMAINPOST = gql`
 `;
 
 export const FEATUREDPOSTS = gql`
-    query{
-        featuredPosts (orderBy: [{ column: CREATED_AT, order: DESC }]) {
-            id
-            title
-            subtitle
-            created_at
-            like
-            image
+    query featuredPosts($first: Int!){
+        featuredPosts (first: $first,orderBy: [{ column: CREATED_AT, order: DESC }]) {
+            data{
+                id
+                title
+                subtitle
+                created_at
+                like
+                image
+            }
+            paginatorInfo{
+                hasMorePages
+                count
+            }
         }
     }
 `;

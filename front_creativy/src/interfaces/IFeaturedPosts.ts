@@ -1,5 +1,9 @@
 import { IPost } from "./IPost";
 
 export interface IFeaturedPosts {
-    featuredPosts: IPost
+    data: IPost[]
+    paginatorInfo: {
+        hasMorePages: boolean
+        count: number
+    }
 }

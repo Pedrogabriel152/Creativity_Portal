@@ -1,4 +1,3 @@
-import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -17,40 +16,21 @@ import { sections } from '../Utils/variable';
 import { useGetFeaturedPosts, useGetMainPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getFeaturedPostsVar, getMainPostVar } from '../GraphQL/States/postState';
+import { IPost } from '../interfaces/IPost';
+import { CircularProgress, IconButton } from '@mui/material';
+import ReplayIcon from '@mui/icons-material/Replay';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
-  useGetMainPost();
-  useGetFeaturedPosts();
-  const mainPost = useReactiveVar(getMainPostVar);
-  const featuredPosts = useReactiveVar(getFeaturedPostsVar);
+    const [first, setFirst] = useState<number>(6);
+    useGetMainPost();
+    const {loading: loadindMorePosts} = useGetFeaturedPosts(first);
+    const mainPost = useReactiveVar(getMainPostVar);
+    const featuredPosts = useReactiveVar(getFeaturedPostsVar);
 
-    const mainFeaturedPost = {
-        title: 'Teste post',
-        description:
-          "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-        image: 'https://source.unsplash.com/random?wallpapers',
-        imageText: 'main image description',
-        linkText: 'Continue reading…',
-    };
-    
-    // const featuredPosts = [
-    //     {
-    //       title: 'Featured post',
-    //       date: 'Nov 12',
-    //       description:
-    //         'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    //       image: 'https://source.unsplash.com/random?wallpapers',
-    //       imageLabel: 'Image Text',
-    //     },
-    //     {
-    //       title: 'Post title',
-    //       date: 'Nov 11',
-    //       description:
-    //         'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    //       image: 'https://source.unsplash.com/random?wallpapers',
-    //       imageLabel: 'Image Text',
-    //     },
-    // ];
+    useEffect(() => {},[first]); 
+
+    const morePosts = () => {if(featuredPosts?.paginatorInfo.hasMorePages) setFirst(featuredPosts?.paginatorInfo.count+6);}
 
     if(!mainPost || !featuredPosts)  {
       return <div></div>
@@ -58,7 +38,6 @@ const Home = () => {
     
     // TODO remove, this demo shouldn't need to reset the theme.
     const defaultTheme = createTheme();
-    console.log(featuredPosts)
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -66,21 +45,18 @@ const Home = () => {
         <Container maxWidth="lg">
             <Header title="Creativy Portal" sections={sections} />
             <main>
-            <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} />
+            <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} id={mainPost.id}/>
             <Grid container spacing={4}>
-                {featuredPosts.map(post => (
-                <FeaturedPost key={post.title} post={post} />
+                {featuredPosts.data.map((post: IPost) => (
+                <FeaturedPost key={post.id} post={post} />
                 ))}
             </Grid>
-            {/* <Grid container spacing={5} sx={{ mt: 3 }}>
-                <Main title="From the firehose" posts={posts} />
-                <Sidebar
-                title={sidebar.title}
-                description={sidebar.description}
-                archives={sidebar.archives}
-                social={sidebar.social}
-                />
-            </Grid> */}
+            {loadindMorePosts 
+                ?<CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
+                :<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={morePosts}>
+                    <ReplayIcon fontSize="inherit"/>
+                </IconButton>
+            }
             </main>
         </Container>
         <Footer

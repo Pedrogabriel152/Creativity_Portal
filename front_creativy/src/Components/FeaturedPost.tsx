@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
@@ -32,7 +31,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
               {post.created_at}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.subtitle}
+              {post.subtitle.substring(0,150)}
             </Typography>
             <Typography variant="subtitle1" color="primary">
               Continue reading...
@@ -41,7 +40,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
           <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={post.image}
+            image={post.image? `${process.env.REACT_APP_API_URL}/${post.image}` : ''}
             alt={post.title}
           />
         </Card>

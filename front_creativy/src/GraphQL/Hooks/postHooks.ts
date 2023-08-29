@@ -12,6 +12,7 @@ import { getFeaturedPostsVar, getMainPostVar } from "../States/postState";
 // Interfaces
 import { IMainPost } from "../../interfaces/IMainPost";
 import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
+import { IPost } from "../../interfaces/IPost";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -24,12 +25,14 @@ export const useGetMainPost = () => {
     });
 };
 
-export const useGetFeaturedPosts = () => {
-        return useQuery<{ featuredPosts: IFeaturedPosts[] }>(FEATUREDPOSTS, {
+export const useGetFeaturedPosts = (first: number) => {
+    return useQuery<{ featuredPosts: IFeaturedPosts }>(FEATUREDPOSTS, {
+        variables: {
+            first: first
+        },
         onCompleted(data) {
             if (data) {
-                console.log(data)
-                // getFeaturedPostsVar(data.featuredPosts);/*  */
+                getFeaturedPostsVar(data.featuredPosts);
             }
         },
         fetchPolicy: 'cache-and-network',

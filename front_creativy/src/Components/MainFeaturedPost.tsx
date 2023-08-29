@@ -53,7 +53,7 @@ export default function MainFeaturedPost(mainPost: IMainFeatured) {
             <Typography variant="h5" color="inherit" paragraph>
               {mainPost.subtitle.substring(0,150)}
             </Typography>
-            <Link variant="subtitle1" href="#">
+            <Link variant="subtitle1" href={`/post/${mainPost.id}`}>
               Continue Lendo...
             </Link>
           </Box>
