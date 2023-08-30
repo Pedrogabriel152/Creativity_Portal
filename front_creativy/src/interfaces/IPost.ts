@@ -3,6 +3,7 @@ export interface IPost {
     title: string
     subtitle: string
     like: number
+    comment: number
     image: string
     created_at: string
     flag?: boolean
@@ -11,4 +12,9 @@ export interface IPost {
         image: string
         name: string
     }
+    user_post?: [
+        {
+            user_id?: number
+        }
+    ]
 }

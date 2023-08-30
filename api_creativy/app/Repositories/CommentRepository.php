@@ -3,17 +3,21 @@
 namespace App\Repositories;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 
 class CommentRepository
 {
-    public static function create(array $args) {
-        return DB::transaction(function () use ($args) {
+    public static function create(array $args, Post $post) {
+        return DB::transaction(function () use ($args, $post) {
             $comment = Comment::create([
                 'text' => $args['text'],
                 'user_id' => $args['user_id'],
                 'post_id' => $args['post_id'],
             ]);
+
+            $post->comment = $post->comment+1;
+            $post->save();
 
             return $comment;
         });

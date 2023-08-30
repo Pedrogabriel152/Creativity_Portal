@@ -22,3 +22,7 @@ export const dateFormater = (create_at: string) => {
     const dateFomarted = ((newDate.getDate() + " " + month[(newDate.getMonth())] + " " + newDate.getFullYear()));
     return dateFomarted;
 }
+
+export const getLocalStorage = () => {
+    
+}

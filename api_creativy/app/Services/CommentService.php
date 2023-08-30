@@ -9,7 +9,16 @@ class CommentService
 {
     public static function create(array $args) {
         try {
-            $comment = CommentRepository::create($args);
+            $postExist = PostRespository::getPostById($args['post_id']);
+
+            if(!$postExist) {
+                return [
+                    'message' => 'Post não encontrado',
+                    'code' => 500
+                ];
+            }
+
+            $comment = CommentRepository::create($args, $postExist);
 
             if(!$comment) {
                 return [

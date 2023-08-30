@@ -51,9 +51,14 @@ export const GETPOST = gql`
             user_id
             created_at
             title
+            image
+            comment
             user{
                 image
                 name
+            }
+            user_post{
+                user_id
             }
         }
     }

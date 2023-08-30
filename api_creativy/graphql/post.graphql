@@ -12,6 +12,7 @@ type Post {
     user_id: Int!
     title: String!
     flag: Boolean
+    comment: Int!
     user: User! @belongsTo
     user_post: [UserPost]! @hasMany
     created_at: DateTime!

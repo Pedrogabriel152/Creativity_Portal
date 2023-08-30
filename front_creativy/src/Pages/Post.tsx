@@ -65,7 +65,6 @@ export default function Post() {
   const {id} = useParams();
   useGetPost(id? parseInt(id) : 0);
   const post = useReactiveVar(getPostVar);
-  console.log(post)
 
   if(!post) {
     return <div></div>
@@ -89,11 +88,11 @@ export default function Post() {
               }}
             >
               <Typography variant="subtitle2" gutterBottom>
-                <Avatar alt={post.user?.name} src={`${process.env.REACT_APP_API_URL}/${post.user?.image}`} />
-                {post.user?.name}
+                <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}/${post.user?.image}`:''} />
+                <span>{post.user?.name}</span>
               </Typography>
             </Grid>
-            <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} />
+            <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} user={post.user} user_post={post.user_post} comment={post.comment} />
             <Sidebar 
               title={sidebar.title}
               description={sidebar.description}
