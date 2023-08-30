@@ -18,19 +18,7 @@ import { useGetPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
-
-const sections = [
-  { title: 'Home', url: '/' },
-  { title: 'Perfil', url: '/profile' },
-  { title: 'Culture', url: '#' },
-  { title: 'Business', url: '#' },
-  { title: 'Politics', url: '#' },
-  { title: 'Opinion', url: '#' },
-  { title: 'Science', url: '#' },
-  { title: 'Health', url: '#' },
-  { title: 'Style', url: '#' },
-  { title: 'Travel', url: '#' },
-];
+import { sections } from '../Utils/variable';
 
 const posts = [post1, post2, post3];
 
