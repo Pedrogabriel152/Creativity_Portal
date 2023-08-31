@@ -35,10 +35,15 @@ class UserRepository
             $hash = array_key_exists('password', $newData)? password_hash($newData['password'], PASSWORD_BCRYPT) : $user->password;
             $user->name = $newData['name'];
             $user->email = $newData['email'];
-            $user->image = array_key_exists('image', $newData)? $newData['image'] : null;
             $user->password = $hash;
+            if(array_key_exists('image', $newData)){
+                $image = $newData['image'];
+                $extension = $image->extension();
+                $imageName = md5($image->getClientOriginalName() . strtotime("now")).".".$extension;
+                $image->move(public_path("img/users/$user->id"), $imageName);
+                $user->image = "img/users/$user->id/$imageName";     
+            }
             $user->save();
-
             return $user;
         });
     }

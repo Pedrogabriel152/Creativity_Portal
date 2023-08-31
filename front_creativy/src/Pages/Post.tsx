@@ -12,15 +12,12 @@ import FeaturedPost from '../Components/FeaturedPost';
 import Main from '../Components/Main';
 import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
-import { post1, post2, post3 } from '../Posts/posts';
 import { useParams } from 'react-router-dom';
 import { useGetPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
 import { sections } from '../Utils/variable';
-
-const posts = [post1, post2, post3];
 
 const sidebar = {
   title: 'About',
@@ -75,9 +72,9 @@ export default function Post() {
                 },
               }}
             >
-              <Typography variant="subtitle2" gutterBottom>
+              <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                 <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}/${post.user?.image}`:''} />
-                <span>{post.user?.name}</span>
+                <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
             </Grid>
             <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} user={post.user} user_post={post.user_post} comment={post.comment} />

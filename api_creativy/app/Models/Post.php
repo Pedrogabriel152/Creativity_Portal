@@ -17,7 +17,6 @@ class Post extends Model
         'user_id',
         'flag',
         'comment',
-        'teste'
     ];
 
     public function comments() {

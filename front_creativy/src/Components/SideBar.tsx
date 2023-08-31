@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Comments from './Comments';
 
 interface SidebarProps {
   archives: ReadonlyArray<{
@@ -23,7 +24,7 @@ export default function Sidebar(props: SidebarProps) {
 
   return (
     <Grid item xs={12} md={4}>
-      <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>
+      {/* <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.200' }}>
         <Typography variant="h6" gutterBottom>
           {title}
         </Typography>
@@ -53,7 +54,8 @@ export default function Sidebar(props: SidebarProps) {
             <span>{network.name}</span>
           </Stack>
         </Link>
-      ))}
+      ))} */}
+      <Comments />
     </Grid>
   );
 }
