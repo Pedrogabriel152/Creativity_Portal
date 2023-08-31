@@ -53,6 +53,16 @@ export const GETPOST = gql`
             title
             image
             comment
+            comments{
+                id
+                text
+                user_id
+                like
+                user{
+                    name
+                    image
+                }
+            }
             user{
                 image
                 name

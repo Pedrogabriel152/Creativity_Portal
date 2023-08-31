@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../Utils/Api";
 import { IRegister } from "../interfaces/IRegister";
 import { saveLocalStorage } from "../Utils/functions";
-import { IUser } from "../interfaces/IUser";
+import { IAuth } from "../interfaces/IAuth";
 import { IAuthContext } from "../interfaces/IAuthContext";
 import { toast } from "react-toastify";
 
@@ -16,7 +16,7 @@ export const AuthContext = createContext<IAuthContext>({
 });
 
 const AuthProvider = ({children}: any) => {
-    const [auth, setAuth] = useState<IUser>();
+    const [auth, setAuth] = useState<IAuth>();
     const [loading, setLoading] = useState<boolean>(false);
     
 

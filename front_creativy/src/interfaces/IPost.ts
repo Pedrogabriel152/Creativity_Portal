@@ -1,3 +1,5 @@
+import { IComment } from "./IComment"
+
 export interface IPost {
     id: number
     title: string
@@ -8,6 +10,7 @@ export interface IPost {
     created_at: string
     flag?: boolean
     user_id?: number
+    comments?: IComment[]
     user? :{
         image: string
         name: string

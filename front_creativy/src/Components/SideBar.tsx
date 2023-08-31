@@ -55,7 +55,6 @@ export default function Sidebar(props: SidebarProps) {
           </Stack>
         </Link>
       ))} */}
-      <Comments />
     </Grid>
   );
 }

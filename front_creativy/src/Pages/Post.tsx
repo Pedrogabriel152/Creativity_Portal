@@ -18,6 +18,7 @@ import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
 import { sections } from '../Utils/variable';
+import Comments from '../Components/Comments';
 
 const sidebar = {
   title: 'About',
@@ -50,6 +51,7 @@ export default function Post() {
   const {id} = useParams();
   useGetPost(id? parseInt(id) : 0);
   const post = useReactiveVar(getPostVar);
+  console.log(post)
 
   if(!post) {
     return <div></div>
@@ -78,12 +80,13 @@ export default function Post() {
               </Typography>
             </Grid>
             <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} user={post.user} user_post={post.user_post} comment={post.comment} />
-            <Sidebar 
+            {/* <Sidebar 
               title={sidebar.title}
               description={sidebar.description}
               archives={sidebar.archives}
               social={sidebar.social}
-            />
+            /> */}
+            <Comments comments={post.comments? post.comments : []}/>
           </Grid>
         </main>
       </Container>
