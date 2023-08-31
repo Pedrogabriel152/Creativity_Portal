@@ -16,7 +16,8 @@ class Post extends Model
         'image',
         'user_id',
         'flag',
-        'comment'
+        'comment',
+        'teste'
     ];
 
     public function comments() {
