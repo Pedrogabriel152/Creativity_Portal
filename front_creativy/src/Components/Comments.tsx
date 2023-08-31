@@ -22,10 +22,8 @@ interface IComments {
 }
 
 export default function Comments({comments}: IComments) {
-
   return (
     <Grid item xs={12} md={4}>
-     
       <Box sx={{ pb: 7, height: 800, marginBottom: 8}} component="div">
         <CssBaseline /> 
         <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.100' }}>
@@ -41,7 +39,6 @@ export default function Comments({comments}: IComments) {
                 </ListItemButton>
               </ListItem>
             ))}
-            
           </List>
         </Paper>
         <Paper elevation={1} sx={{ p: 2, marginTop:1 }}>
@@ -50,9 +47,9 @@ export default function Comments({comments}: IComments) {
               margin="dense"
               required
               fullWidth
-              id="email"
-              name="email"
-              autoComplete="email"
+              id="text"
+              name="text"
+              autoComplete="text"
               autoFocus
               sx={{height: 50}}
             />
@@ -62,7 +59,6 @@ export default function Comments({comments}: IComments) {
           </Box>
         </Paper>
       </Box>
-      
     </Grid>
   );
 }
