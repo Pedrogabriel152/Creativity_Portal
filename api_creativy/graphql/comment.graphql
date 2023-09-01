@@ -1,3 +1,9 @@
+type UserComment {
+    id: ID!
+    user_id: ID!
+    comment_id: ID!
+}
+
 type Comment {
     id: ID!
     text: String!
@@ -6,7 +12,7 @@ type Comment {
     post_id: ID!
     flag: Boolean
     user: User! @belongsTo
-    # post: Post! @belongsTo
+    user_comments: [UserComment]!@hasMany
 }
 
 input CommentInput {

@@ -11,12 +11,20 @@ import { Grid, ListItemButton, TextField } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SendIcon from '@mui/icons-material/Send';
 import { IComment } from "../interfaces/IComment";
+import { useAuthContext } from '../Context/AuthContext';
+import { useEffect, useState } from 'react';
+import { api } from '../Utils/Api';
+import { IAuth } from '../interfaces/IAuth';
 
 interface IComments {
   comments: IComment[]
+  user: number
+  auth: IAuth
 }
 
-export default function Comments({comments}: IComments) {
+export default function Comments({comments, user, auth}: IComments) {
+  const { getLocalStorage } = useAuthContext();
+  
   return (
     <Grid item xs={12} md={4}>
       <Box sx={{ pb: 7, height: 800, marginBottom: 8}} component="div">
@@ -30,7 +38,11 @@ export default function Comments({comments}: IComments) {
                 </ListItemAvatar>
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
                 <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false}>
-                  <FavoriteIcon color="error"/>
+                  {comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments[0].user_id == user
+                    ? <FavoriteIcon color="error"/> 
+                    : <FavoriteBorderIcon color="error"/> 
+                    : <FavoriteBorderIcon color="error"/> 
+                  }
                 </ListItemButton>
               </ListItem>
             ))}

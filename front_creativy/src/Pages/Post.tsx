@@ -19,39 +19,52 @@ import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
 import { sections } from '../Utils/variable';
 import Comments from '../Components/Comments';
+import { api } from '../Utils/Api';
+import { useAuthContext } from '../Context/AuthContext';
 
-const sidebar = {
-  title: 'About',
-  description:
-    'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-  archives: [
-    { title: 'March 2020', url: '#' },
-    { title: 'February 2020', url: '#' },
-    { title: 'January 2020', url: '#' },
-    { title: 'November 1999', url: '#' },
-    { title: 'October 1999', url: '#' },
-    { title: 'September 1999', url: '#' },
-    { title: 'August 1999', url: '#' },
-    { title: 'July 1999', url: '#' },
-    { title: 'June 1999', url: '#' },
-    { title: 'May 1999', url: '#' },
-    { title: 'April 1999', url: '#' },
-  ],
-  social: [
-    { name: 'GitHub', icon: GitHubIcon },
-    { name: 'Twitter', icon: TwitterIcon },
-    { name: 'Facebook', icon: FacebookIcon },
-  ],
-};
+// const sidebar = {
+//   title: 'About',
+//   description:
+//     'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
+//   archives: [
+//     { title: 'March 2020', url: '#' },
+//     { title: 'February 2020', url: '#' },
+//     { title: 'January 2020', url: '#' },
+//     { title: 'November 1999', url: '#' },
+//     { title: 'October 1999', url: '#' },
+//     { title: 'September 1999', url: '#' },
+//     { title: 'August 1999', url: '#' },
+//     { title: 'July 1999', url: '#' },
+//     { title: 'June 1999', url: '#' },
+//     { title: 'May 1999', url: '#' },
+//     { title: 'April 1999', url: '#' },
+//   ],
+//   social: [
+//     { name: 'GitHub', icon: GitHubIcon },
+//     { name: 'Twitter', icon: TwitterIcon },
+//     { name: 'Facebook', icon: FacebookIcon },
+//   ],
+// };
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Post() {
+  const { getLocalStorage } = useAuthContext();
   const {id} = useParams();
   useGetPost(id? parseInt(id) : 0);
   const post = useReactiveVar(getPostVar);
-  console.log(post)
+  const auth = getLocalStorage();
+  const [user, setUser] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+    api.get('api/user', {
+      headers: {
+          Authorization: `Bearer ${auth?.token}`
+      }
+    }).then(response => setUser(response.data.id));
+  }, [auth])
 
   if(!post) {
     return <div></div>
@@ -79,14 +92,14 @@ export default function Post() {
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
             </Grid>
-            <Main title={post.title} created_at={post.created_at} id={post.id} image={post.image} like={post.like} subtitle={post.subtitle} user={post.user} user_post={post.user_post} comment={post.comment} />
+            <Main auth={auth} post={post} user={user} />
             {/* <Sidebar 
               title={sidebar.title}
               description={sidebar.description}
               archives={sidebar.archives}
               social={sidebar.social}
             /> */}
-            <Comments comments={post.comments? post.comments : []}/>
+            <Comments comments={post.comments? post.comments : []} user={user} auth={auth}/>
           </Grid>
         </main>
       </Container>

@@ -1,10 +1,6 @@
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { FEATUREDPOSTS, GETMAINPOST, GETPOST } from "../Queries/postQuery";
 import { getFeaturedPostsVar, getMainPostVar, getPostVar } from "../States/postState";
-// import { GETEXPENSES, GETACTIVEEXPENSES, GETIDLEEXPENSES, CREATEEXPENSE, GETEXPENSE, UPDATEEXPENSE, PAYINSTALLMENT } from "./queries";
-// import { GETFINANCE, GETFINANCIALSUMMARY, GETMONTHLYSUMMARY } from "../Finance/queries";
-// import { createExpenseVar, getActiveExpenseVar, getExpenseVar, getExpensesVar, getIdleExpenseVar, payInstallmentExpenseVar, updateExpenseVar } from "./state";
-// import { updateLink } from "../../utils/updateLink";
 
 // Context
 // import { useUserContext } from "../../Context/UserContext";

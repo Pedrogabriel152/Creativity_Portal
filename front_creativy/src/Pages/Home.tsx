@@ -11,7 +11,6 @@ import FeaturedPost from '../Components/FeaturedPost';
 import Main from '../Components/Main';
 import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
-import { post1, post2, post3 } from '../Posts/posts';
 import { sections } from '../Utils/variable';
 import { useGetFeaturedPosts, useGetMainPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';

@@ -14,21 +14,15 @@ import { Card } from '@mui/material';
 import { useAuthContext } from '../Context/AuthContext';
 import { useEffect, useState } from 'react';
 import { api } from '../Utils/Api';
+import { IAuth } from '../interfaces/IAuth';
 
-export default function Main(post: IPost) {
-  const { getLocalStorage } = useAuthContext();
-  const [user, setUser] = useState<any>();
+interface IMain {
+  post: IPost
+  user: number
+  auth: IAuth
+}
 
-  useEffect(() => {
-    api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
-    api.get('api/user', {
-      headers: {
-          Authorization: `Bearer ${auth?.token}`
-      }
-    }).then(response => setUser(response.data.id));
-  }, [])
-  const auth = getLocalStorage();
-
+export default function Main({post, user, auth}: IMain) {
   const userPost = post.user_post?.filter(user => user.user_id === auth.user_id)
 
   return (
