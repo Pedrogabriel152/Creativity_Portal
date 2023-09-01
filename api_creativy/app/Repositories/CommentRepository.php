@@ -42,9 +42,9 @@ class CommentRepository
         });
     }
 
-    public static function like(Comment $comment, int $user_id) {
-        return DB::transaction(function () use ($comment, $user_id) {
-            $userCommentExist = UserCommentRopository::get($user_id, $comment->id);
+    public static function like(Comment $comment, int $user_id, int $post_id) {
+        return DB::transaction(function () use ($comment, $user_id, $post_id) {
+            $userCommentExist = UserCommentRopository::get($user_id, $comment->id, $post_id);
 
             if($userCommentExist) {
                 UserCommentRopository::delete($userCommentExist);
@@ -53,7 +53,7 @@ class CommentRepository
                 return $comment;
             }
             
-            $userComment = UserCommentRopository::create($comment->id, $user_id);
+            $userComment = UserCommentRopository::create($comment->id, $user_id, $post_id);
 
             if(!$userComment){
                 return DB::rollBack();

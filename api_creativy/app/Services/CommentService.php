@@ -72,7 +72,7 @@ class CommentService
     }
 
     public static function like(int $id, int $post_id, int $user_id) {
-        try {
+        // try {
             $commentExist = CommentRepository::getCommentPost($id, $post_id);
 
             if(!$commentExist){
@@ -82,7 +82,7 @@ class CommentService
                 ];
             }
 
-            $comment = CommentRepository::like($commentExist, $user_id);
+            $comment = CommentRepository::like($commentExist, $user_id, $post_id);
 
             if(!$comment) {
                 return [
@@ -95,12 +95,12 @@ class CommentService
                 'message' => 'Comentário atualizado com sucesso',
                 'code' => 200
             ];
-        } catch (\Throwable $th) {
-            return [
-                'message' => 'Erro ao dar like',
-                'code' => 500
-            ];
-        }
+        // } catch (\Throwable $th) {
+        //     return [
+        //         'message' => $th->getMessage(),//'Erro ao dar like',
+        //         'code' => 500
+        //     ];
+        // }
     }
 
     public static function delete(array $args) {

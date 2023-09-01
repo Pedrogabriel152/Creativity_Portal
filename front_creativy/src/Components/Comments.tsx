@@ -23,8 +23,7 @@ interface IComments {
 }
 
 export default function Comments({comments, user, auth}: IComments) {
-  const { getLocalStorage } = useAuthContext();
-  
+  console.log(comments, user)
   return (
     <Grid item xs={12} md={4}>
       <Box sx={{ pb: 7, height: 800, marginBottom: 8}} component="div">

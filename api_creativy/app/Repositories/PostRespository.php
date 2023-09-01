@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\Sanctum;
 
 class PostRespository 
 {

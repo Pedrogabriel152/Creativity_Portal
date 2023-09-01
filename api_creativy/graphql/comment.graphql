@@ -35,5 +35,5 @@ extend type Mutation @guard {
     createComment(comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@create")
     deleteComment(id: ID!, user_id: ID!, post_id: ID!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@delete")
     updateComment(id: ID!, user_id: ID!, post_id: ID!, comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@update")
-    likeComment(id: ID!, post_id: ID!, user_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@like")
+    likeComment(id: ID!, post_id: ID!, user_id: ID!, post_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@like")
 }
