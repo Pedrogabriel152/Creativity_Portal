@@ -22,17 +22,22 @@ import { getCommentsVar } from '../GraphQL/States/commentState';
 // Interface 
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
+import { useEffect } from 'react';
 
 interface IComments {
   user: number
   auth: IAuth
-  setFirst: (newFirst: number) => void,
+  setFirst: (newFirst: number) => void
   loadindMoreComment: boolean
+  likeCommentFunc: (id: number, post_id: number) => void
 }
 
-export default function Comments({ user, auth, loadindMoreComment, setFirst}: IComments) {
+export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc}: IComments) {
   const comments = useReactiveVar(getCommentsVar);
   const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+10);}
+
+  useEffect(() => {console.log(comments)}, [comments]);
+
   return (
     <Grid item xs={12} md={4}>
       <Box sx={{ pb: 7, height: 800, marginBottom: 8}} component="div">
@@ -45,7 +50,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst}: IC
                   <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
                 </ListItemAvatar>
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
-                <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false}>
+                <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => likeCommentFunc(comment.id, comment.post_id)}>
                   {comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments[0].user_id == user
                     ? <FavoriteIcon color="error"/> 
                     : <FavoriteBorderIcon color="error"/> 

@@ -59,6 +59,7 @@ export const GETPOST = gql`
                     text
                     user_id
                     like
+                    post_id
                     user{
                         name
                         image
@@ -85,9 +86,9 @@ export const GETPOST = gql`
     }
 `;
 
-export const CREATEEXPENSE = gql`   
-    mutation CreateExpense($expense: ExpenseInput!){
-        createExpense(expense: $expense){
+export const LIKE = gql`   
+    mutation Like($id: ID!, $post_id: ID!){
+        likeComment(id: $id, post_id: $post_id){
             code
             message
         }

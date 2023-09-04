@@ -7,5 +7,6 @@ export interface IComment {
     text: string
     user_id: number
     user: IUser
+    post_id: number
     user_comments?: IUserComment[]
 }

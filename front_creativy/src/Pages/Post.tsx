@@ -21,6 +21,7 @@ import { sections } from '../Utils/variable';
 import Comments from '../Components/Comments';
 import { api } from '../Utils/Api';
 import { useAuthContext } from '../Context/AuthContext';
+import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
 
 // const sidebar = {
 //   title: 'About',
@@ -57,6 +58,16 @@ export default function Post() {
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
   const [user, setUser] = React.useState<number>(0);
+  const [likeComment] = useLikeComment(id? parseInt(id) : 0, first);
+
+  const likeCommentFunc = (id: number, post_id: number) => {
+    likeComment({
+      variables: {
+        id,
+        post_id
+      }
+    });
+  }
 
   React.useEffect(() => {
     api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
@@ -102,7 +113,7 @@ export default function Post() {
               archives={sidebar.archives}
               social={sidebar.social}
             /> */}
-            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment}/>
+            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc}/>
           </Grid>
         </main>
       </Container>
