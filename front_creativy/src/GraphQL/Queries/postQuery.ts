@@ -39,11 +39,11 @@ export const FEATUREDPOSTS = gql`
 `;
 
 export const GETPOST = gql`
-    query GetPost($id: Mixed!, $flag: Mixed!){
+    query GetPost($id: Mixed!, $flag: Mixed!, $first: Int!){
         post(where: {AND: [
                 { column: ID, operator: EQ, value: $id },
                 { column: FLAG, operator: EQ, value: $flag}
-        ]}){
+        ]}, first: $first){
             id
             subtitle
             like
@@ -53,20 +53,26 @@ export const GETPOST = gql`
             title
             image
             comment
-            comments{
-                id
-                text
-                user_id
-                like
-                user{
-                    name
-                    image
-                }
-                user_comments{
-                    comment_id
-                    user_id
+            comments(first: $first){
+                data {
                     id
+                    text
+                    user_id
+                    like
+                    user{
+                        name
+                        image
+                    }
+                    user_comments{
+                        comment_id
+                        user_id
+                        id
+                    }
                 }
+                paginatorInfo{
+                    hasMorePages
+                    count
+                }   
             }
             user{
                 image

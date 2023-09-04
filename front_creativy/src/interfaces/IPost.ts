@@ -1,4 +1,5 @@
 import { IComment } from "./IComment"
+import { ICommentPaginator } from "./ICommentPaginator"
 
 export interface IPost {
     id: number
@@ -10,7 +11,7 @@ export interface IPost {
     created_at: string
     flag?: boolean
     user_id?: number
-    comments?: IComment[]
+    comments?: ICommentPaginator
     user? :{
         image: string
         name: string

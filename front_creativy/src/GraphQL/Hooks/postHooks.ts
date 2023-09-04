@@ -9,6 +9,7 @@ import { getFeaturedPostsVar, getMainPostVar, getPostVar } from "../States/postS
 import { IMainPost } from "../../interfaces/IMainPost";
 import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
 import { IPost } from "../../interfaces/IPost";
+import { getCommentsVar } from "../States/commentState";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -35,14 +36,16 @@ export const useGetFeaturedPosts = (first: number) => {
     });
 };
 
-export const useGetPost = (id: number) => {
+export const useGetPost = (id: number, first: number) => {
     return useQuery<{ post: IPost }>(GETPOST, {
         variables: {
             id: id,
-            flag: true
+            flag: true,
+            first: first
         },
         onCompleted(data) {
             if (data) {
+                getCommentsVar(data.post.comments)
                 getPostVar(data.post);
             }
         },

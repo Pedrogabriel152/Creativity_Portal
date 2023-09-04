@@ -50,9 +50,10 @@ import { useAuthContext } from '../Context/AuthContext';
 const defaultTheme = createTheme();
 
 export default function Post() {
+  const [first, setFirst] = React.useState<number>(10);
   const { getLocalStorage } = useAuthContext();
   const {id} = useParams();
-  useGetPost(id? parseInt(id) : 0);
+  const {loading: loadindMoreComment} = useGetPost(id? parseInt(id) : 0, first);
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
   const [user, setUser] = React.useState<number>(0);
@@ -64,7 +65,9 @@ export default function Post() {
           Authorization: `Bearer ${auth?.token}`
       }
     }).then(response => setUser(response.data.id));
-  }, [auth])
+  }, [auth]);
+
+  React.useEffect(() => {}, [first]);
 
   if(!post) {
     return <div></div>
@@ -99,7 +102,7 @@ export default function Post() {
               archives={sidebar.archives}
               social={sidebar.social}
             /> */}
-            <Comments comments={post.comments? post.comments : []} user={user} auth={auth}/>
+            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment}/>
           </Grid>
         </main>
       </Container>

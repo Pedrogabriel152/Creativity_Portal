@@ -1,36 +1,45 @@
+// Material UI
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import { Grid, ListItemButton, TextField } from "@mui/material";
+import { CircularProgress, Grid, IconButton, ListItemButton, TextField } from "@mui/material";
+
+// Icons
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import SendIcon from '@mui/icons-material/Send';
+import ReplayIcon from '@mui/icons-material/Replay';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+// GraphQL
+import { useReactiveVar } from '@apollo/client';
+import { getCommentsVar } from '../GraphQL/States/commentState';
+
+// Interface 
 import { IComment } from "../interfaces/IComment";
-import { useAuthContext } from '../Context/AuthContext';
-import { useEffect, useState } from 'react';
-import { api } from '../Utils/Api';
 import { IAuth } from '../interfaces/IAuth';
 
 interface IComments {
-  comments: IComment[]
   user: number
   auth: IAuth
+  setFirst: (newFirst: number) => void,
+  loadindMoreComment: boolean
 }
 
-export default function Comments({comments, user, auth}: IComments) {
-  console.log(comments, user)
+export default function Comments({ user, auth, loadindMoreComment, setFirst}: IComments) {
+  const comments = useReactiveVar(getCommentsVar);
+  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+10);}
   return (
     <Grid item xs={12} md={4}>
       <Box sx={{ pb: 7, height: 800, marginBottom: 8}} component="div">
         <CssBaseline /> 
         <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.100' }}>
           <List sx={{height: 610, overflow: 'auto', }}>
-            {comments.map((comment: IComment, index) => (
+            {comments?.data?.map((comment: IComment, index) => (
               <ListItem key={index} sx={{cursor: 'default'}}>
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
@@ -46,6 +55,14 @@ export default function Comments({comments, user, auth}: IComments) {
               </ListItem>
             ))}
           </List>
+          {comments?.paginatorInfo?.hasMorePages 
+            ? !loadindMoreComment
+              ?<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={moreComments}>
+                  <ReplayIcon fontSize="inherit"/>
+              </IconButton>
+              : <CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
+          : <div></div>
+        }
         </Paper>
         <Paper elevation={1} sx={{ p: 2, marginTop:1 }}>
           <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1, width: 345, display: 'flex', height: 80, paddingLeft: 1, justifyContent: 'space-between'}}>

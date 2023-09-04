@@ -14,7 +14,7 @@ type Post {
     flag: Boolean
     comment: Int!
     user: User! @belongsTo
-    comments: [Comment]! @hasMany
+    comments: [Comment]! @hasMany(type: PAGINATOR, defaultCount: 10)
     user_post: [UserPost]! @hasMany
     created_at: DateTime!
     updated_at: DateTime!
@@ -29,7 +29,7 @@ input PostInput {
 }
 
 extend type Query @guard {
-    post(where: _ @whereConditions(columns: ["id", "flag"])): Post @find
+    post(first: Int!, where: _ @whereConditions(columns: ["id", "flag"])): Post @find
     posts(
         where: _ @whereConditions(columns: ["user_id", "flag"]),
         orderBy: _ @orderBy(columns: ["created_at"])
