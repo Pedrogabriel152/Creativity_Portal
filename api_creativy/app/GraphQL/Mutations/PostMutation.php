@@ -36,7 +36,6 @@ final class PostMutation
 
     public function like($_, array $args)
     {
-        // dd(Auth::guard('sanctum')->user());
         $response = PostService::like($args['id'], $args['user_id']);
         return $response;
     }

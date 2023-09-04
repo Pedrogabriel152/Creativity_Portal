@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class CommentRepository
 {
-    public static function create(array $args, Post $post) {
-        return DB::transaction(function () use ($args, $post) {
+    public static function create(array $args, Post $post, int $user_id) {
+        return DB::transaction(function () use ($args, $post, $user_id) {
             $comment = Comment::create([
                 'text' => $args['text'],
-                'user_id' => $args['user_id'],
+                'user_id' => $user_id,
                 'post_id' => $args['post_id'],
             ]);
 

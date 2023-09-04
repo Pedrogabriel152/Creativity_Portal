@@ -56,5 +56,5 @@ extend type Query {
 }
 
 extend type Mutation @guard {
-  editUser(id: ID!, user: UserInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@update")
+  editUser(user: UserInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@update")
 }

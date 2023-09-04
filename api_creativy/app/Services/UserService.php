@@ -2,28 +2,24 @@
 
 namespace App\Services;
 
+use ErrorException;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserService 
 {
     public static function update(array $args) {
-        $user = UserRepository::getUserByID($args['id']);
-        
-        if(!$user){
-            return [
-                'message' => "Usuário não encontrado",
-                'code' => 404
-            ];
-        }
-
         try {
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user){
+                throw new ErrorException('Usuário não encontrado', 404);
+            }
+            
             $updateUser = UserRepository::update($user, $args['user']);
 
             if(!$updateUser) {
-                return [
-                    'message' => "Erro ao atualizar o usuário",
-                    'code' => 500
-                ];
+                throw new ErrorException('Erro ao atualizar o usuário', 500);
             }
 
             return [
@@ -31,10 +27,10 @@ class UserService
                 'code' => 200
             ];
 
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'message' => "Erro ao atualizar o usuário",
-                'code' => 500
+                'message' => $ex->getMessage(),
+                'code' => $ex->getCode()
             ];
         }
     }

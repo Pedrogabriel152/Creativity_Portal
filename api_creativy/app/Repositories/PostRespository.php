@@ -8,12 +8,12 @@ use Laravel\Sanctum\Sanctum;
 
 class PostRespository 
 {
-    public static function create(array $args){
-        return DB::transaction(function() use($args) {
+    public static function create(array $args, int $user_id){
+        return DB::transaction(function() use($args, $user_id) {
             $post = Post::create([
                 'title' => $args['title'],
                 'subtitle' => $args['subtitle'],
-                'user_id' => $args['user_id']
+                'user_id' => $user_id
             ]);
 
             if(array_key_exists('image', $args)){

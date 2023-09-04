@@ -2,84 +2,89 @@
 
 namespace App\Services;
 
+use ErrorException;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\PostRespository;
 
 class PostService 
 {
     public static function create(array $args){
         try {
-            $post = PostRespository::create($args);
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user){
+                throw new ErrorException('Falha ao publicar o post, tente novamente mais tarde', 500);
+            }
+
+            $post = PostRespository::create($args, $user->id);
 
             if(!$post) {
-                return [
-                    'message' => 'Falha ao publicar o post, tente novamente mais tarde',
-                    'code' => 500
-                ];
+                throw new ErrorException('Falha ao publicar o post, tente novamente mais tarde', 500);
             }
 
             return [
                 'message' => 'Post criado com sucesso',
                 'code' => 200
             ];
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'message' => 'Falha ao publicar o post, tente novamente mais tarde',
-                'code' => 500
+                'message' => $ex->getMessage(),
+                'code' => $ex->getCode()
             ];
         }        
     }
 
     public static function delete(array $args) {
         try {
-            $postExist = PostRespository::getPost($args['id'], $args['user_id']);
+            $user = Auth::guard('sanctum')->user();
+            
+            if(!$user){
+                throw new ErrorException('Falha ao publicar o post, tente novamente mais tarde', 500);
+            }
+
+            $postExist = PostRespository::getPost($args['id'], $user->id);
 
             if(!$postExist){
-                return [
-                    'message' => 'Post não encontrado',
-                    'code' => 404
-                ];
+                throw new ErrorException('Post não encontrado', 404);
             }
 
             $post = PostRespository::delete($postExist);
 
             if(!$post){
-                return [
-                    'message' => 'Erro ao deletar post',
-                    'code' => 500
-                ];
+                throw new ErrorException('Post não encontrado', 500);
             }
 
             return [
                 'message' => 'Post deletado com sucesso',
                 'code' => 200
             ];
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'message' => 'Erro ao deletar post',
-                'code' => 500
+                'message' => $ex->getMessage(),
+                'code' => $ex->getCode()
             ];
         }
     }
 
     public static function update(array $args) {
         try {
-            $postExist = PostRespository::getPost($args['id'], $args['user_id']);
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user){
+                throw new ErrorException('Falha ao publicar o post, tente novamente mais tarde', 500);
+            }
+
+            $postExist = PostRespository::getPost($args['id'], $user->id);
 
             if(!$postExist){
-                return [
-                    'message' => 'Post não encontrado',
-                    'code' => 404
-                ];
+                throw new ErrorException('Post não encontrado', 404);
             }
 
             $post = PostRespository::update($postExist, $args['post']);
 
             if(!$post) {
-                return [
-                    'message' => 'Erro ao atualizar post',
-                    'code' => 500
-                ];
+                throw new ErrorException('Erro ao atualizar post', 500);
             }
 
             return [
@@ -87,42 +92,42 @@ class PostService
                 'code' => 200
             ];
             
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'message' => 'Erro ao atualizar post',
-                'code' => 500
+                'message' => $ex->getMessage(),
+                'code' => $ex->getCode()
             ];
         }
     }
 
-    public static function like(int $id, int $user_id) {
+    public static function like(int $id) {
         try {
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user){
+                throw new ErrorException('Falha ao publicar o post, tente novamente mais tarde', 500);
+            }
+
             $postExist = Post::find($id);
 
             if(!$postExist){
-                return [
-                    'message' => 'Post não encontrado',
-                    'code' => 404
-                ];
+                throw new ErrorException('Post não encontrado', 404);
             }
 
-            $post = PostRespository::like($postExist, $user_id);
+            $post = PostRespository::like($postExist, $user->id);
 
             if(!$post) {
-                return [
-                    'message' => 'Erro ao dar like',
-                    'code' => 500
-                ];
+                throw new ErrorException('Erro ao dar like', 500);
             }
 
             return [
                 'message' => 'Post atualizado com sucesso',
                 'code' => 200
             ];
-        } catch (\Throwable $th) {
+        } catch (\Exception $ex) {
             return [
-                'message' => 'Erro ao dar like',
-                'code' => 500
+                'message' => $ex->getMessage(),
+                'code' => $ex->getCode()
             ];
         }
     }

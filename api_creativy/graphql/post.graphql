@@ -26,7 +26,6 @@ input PostInput {
     subtitle: String!
     like: Int
     image: Upload
-    user_id: Int!
 }
 
 extend type Query @guard {
@@ -44,7 +43,7 @@ extend type Query @guard {
 
 extend type Mutation @guard {
     createPost(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
-    deletePost(id: ID!, user_id: Int!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
-    updatePost(id: ID!, user_id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
-    likePost(id: ID!, user_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
+    deletePost(id: ID!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
+    updatePost(id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
+    likePost(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }
