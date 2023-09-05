@@ -22,7 +22,7 @@ import { createCommentVar, getCommentsVar, likeCommentVar } from '../GraphQL/Sta
 // Interface 
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { useParams } from 'react-router-dom';
 import { useCreateComment } from '../GraphQL/Hooks/commentHooks';
@@ -40,6 +40,7 @@ interface IComments {
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
   const comments = useReactiveVar(getCommentsVar);
   const likeComment = useReactiveVar(likeCommentVar);
+  const [like, setLike] = useState<any[]>([]);
   const {id} = useParams();
   const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
@@ -62,7 +63,19 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
     });
   }
 
-  useEffect(() => {}, [createCommentResponse]);
+  const updateLike = (comment: IComment, indexNum: number, user: number) => {
+    console.log(comment.user_comments?.filter(user => user.user_id == auth.user_id)[0])
+    if((comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id != user) || indexNum in like) {
+      const likes = like.filter((item, index) => index != indexNum);
+      console.log(likes);
+      setLike(likes);
+      return;
+    }
+    const likes = like;
+    likes[indexNum] = comment
+    console.log(likes)
+    setLike(likes);
+  }
 
   return (
     <Grid item xs={12} md={4}>
@@ -76,11 +89,14 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                   <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
                 </ListItemAvatar>
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
-                <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => likeCommentFunc(comment.id, comment.post_id)}>
-                  {comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments[0].user_id == user
+                <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
+                  {comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user
                     ? <FavoriteIcon color="error"/> 
                     : <FavoriteBorderIcon color="error"/> 
-                    : <FavoriteBorderIcon color="error"/> 
+                    : like[index] 
+                      ? <FavoriteIcon color="error"/> 
+                      : <FavoriteBorderIcon color="error"/>
+                        
                   }
                 </ListItemButton>
               </ListItem>
