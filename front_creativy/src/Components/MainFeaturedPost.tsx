@@ -16,11 +16,11 @@ export default function MainFeaturedPost(mainPost: IMainFeatured) {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: `url(${process.env.REACT_APP_API_URL}/${mainPost.image})`,
+        backgroundImage: mainPost.image? `url(${process.env.REACT_APP_API_URL}/${mainPost.image})` : '',
       }}
     >
       {/* Increase the priority of the hero background image */}
-      {<img style={{ display: 'none' }} src={mainPost.image} alt={mainPost.title} />}
+      {<img style={{ display: 'none' }} src={mainPost.image? mainPost.image : ''} alt={mainPost.title} />}
       <Box
         sx={{
           position: 'absolute',

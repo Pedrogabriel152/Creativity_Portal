@@ -22,38 +22,16 @@ import Comments from '../Components/Comments';
 import { api } from '../Utils/Api';
 import { useAuthContext } from '../Context/AuthContext';
 import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
-
-// const sidebar = {
-//   title: 'About',
-//   description:
-//     'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-//   archives: [
-//     { title: 'March 2020', url: '#' },
-//     { title: 'February 2020', url: '#' },
-//     { title: 'January 2020', url: '#' },
-//     { title: 'November 1999', url: '#' },
-//     { title: 'October 1999', url: '#' },
-//     { title: 'September 1999', url: '#' },
-//     { title: 'August 1999', url: '#' },
-//     { title: 'July 1999', url: '#' },
-//     { title: 'June 1999', url: '#' },
-//     { title: 'May 1999', url: '#' },
-//     { title: 'April 1999', url: '#' },
-//   ],
-//   social: [
-//     { name: 'GitHub', icon: GitHubIcon },
-//     { name: 'Twitter', icon: TwitterIcon },
-//     { name: 'Facebook', icon: FacebookIcon },
-//   ],
-// };
+import { likeCommentVar } from '../GraphQL/States/commentState';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Post() {
-  const [first, setFirst] = React.useState<number>(10);
+  const [first, setFirst] = React.useState<number>(8);
   const { getLocalStorage } = useAuthContext();
   const {id} = useParams();
+  const likeCommentResponse = useReactiveVar(likeCommentVar);
   const {loading: loadindMoreComment} = useGetPost(id? parseInt(id) : 0, first);
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
@@ -79,7 +57,7 @@ export default function Post() {
     }).then(response => setUser(response.data.id));
   }, [auth]);
 
-  React.useEffect(() => {}, [first, loading]);
+  React.useEffect(() => {}, [first, loading, likeCommentResponse]);
 
   if(!post) {
     return <div></div>
@@ -108,13 +86,7 @@ export default function Post() {
               </Typography>
             </Grid>
             <Main auth={auth} post={post} user={user} />
-            {/* <Sidebar 
-              title={sidebar.title}
-              description={sidebar.description}
-              archives={sidebar.archives}
-              social={sidebar.social}
-            /> */}
-            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc}/>
+            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first}/>
           </Grid>
         </main>
       </Container>

@@ -17,7 +17,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 // GraphQL
 import { useReactiveVar } from '@apollo/client';
-import { getCommentsVar, likeCommentVar } from '../GraphQL/States/commentState';
+import { createCommentVar, getCommentsVar, likeCommentVar } from '../GraphQL/States/commentState';
 
 // Interface 
 import { IComment } from "../interfaces/IComment";
@@ -25,6 +25,8 @@ import { IAuth } from '../interfaces/IAuth';
 import { useEffect } from 'react';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { useParams } from 'react-router-dom';
+import { useCreateComment } from '../GraphQL/Hooks/commentHooks';
+import {} from "jquery";
 
 interface IComments {
   user: number
@@ -32,15 +34,18 @@ interface IComments {
   setFirst: (newFirst: number) => void
   loadindMoreComment: boolean
   likeCommentFunc: (id: number, post_id: number) => void
+  first: number
 }
 
-export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc}: IComments) {
+export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
   const comments = useReactiveVar(getCommentsVar);
   const likeComment = useReactiveVar(likeCommentVar);
   const {id} = useParams();
-  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+10);}
+  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
+  const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
+  const createCommentResponse = useReactiveVar(createCommentVar);
 
-  useEffect(() => {console.log(comments)}, [likeComment]);
+  useEffect(() => {}, [likeComment]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,7 +55,14 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
       post_id: id? parseInt(id) : 0,
     };
 
+    createComment({
+      variables: {
+        comment: newComment
+      },
+    });
   }
+
+  useEffect(() => {}, [createCommentResponse]);
 
   return (
     <Grid item xs={12} md={4}>
@@ -95,9 +107,11 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               autoFocus
               sx={{height: 50}}
             />
-            <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent'}}} autoFocus={false}>
-              <SendIcon color="primary"/>
-            </ListItemButton>
+            <button type="submit" style={{border: 'none', background: 'transparent'}}>
+              <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent'}}} autoFocus={false}>
+                <SendIcon color="primary"/>
+              </ListItemButton>
+            </button>
           </Box>
         </Paper>
       </Box>

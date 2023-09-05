@@ -27,6 +27,7 @@ export const useCreateComment = (id: number, first: number) => {
     return useMutation<{ createComment: IResponse }>(CREATECOMMENT, {
         onCompleted(data) {
             if (data) {
+                console.log(data)
                 createCommentVar(data.createComment);
             }
         },
