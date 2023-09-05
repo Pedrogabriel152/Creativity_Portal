@@ -8,3 +8,12 @@ export const LIKECOMMENT = gql`
         }
     }
 `;
+
+export const CREATECOMMENT = gql`
+    mutation createComment($comment: CommentInput!) {
+        createComment(comment: $comment) {
+            code
+            message
+        }
+    }
+`

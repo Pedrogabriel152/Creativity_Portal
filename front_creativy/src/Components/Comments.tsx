@@ -17,12 +17,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 // GraphQL
 import { useReactiveVar } from '@apollo/client';
-import { getCommentsVar } from '../GraphQL/States/commentState';
+import { getCommentsVar, likeCommentVar } from '../GraphQL/States/commentState';
 
 // Interface 
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
 import { useEffect } from 'react';
+import { ICommentInput } from '../interfaces/ICommentInput';
+import { useParams } from 'react-router-dom';
 
 interface IComments {
   user: number
@@ -34,9 +36,21 @@ interface IComments {
 
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc}: IComments) {
   const comments = useReactiveVar(getCommentsVar);
+  const likeComment = useReactiveVar(likeCommentVar);
+  const {id} = useParams();
   const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+10);}
 
-  useEffect(() => {console.log(comments)}, [comments]);
+  useEffect(() => {console.log(comments)}, [likeComment]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const newComment: ICommentInput = {
+      text: `${data.get('text')}`,
+      post_id: id? parseInt(id) : 0,
+    };
+
+  }
 
   return (
     <Grid item xs={12} md={4}>
@@ -70,7 +84,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
         }
         </Paper>
         <Paper elevation={1} sx={{ p: 2, marginTop:1 }}>
-          <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1, width: 345, display: 'flex', height: 80, paddingLeft: 1, justifyContent: 'space-between'}}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: 345, display: 'flex', height: 80, paddingLeft: 1, justifyContent: 'space-between'}}>
             <TextField
               margin="dense"
               required

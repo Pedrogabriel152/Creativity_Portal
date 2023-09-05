@@ -58,7 +58,7 @@ export default function Post() {
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
   const [user, setUser] = React.useState<number>(0);
-  const [likeComment] = useLikeComment(id? parseInt(id) : 0, first);
+  const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -67,18 +67,19 @@ export default function Post() {
         post_id
       }
     });
+    // window.location.reload();
   }
 
   React.useEffect(() => {
     api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
     api.get('api/user', {
       headers: {
-          Authorization: `Bearer ${auth?.token}`
+        Authorization: `Bearer ${auth?.token}`
       }
     }).then(response => setUser(response.data.id));
   }, [auth]);
 
-  React.useEffect(() => {}, [first]);
+  React.useEffect(() => {}, [first, loading]);
 
   if(!post) {
     return <div></div>
