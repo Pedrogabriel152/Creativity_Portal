@@ -46,7 +46,16 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const createCommentResponse = useReactiveVar(createCommentVar);
 
-  useEffect(() => {}, [likeComment]);
+  useEffect(() => {
+    const likes = like;
+      comments?.data?.map((comment: IComment, index: number) => {
+        if(comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user) {
+          likes[index] = comment;
+        }
+      });
+      setLike(likes);
+      console.log(likes)
+  }, [likeComment, comments]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -67,7 +76,6 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
     console.log(comment.user_comments?.filter(user => user.user_id == auth.user_id)[0])
     if((comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id != user) || indexNum in like) {
       const likes = like.filter((item, index) => index != indexNum);
-      console.log(likes);
       setLike(likes);
       return;
     }
@@ -90,13 +98,12 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                 </ListItemAvatar>
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
                 <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
-                  {comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user
+                  {like[index] 
                     ? <FavoriteIcon color="error"/> 
-                    : <FavoriteBorderIcon color="error"/> 
-                    : like[index] 
-                      ? <FavoriteIcon color="error"/> 
-                      : <FavoriteBorderIcon color="error"/>
-                        
+                    : comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user  
+                    ? <FavoriteIcon color="error"/>
+                      : <FavoriteBorderIcon color="error"/> 
+                      : <FavoriteBorderIcon color="error"/>     
                   }
                 </ListItemButton>
               </ListItem>
