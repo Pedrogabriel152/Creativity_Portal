@@ -25,7 +25,7 @@ import { IAuth } from '../interfaces/IAuth';
 import { useEffect, useState } from 'react';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { useParams } from 'react-router-dom';
-import { useCreateComment } from '../GraphQL/Hooks/commentHooks';
+import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks';
 import {} from "jquery";
 
 interface IComments {
@@ -38,24 +38,27 @@ interface IComments {
 }
 
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
+  const {id} = useParams();
+  useGetComments(id? parseInt(id) : 0, first);
+  const [like, setLike] = useState<any[]>([]);
+  const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const comments = useReactiveVar(getCommentsVar);
   const likeComment = useReactiveVar(likeCommentVar);
-  const [like, setLike] = useState<any[]>([]);
-  const {id} = useParams();
-  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
-  const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const createCommentResponse = useReactiveVar(createCommentVar);
 
+  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
+
   useEffect(() => {
-    const likes = like;
-      comments?.data?.map((comment: IComment, index: number) => {
-        if(comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user) {
-          likes[index] = comment;
-        }
-      });
-      setLike(likes);
-      console.log(likes)
-  }, [likeComment, comments]);
+    const likes: any[] = [];
+    comments?.data?.map((comment: IComment, index: number) => {
+      if(comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user) {
+        likes[index] = comment;
+      }
+    });
+    setLike(likes);
+  }, [comments]);
+
+  useEffect(() => {}, [createCommentResponse]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,15 +76,18 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   }
 
   const updateLike = (comment: IComment, indexNum: number, user: number) => {
-    console.log(comment.user_comments?.filter(user => user.user_id == auth.user_id)[0])
     if((comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id != user) || indexNum in like) {
-      const likes = like.filter((item, index) => index != indexNum);
+      const likes:any[] = [];
+      like.map((item, index) => {
+        if(index != indexNum) {
+          likes[index] = item;
+        }
+      });
       setLike(likes);
       return;
     }
     const likes = like;
-    likes[indexNum] = comment
-    console.log(likes)
+    likes[indexNum] = comment;
     setLike(likes);
   }
 
@@ -100,10 +106,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                 <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
                   {like[index] 
                     ? <FavoriteIcon color="error"/> 
-                    : comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1? comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user  
-                    ? <FavoriteIcon color="error"/>
-                      : <FavoriteBorderIcon color="error"/> 
-                      : <FavoriteBorderIcon color="error"/>     
+                    : <FavoriteBorderIcon color="error"/>     
                   }
                 </ListItemButton>
               </ListItem>

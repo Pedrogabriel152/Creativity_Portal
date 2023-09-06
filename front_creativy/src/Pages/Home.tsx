@@ -50,11 +50,13 @@ const Home = () => {
                 <FeaturedPost key={post.id} post={post} />
                 ))}
             </Grid>
-            {loadindMorePosts 
+            {featuredPosts?.paginatorInfo?.hasMorePages?
+                loadindMorePosts 
                 ?<CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
                 :<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={morePosts}>
                     <ReplayIcon fontSize="inherit"/>
                 </IconButton>
+                :<div></div>
             }
             </main>
         </Container>

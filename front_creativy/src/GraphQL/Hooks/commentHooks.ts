@@ -1,9 +1,11 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { IResponse } from "../../interfaces/IResponse";
 import { CREATECOMMENT, LIKECOMMENT } from "../Mutations/commentMutation";
-import { createCommentVar, likeCommentVar } from "../States/commentState";
+import { createCommentVar, getCommentsVar, likeCommentVar } from "../States/commentState";
 import { GETPOST } from "../Queries/postQuery";
 import { GETCOMMENTS } from "../Queries/commentQuery";
+import { IComment } from "../../interfaces/IComment";
+import { ICommentPaginator } from "../../interfaces/ICommentPaginator";
 
 export const useLikeComment = (id: number, first: number) => {
     return useMutation<{ likeComment: IResponse }>(LIKECOMMENT, {
@@ -27,7 +29,6 @@ export const useCreateComment = (id: number, first: number) => {
     return useMutation<{ createComment: IResponse }>(CREATECOMMENT, {
         onCompleted(data) {
             if (data) {
-                console.log(data)
                 createCommentVar(data.createComment);
             }
         },
@@ -45,3 +46,16 @@ export const useCreateComment = (id: number, first: number) => {
         ],
     });
 };
+
+export const useGetComments = (post_id: number, first: number) => {
+    return useQuery<{comments: ICommentPaginator}>(GETCOMMENTS, {
+        variables: {
+            post_id: post_id,
+            flag: true,
+            first: first
+        },
+        onCompleted(data) {
+            if(data) getCommentsVar(data.comments);
+        },
+    })
+}
