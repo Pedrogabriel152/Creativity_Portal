@@ -82,4 +82,13 @@ class CommentRepository
             return $comment;
         });
     }
+
+    public static function getComments(int $post_id, int $first){
+        $comments = Comment::where([
+            ['post_id', '=', $post_id],
+            ['flag', '=', true]
+        ])->paginate($first);
+
+        return $comments;
+    }
 }

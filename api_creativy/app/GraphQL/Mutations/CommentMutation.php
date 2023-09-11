@@ -17,7 +17,7 @@ final class CommentMutation
 
     public function create($_, array $args) 
     {
-        $response = CommentService::create($args['comment']);
+        $response = CommentService::create($args['comment'], $args['first']);
         return $response;
     }
 

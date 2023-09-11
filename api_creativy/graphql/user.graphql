@@ -33,7 +33,12 @@ input UserInput {
   password: String
 }
 
-type Response {
+interface Response {
+  code: Int!
+  message: String!
+}
+
+type ResponseUser implements Response {
   code: Int!
   message: String!
 }
@@ -56,5 +61,5 @@ extend type Query {
 }
 
 extend type Mutation @guard {
-  editUser(user: UserInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@update")
+  editUser(user: UserInput!): ResponseUser! @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@update")
 }

@@ -58,7 +58,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
     setLike(likes);
   }, [comments]);
 
-  useEffect(() => {}, [createCommentResponse]);
+  useEffect(() => {console.log(comments)}, [comments]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

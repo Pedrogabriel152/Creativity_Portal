@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { AccountProfileDetails } from '../Components/AccountProfileDetails';
 import { AccountProfile } from '../Components/AccountProfile';
-import Head from 'next/head';
 
 export default function Profile() {
 
@@ -22,11 +21,6 @@ export default function Profile() {
         <Container maxWidth="lg">
             <Header title="Creativy Portal" sections={sections} />
             <main>
-                <Head>
-                    <title>
-                        Account | Devias Kit
-                    </title>
-                </Head>
                 <Box
                 component="main"
                 sx={{
@@ -50,13 +44,15 @@ export default function Profile() {
                                 xs={12}
                                 md={6}
                                 lg={4}
+                                marginRight={2}
+                                marginBottom={3}
                             >
                                 <AccountProfile />
                             </Grid>
                             <Grid
                                 xs={12}
-                                md={6}
-                                lg={8}
+                                md={5}
+                                lg={7}
                             >
                                 <AccountProfileDetails />
                             </Grid>

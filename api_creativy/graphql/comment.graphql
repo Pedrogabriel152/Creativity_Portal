@@ -22,6 +22,12 @@ input CommentInput {
     post_id: ID!
 }
 
+type ResponseComment implements Response {
+  code: Int!
+  message: String!
+  comments: [Comment]!
+}
+
 extend type Query @guard{
     comment(where: _ @whereConditions(columns: ["id", "user_id", "post_id", "flag"])): Comment @find
     comments(
@@ -31,8 +37,8 @@ extend type Query @guard{
 }
 
 extend type Mutation @guard {
-    createComment(comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@create")
-    deleteComment(id: ID!, post_id: ID!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@delete")
-    updateComment(id: ID!, post_id: ID!, comment: CommentInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@update")
+    createComment(comment: CommentInput!, first: Int!): ResponseComment! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@create")
+    deleteComment(id: ID!, post_id: ID!): ResponseComment! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@delete")
+    updateComment(id: ID!, post_id: ID!, comment: CommentInput!): ResponseComment! @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@update")
     likeComment(id: ID!, post_id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@like")
 }

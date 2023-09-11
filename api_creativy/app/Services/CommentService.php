@@ -9,7 +9,7 @@ use App\Repositories\CommentRepository;
 
 class CommentService
 {
-    public static function create(array $args) {
+    public static function create(array $args, int $first) {
         try {
             $user = Auth::guard('sanctum')->user();
 
@@ -29,14 +29,18 @@ class CommentService
                 throw new ErrorException('Falha ao comentar no post, tente novamente mais tarde', 500);
             }
 
+            $comments = CommentRepository::getComments($args['post_id'], $first);
+
             return [
                 'message' => 'Comentário criado com sucesso',
-                'code' => 200
+                'code' => 200,
+                'comments' => $comments
             ];
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
-                'code' => $ex->getCode()
+                'code' => $ex->getCode(),
+                'comments' => []
             ];
         } 
     }
