@@ -36,7 +36,7 @@ final class PostMutation
 
     public function like($_, array $args)
     {
-        $response = PostService::like($args['id'], $args['user_id']);
+        $response = PostService::like($args['id']);
         return $response;
     }
 }

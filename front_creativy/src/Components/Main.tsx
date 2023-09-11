@@ -15,15 +15,31 @@ import { useAuthContext } from '../Context/AuthContext';
 import { useEffect, useState } from 'react';
 import { api } from '../Utils/Api';
 import { IAuth } from '../interfaces/IAuth';
+import { useGetPost } from '../GraphQL/Hooks/postHooks';
+import { useReactiveVar } from '@apollo/client';
+import { getPostVar } from '../GraphQL/States/postState';
 
 interface IMain {
   post: IPost
   user: number
   auth: IAuth
+  first: number
+  likePostFunc: (id: number) => void
 }
 
-export default function Main({post, user, auth}: IMain) {
-  const userPost = post.user_post?.filter(user => user.user_id === auth.user_id)
+export default function Main({post, user, auth, first, likePostFunc}: IMain) {
+  const userPost = post.user_post?.filter(user => user.user_id === auth.user_id);
+  useGetPost(post.id, first);
+  const postUpdate = useReactiveVar(getPostVar);
+  const [like, setLike] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(postUpdate?.user_post?.filter(user => user.user_id == auth.user_id).length === 1 && postUpdate?.user_post?.filter(user => user.user_id == auth.user_id)[0].user_id == user) setLike(true); else setLike(false)
+  }, [postUpdate]);
+
+  const updateLike = () => {
+    setLike(!like);
+  }
 
   return (
     <Grid
@@ -51,12 +67,8 @@ export default function Main({post, user, auth}: IMain) {
           alt={post.title}
         />
       </Card>
-      <Button variant="outlined" startIcon={userPost?.length === 1? userPost[0].user_id === user ?  <FavoriteIcon /> : <FavoriteBorderIcon /> : <FavoriteBorderIcon />} style={{marginTop: '8px'}}>
-        {post.like}
-      </Button>
-      <Button variant="outlined" startIcon={ <MessageIcon />} style={{marginTop: '8px', marginLeft: '10px'}}>
-        {post.comment}
-      </Button>
+      <Button variant="outlined" startIcon={like ?  <FavoriteIcon /> : <FavoriteBorderIcon />} style={{marginTop: '8px'}} onClick={() => {likePostFunc(post.id); updateLike();}} />
+       <Button variant="outlined" startIcon={ <MessageIcon />} style={{marginTop: '8px', marginLeft: '10px'}}/>
       <Button variant="outlined" startIcon={<SendIcon />} style={{marginTop: '8px', marginLeft: '10px'}}>
         Compartilhar
       </Button>

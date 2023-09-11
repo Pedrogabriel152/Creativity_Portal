@@ -13,7 +13,7 @@ import Main from '../Components/Main';
 import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
 import { useParams } from 'react-router-dom';
-import { useGetPost } from '../GraphQL/Hooks/postHooks';
+import { useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
@@ -37,6 +37,8 @@ export default function Post() {
   const auth = getLocalStorage();
   const [user, setUser] = React.useState<number>(0);
   const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
+  const [likePost] = useLikePost();
+  const likePostResponse = useReactiveVar(likeCommentVar);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -45,7 +47,15 @@ export default function Post() {
         post_id
       }
     });
-    // window.location.reload();
+  }
+
+  const likePostFunc = (id: number) => {
+    console.log(id)
+    likePost({
+      variables: {
+        id
+      }
+    })
   }
 
   React.useEffect(() => {
@@ -57,7 +67,7 @@ export default function Post() {
     }).then(response => setUser(response.data.id));
   }, [auth]);
 
-  React.useEffect(() => {}, [first, loading, likeCommentResponse]);
+  React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse]);
 
   if(!post) {
     return <div></div>
@@ -85,7 +95,7 @@ export default function Post() {
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
             </Grid>
-            <Main auth={auth} post={post} user={user} />
+            <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
             <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first}/>
           </Grid>
         </main>

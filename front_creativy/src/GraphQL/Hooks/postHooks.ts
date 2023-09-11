@@ -1,6 +1,6 @@
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { FEATUREDPOSTS, GETMAINPOST, GETPOST } from "../Queries/postQuery";
-import { getFeaturedPostsVar, getMainPostVar, getPostVar } from "../States/postState";
+import { getFeaturedPostsVar, getMainPostVar, getPostVar, likePostVar } from "../States/postState";
 
 // Context
 // import { useUserContext } from "../../Context/UserContext";
@@ -10,6 +10,8 @@ import { IMainPost } from "../../interfaces/IMainPost";
 import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
 import { IPost } from "../../interfaces/IPost";
 import { getCommentsVar } from "../States/commentState";
+import { IResponse } from "../../interfaces/IResponse";
+import { LIKEPOST } from "../Mutations/postMutation";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -50,6 +52,16 @@ export const useGetPost = (id: number, first: number) => {
             }
         },
         fetchPolicy: 'cache-and-network',
+    });
+};
+
+export const useLikePost = () => {
+    return useMutation<{ likePost: IResponse }>(LIKEPOST, {
+        onCompleted(data) {
+            if (data) {
+                likePostVar(data.likePost);
+            }
+        },
     });
 };
 
