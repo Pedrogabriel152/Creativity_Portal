@@ -10,10 +10,26 @@ export const LIKECOMMENT = gql`
 `;
 
 export const CREATECOMMENT = gql`
-    mutation createComment($comment: CommentInput!) {
+    mutation createComment($comment: CommentInput!, $first: Int!) {
         createComment(comment: $comment) {
             code
             message
+            comments {
+                id
+                text
+                user_id
+                like
+                post_id
+                user{
+                    name
+                    image
+                }
+                user_comments{
+                    comment_id
+                    user_id
+                    id
+                }
+            }
         }
     }
 `
