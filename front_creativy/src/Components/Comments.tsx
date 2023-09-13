@@ -70,7 +70,8 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
 
     createComment({
       variables: {
-        comment: newComment
+        comment: newComment,
+        first: first
       },
     });
   }

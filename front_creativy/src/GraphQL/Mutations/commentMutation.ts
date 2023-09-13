@@ -11,7 +11,7 @@ export const LIKECOMMENT = gql`
 
 export const CREATECOMMENT = gql`
     mutation createComment($comment: CommentInput!, $first: Int!) {
-        createComment(comment: $comment) {
+        createComment(comment: $comment, first: $first) {
             code
             message
             comments {
