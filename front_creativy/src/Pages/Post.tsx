@@ -50,7 +50,6 @@ export default function Post() {
   }
 
   const likePostFunc = (id: number) => {
-    console.log(id)
     likePost({
       variables: {
         id

@@ -28,6 +28,11 @@ input PostInput {
     image: Upload
 }
 
+type ResponsePost implements Response {
+    code: Int!
+    message: String!
+}
+
 extend type Query @guard {
     post(first: Int!, where: _ @whereConditions(columns: ["id", "flag"])): Post @find
     posts(
@@ -42,8 +47,8 @@ extend type Query @guard {
 }
 
 extend type Mutation @guard {
-    createPost(post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
-    deletePost(id: ID!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
-    updatePost(id: ID!, post: PostInput!): Response! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
-    likePost(id: ID!): Response @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
+    createPost(post: PostInput!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
+    deletePost(id: ID!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
+    updatePost(id: ID!, post: PostInput!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
+    likePost(id: ID!): ResponsePost @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }
