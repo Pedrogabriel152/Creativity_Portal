@@ -39,9 +39,7 @@ export default function Main({post, user, auth, first, likePostFunc}: IMain) {
     if(postUpdate?.user_post?.filter(user => user.user_id == auth.user_id).length === 1 && postUpdate?.user_post?.filter(user => user.user_id == auth.user_id)[0].user_id == user) setLike(true); else setLike(false)
   }, [postUpdate]);
 
-  const updateLike = () => {
-    setLike(!like);
-  }
+  const updateLike = () => setLike(!like);
 
   return (
     <Grid

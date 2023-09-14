@@ -56,9 +56,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
       }
     });
     setLike(likes);
-  }, [comments]);
-
-  useEffect(() => {}, [updatedComments]);
+  }, [comments, updatedComments]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -135,7 +133,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               ))
             )}
           </List>
-          {comments?.paginatorInfo?.hasMorePages 
+          {comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages
             ? !loadindMoreComment
               ?<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={moreComments}>
                   <ReplayIcon fontSize="inherit"/>
