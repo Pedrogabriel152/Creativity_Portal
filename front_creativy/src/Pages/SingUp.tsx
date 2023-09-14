@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Mui Material
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,27 +15,22 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { IRegister } from '../interfaces/IRegister';
-import { useAuthContext } from '../Context/AuthContext';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
+// Components
 import Copyright from '../Components/Copyright';
+
+// Toastify
+import { toast } from 'react-toastify';
+
+// Context
+import { useAuthContext } from '../Context/AuthContext';
+
+// Interfaces
+import { IRegister } from '../interfaces/IRegister';
+
+// Utils
 import { api } from '../Utils/Api';
 import { removeLocalStorage, saveLocalStorage } from '../Utils/functions';
-
-// function Copyright(props: any) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://github.com/Pedrogabriel152/Creativity_Portal">
-//         Pedro Gabriel
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();

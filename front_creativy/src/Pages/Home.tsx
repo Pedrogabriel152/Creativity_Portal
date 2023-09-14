@@ -1,24 +1,30 @@
+import { useEffect, useState } from 'react';
+
+// Mui Material
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CircularProgress, IconButton } from '@mui/material';
+import ReplayIcon from '@mui/icons-material/Replay';
+
+// Components
 import Header from '../Components/Header';
 import MainFeaturedPost from '../Components/MainFeaturedPost';
 import FeaturedPost from '../Components/FeaturedPost';
-import Main from '../Components/Main';
-import Sidebar from '../Components/SideBar';
 import Footer from '../Components/Footer';
+
+// Utils
 import { sections } from '../Utils/variable';
+
+// GraphQL
 import { useGetFeaturedPosts, useGetMainPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getFeaturedPostsVar, getMainPostVar } from '../GraphQL/States/postState';
+
+// Interfaces
 import { IPost } from '../interfaces/IPost';
-import { CircularProgress, IconButton } from '@mui/material';
-import ReplayIcon from '@mui/icons-material/Replay';
-import { useEffect, useState } from 'react';
+
 
 const Home = () => {
     const [first, setFirst] = useState<number>(6);

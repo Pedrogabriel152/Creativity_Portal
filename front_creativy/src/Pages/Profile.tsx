@@ -1,13 +1,16 @@
+// GraphQL
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from '../Components/Footer';
 import Container from '@mui/material/Container';
-import Header from '../Components/Header';
 import { sections } from '../Utils/variable';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+
+// Components
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 import { AccountProfileDetails } from '../Components/AccountProfileDetails';
 import { AccountProfile } from '../Components/AccountProfile';
 

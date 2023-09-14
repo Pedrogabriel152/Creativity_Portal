@@ -1,22 +1,30 @@
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
+
+// Utils
+import { api } from '../Utils/Api';
+import { sections } from '../Utils/variable';
+
+// Mui Material
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Header from '../Components/Header';
-import Main from '../Components/Main';
-import Footer from '../Components/Footer';
-import { useParams } from 'react-router-dom';
-import { useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
-import { useReactiveVar } from '@apollo/client';
-import { getPostVar } from '../GraphQL/States/postState';
 import { Avatar, Typography } from '@mui/material';
-import { sections } from '../Utils/variable';
-import Comments from '../Components/Comments';
-import { api } from '../Utils/Api';
+
+// GraphQL
 import { useAuthContext } from '../Context/AuthContext';
 import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
 import { updatedCommentsVar } from '../GraphQL/States/commentState';
+import { useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
+import { useReactiveVar } from '@apollo/client';
+import { getPostVar } from '../GraphQL/States/postState';
+
+// Components
+import Header from '../Components/Header';
+import Main from '../Components/Main';
+import Footer from '../Components/Footer';
+import Comments from '../Components/Comments';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
