@@ -1,3 +1,6 @@
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 // Material UI
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,15 +21,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 // GraphQL
 import { useReactiveVar } from '@apollo/client';
 import { getCommentsVar, updatedCommentsVar } from '../GraphQL/States/commentState';
+import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks';
 
 // Interface 
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
-import { useEffect, useState } from 'react';
 import { ICommentInput } from '../interfaces/ICommentInput';
-import { useParams } from 'react-router-dom';
-import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks';
-import { event } from "jquery";
 
 interface IComments {
   user: number

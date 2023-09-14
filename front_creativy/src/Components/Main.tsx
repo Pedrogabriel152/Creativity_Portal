@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+
+// Mui Material
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -6,15 +9,14 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SendIcon from '@mui/icons-material/Send';
 import MessageIcon from '@mui/icons-material/Message';
+import Button from '@mui/material/Button';
+import { Card } from '@mui/material';
 
 // intertfades
 import { IPost } from '../interfaces/IPost';
-import Button from '@mui/material/Button';
-import { Card } from '@mui/material';
-import { useAuthContext } from '../Context/AuthContext';
-import { useEffect, useState } from 'react';
-import { api } from '../Utils/Api';
 import { IAuth } from '../interfaces/IAuth';
+
+// GraphQL
 import { useGetPost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';

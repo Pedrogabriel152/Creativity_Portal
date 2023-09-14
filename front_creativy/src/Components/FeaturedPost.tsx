@@ -4,7 +4,8 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Link } from '@mui/material';
+
+// Utils
 import { dateFormater } from '../Utils/functions';
 
 interface FeaturedPostProps {

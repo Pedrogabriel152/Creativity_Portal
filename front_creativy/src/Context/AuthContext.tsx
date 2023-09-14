@@ -1,13 +1,17 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// API
+// Utils
 import { api } from "../Utils/Api";
-import { IRegister } from "../interfaces/IRegister";
 import { saveLocalStorage } from "../Utils/functions";
+
+// Toastify
+import { toast } from "react-toastify";
+
+// Interfaces
 import { IAuth } from "../interfaces/IAuth";
 import { IAuthContext } from "../interfaces/IAuthContext";
-import { toast } from "react-toastify";
+import { IRegister } from "../interfaces/IRegister";
 
 export const AuthContext = createContext<IAuthContext>({
     createUser: () => null,
