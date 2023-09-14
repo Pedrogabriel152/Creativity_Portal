@@ -1,11 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { IResponse } from "../../interfaces/IResponse";
+
+// Mutations
 import { CREATECOMMENT, LIKECOMMENT } from "../Mutations/commentMutation";
+
+// States
 import { updatedCommentsVar, getCommentsVar } from "../States/commentState";
+
+// Queries
 import { GETPOST } from "../Queries/postQuery";
 import { GETCOMMENTS } from "../Queries/commentQuery";
-import { IComment } from "../../interfaces/IComment";
+
+// Interfaces
 import { ICommentPaginator } from "../../interfaces/ICommentPaginator";
+import { IResponse } from "../../interfaces/IResponse";
 
 export const useLikeComment = (id: number, first: number) => {
     return useMutation<{ likeComment: IResponse }>(LIKECOMMENT, {

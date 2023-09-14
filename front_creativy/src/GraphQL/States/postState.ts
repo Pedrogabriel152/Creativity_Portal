@@ -1,4 +1,6 @@
 import { makeVar } from "@apollo/client";
+
+// Interfaces
 import { IMainPost } from "../../interfaces/IMainPost";
 import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
 import { IPost } from "../../interfaces/IPost";

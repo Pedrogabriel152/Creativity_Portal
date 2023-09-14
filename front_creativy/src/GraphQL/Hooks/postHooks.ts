@@ -1,16 +1,19 @@
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
-import { FEATUREDPOSTS, GETMAINPOST, GETPOST } from "../Queries/postQuery";
-import { getFeaturedPostsVar, getMainPostVar, getPostVar, likePostVar } from "../States/postState";
-
-// Context
-// import { useUserContext } from "../../Context/UserContext";
 
 // Interfaces
 import { IMainPost } from "../../interfaces/IMainPost";
 import { IFeaturedPosts } from "../../interfaces/IFeaturedPosts";
 import { IPost } from "../../interfaces/IPost";
-import { getCommentsVar } from "../States/commentState";
 import { IResponse } from "../../interfaces/IResponse";
+
+// States
+import { getCommentsVar } from "../States/commentState";
+import { getFeaturedPostsVar, getMainPostVar, getPostVar, likePostVar } from "../States/postState";
+
+// Queries
+import { FEATUREDPOSTS, GETMAINPOST, GETPOST } from "../Queries/postQuery";
+
+// Mutations
 import { LIKEPOST } from "../Mutations/postMutation";
 
 export const useGetMainPost = () => {
