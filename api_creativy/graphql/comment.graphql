@@ -31,7 +31,7 @@ type ResponseComment implements Response {
   code: Int!
   message: String!
   comments: [Comment]!
-  paginatorInfo: PaginatorInfo
+#   paginatorInfo: PaginatorInfo
 }
 
 extend type Query @guard{

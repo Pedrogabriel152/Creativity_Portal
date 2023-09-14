@@ -46,10 +46,10 @@ export const CREATECOMMENT = gql`
                     id
                 }
             }
-            paginatorInfo {
-                hasMorePages
-                count
-            }
+            # paginatorInfo {
+            #     hasMorePages
+            #     count
+            # }
         }
     }
 `

@@ -46,10 +46,19 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const comments = useReactiveVar(getCommentsVar);
   const updatedComments = useReactiveVar(updatedCommentsVar);
 
-  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
+  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : 8);}
 
   useEffect(() => {
     const likes: any[] = [];
+    if(updatedComments) {
+      updatedComments?.comments?.map((comment: IComment, index: number) => {
+        if(comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user) {
+          likes[index] = comment;
+        }
+      });
+      setLike(likes);
+      return;
+    }
     comments?.data?.map((comment: IComment, index: number) => {
       if(comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id == user) {
         likes[index] = comment;
@@ -80,6 +89,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   }
 
   const updateLike = (comment: IComment, indexNum: number, user: number) => {
+    console.log(like)
     if((comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id != user) || indexNum in like) {
       const likes:any[] = [];
       like.map((item, index) => {
@@ -133,7 +143,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               ))
             )}
           </List>
-          {comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages
+          {comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages 
             ? !loadindMoreComment
               ?<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={moreComments}>
                   <ReplayIcon fontSize="inherit"/>
