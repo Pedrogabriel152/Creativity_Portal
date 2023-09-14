@@ -17,7 +17,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 // GraphQL
 import { useReactiveVar } from '@apollo/client';
-import { createCommentVar, getCommentsVar, likeCommentVar } from '../GraphQL/States/commentState';
+import { getCommentsVar, updatedCommentsVar } from '../GraphQL/States/commentState';
 
 // Interface 
 import { IComment } from "../interfaces/IComment";
@@ -43,8 +43,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const [like, setLike] = useState<any[]>([]);
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const comments = useReactiveVar(getCommentsVar);
-  const likeComment = useReactiveVar(likeCommentVar);
-  const createCommentResponse = useReactiveVar(createCommentVar);
+  const updatedComments = useReactiveVar(updatedCommentsVar);
 
   const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo.count+8);}
 
@@ -58,7 +57,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
     setLike(likes);
   }, [comments]);
 
-  useEffect(() => {console.log(comments)}, [comments]);
+  useEffect(() => {}, [updatedComments]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,8 +97,9 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
         <CssBaseline /> 
         <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.100' }}>
           <List sx={{height: 610, overflow: 'auto', }}>
-            {comments?.data?.map((comment: IComment, index) => (
-              <ListItem key={index} sx={{cursor: 'default'}}>
+            {updatedComments?.comments ? (
+              updatedComments.comments?.map((comment: IComment, index: number) => (
+                <ListItem key={index} sx={{cursor: 'default'}}>
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
                 </ListItemAvatar>
@@ -111,7 +111,23 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                   }
                 </ListItemButton>
               </ListItem>
-            ))}
+              ))
+            ) : (
+              comments?.data?.map((comment: IComment, index) => (
+                <ListItem key={index} sx={{cursor: 'default'}}>
+                  <ListItemAvatar>
+                    <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
+                  </ListItemAvatar>
+                  <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
+                  <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
+                    {like[index] 
+                      ? <FavoriteIcon color="error"/> 
+                      : <FavoriteBorderIcon color="error"/>     
+                    }
+                  </ListItemButton>
+                </ListItem>
+              ))
+            )}
           </List>
           {comments?.paginatorInfo?.hasMorePages 
             ? !loadindMoreComment

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { IResponse } from "../../interfaces/IResponse";
 import { CREATECOMMENT, LIKECOMMENT } from "../Mutations/commentMutation";
-import { createCommentVar, getCommentsVar, likeCommentVar } from "../States/commentState";
+import { updatedCommentsVar, getCommentsVar } from "../States/commentState";
 import { GETPOST } from "../Queries/postQuery";
 import { GETCOMMENTS } from "../Queries/commentQuery";
 import { IComment } from "../../interfaces/IComment";
@@ -11,7 +11,8 @@ export const useLikeComment = (id: number, first: number) => {
     return useMutation<{ likeComment: IResponse }>(LIKECOMMENT, {
         onCompleted(data) {
             if (data) {
-                likeCommentVar(data.likeComment);
+                console.log(data.likeComment);
+                updatedCommentsVar(data.likeComment);
             }
         },
         refetchQueries: [
@@ -29,7 +30,7 @@ export const useCreateComment = (id: number, first: number) => {
     return useMutation<{ createComment: IResponse }>(CREATECOMMENT, {
         onCompleted(data) {
             if (data) {
-                createCommentVar(data.createComment);
+                updatedCommentsVar(data.createComment);
             }
         },
         refetchQueries: [

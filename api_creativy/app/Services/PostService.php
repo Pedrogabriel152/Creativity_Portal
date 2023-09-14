@@ -4,6 +4,7 @@ namespace App\Services;
 
 use ErrorException;
 use App\Models\Post;
+use App\Repositories\CommentRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\PostRespository;
 
@@ -122,12 +123,14 @@ class PostService
 
             return [
                 'message' => 'Post atualizado com sucesso',
-                'code' => 200
+                'code' => 200,
+                // 'comment' => $comments
             ];
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
-                'code' => $ex->getCode()
+                'code' => $ex->getCode(),
+                // 'comments' => []
             ];
         }
     }

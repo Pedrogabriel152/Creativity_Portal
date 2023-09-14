@@ -77,7 +77,7 @@ class CommentService
         } 
     }
 
-    public static function like(int $id, int $post_id) {
+    public static function like(int $id, int $post_id, int $first) {
         try {
             $user = Auth::guard('sanctum')->user();
 
@@ -97,14 +97,18 @@ class CommentService
                 throw new ErrorException('Erro ao dar like', 500);
             }
 
+            $comments = CommentRepository::getComments($post_id, $first);
+
             return [
                 'message' => 'Comentário atualizado com sucesso',
-                'code' => 200
+                'code' => 200,
+                'comments' => $comments
             ];
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
-                'code' => $ex->getCode()
+                'code' => $ex->getCode(),
+                'comments' => []
             ];
         }
     }

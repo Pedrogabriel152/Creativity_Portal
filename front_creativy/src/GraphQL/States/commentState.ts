@@ -9,8 +9,7 @@ import { IResponse } from "../../interfaces/IResponse";
 // import { IExpense } from "../../Interfaces/IExpense";
 
 export const getCommentsVar = makeVar<ICommentPaginator | null>(null);
-export const likeCommentVar = makeVar<IResponse | null>(null);
-export const createCommentVar = makeVar<IResponse | null>(null);
+export const updatedCommentsVar = makeVar<IResponse | null>(null);
 // export const createExpenseVar = makeVar<IResponse | null>(null);
 // export const updateExpenseVar = makeVar<IResponse | null>(null);
 // export const payInstallmentExpenseVar = makeVar<IResponse | null>(null);

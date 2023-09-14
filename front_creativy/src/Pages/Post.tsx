@@ -22,7 +22,7 @@ import Comments from '../Components/Comments';
 import { api } from '../Utils/Api';
 import { useAuthContext } from '../Context/AuthContext';
 import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
-import { likeCommentVar } from '../GraphQL/States/commentState';
+import { updatedCommentsVar } from '../GraphQL/States/commentState';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -31,20 +31,21 @@ export default function Post() {
   const [first, setFirst] = React.useState<number>(8);
   const { getLocalStorage } = useAuthContext();
   const {id} = useParams();
-  const likeCommentResponse = useReactiveVar(likeCommentVar);
+  const likeCommentResponse = useReactiveVar(updatedCommentsVar);
   const {loading: loadindMoreComment} = useGetPost(id? parseInt(id) : 0, first);
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
   const [user, setUser] = React.useState<number>(0);
   const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
   const [likePost] = useLikePost();
-  const likePostResponse = useReactiveVar(likeCommentVar);
+  const likePostResponse = useReactiveVar(updatedCommentsVar);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
       variables: {
         id,
-        post_id
+        post_id,
+        first
       }
     });
   }
