@@ -40,15 +40,15 @@ interface IComments {
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
-  useGetComments(id? parseInt(id) : 0, first);
+  const {refetch} = useGetComments(id? parseInt(id) : 0, first);
   const [like, setLike] = useState<any[]>([]);
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const comments = useReactiveVar(getCommentsVar);
   const updatedComments = useReactiveVar(updatedCommentsVar);
 
   const moreComments = () => {
-    console.log("ChameiiiIIIIiiiiiII",updatedComments?.paginatorInfo?.count)
     if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : first);
+    refetch();
   }
 
   useEffect(() => {
