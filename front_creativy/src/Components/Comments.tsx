@@ -26,7 +26,7 @@ import { useEffect, useState } from 'react';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { useParams } from 'react-router-dom';
 import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks';
-import {} from "jquery";
+import { event } from "jquery";
 
 interface IComments {
   user: number
@@ -39,6 +39,7 @@ interface IComments {
 
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
   const {id} = useParams();
+  const [text, setText] = useState<string>('');
   useGetComments(id? parseInt(id) : 0, first);
   const [like, setLike] = useState<any[]>([]);
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
@@ -59,6 +60,10 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
 
   useEffect(() => {}, [updatedComments]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setText(event.target.value);
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -73,6 +78,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
         first: first
       },
     });
+    setText('');
   }
 
   const updateLike = (comment: IComment, indexNum: number, user: number) => {
@@ -148,6 +154,8 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               name="text"
               autoComplete="text"
               autoFocus
+              onChange={handleChange}
+              value={text}
               sx={{height: 50}}
             />
             <button type="submit" style={{border: 'none', background: 'transparent'}}>
