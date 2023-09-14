@@ -31,6 +31,7 @@ input PostInput {
 type ResponsePost implements Response {
     code: Int!
     message: String!
+    post: Post
 }
 
 extend type Query @guard {
@@ -50,5 +51,5 @@ extend type Mutation @guard {
     createPost(post: PostInput!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@create")
     deletePost(id: ID!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@delete")
     updatePost(id: ID!, post: PostInput!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@update")
-    likePost(id: ID!): ResponsePost @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
+    likePost(id: ID!): ResponsePost! @field(resolver: "App\\GraphQL\\Mutations\\PostMutation@like")
 }

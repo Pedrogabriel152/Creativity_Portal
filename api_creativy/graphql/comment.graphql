@@ -22,10 +22,16 @@ input CommentInput {
     post_id: ID!
 }
 
+type PaginatorInfo {
+    count: Int!
+    hasMorePages: Boolean!
+}
+
 type ResponseComment implements Response {
   code: Int!
   message: String!
   comments: [Comment]!
+  paginatorInfo: PaginatorInfo
 }
 
 extend type Query @guard{

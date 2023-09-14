@@ -99,10 +99,15 @@ class CommentService
 
             $comments = CommentRepository::getComments($post_id, $first);
 
+            $paginatorInfo = new \stdClass();
+            $paginatorInfo->hasMorePages = $comments->lastPage() > 1;
+            $paginatorInfo->count = $comments->perPage();
+
             return [
                 'message' => 'Comentário atualizado com sucesso',
                 'code' => 200,
-                'comments' => $comments
+                'comments' => $comments,
+                'paginatorInfo' => $paginatorInfo
             ];
         } catch (\Exception $ex) {
             return [

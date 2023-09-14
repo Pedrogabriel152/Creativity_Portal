@@ -124,13 +124,13 @@ class PostService
             return [
                 'message' => 'Post atualizado com sucesso',
                 'code' => 200,
-                // 'comment' => $comments
+                'post' => $post
             ];
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode(),
-                // 'comments' => []
+                'post' => []
             ];
         }
     }
