@@ -46,7 +46,10 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const comments = useReactiveVar(getCommentsVar);
   const updatedComments = useReactiveVar(updatedCommentsVar);
 
-  const moreComments = () => {if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : 8);}
+  const moreComments = () => {
+    console.log("ChameiiiIIIIiiiiiII",updatedComments?.paginatorInfo?.count)
+    if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : first);
+  }
 
   useEffect(() => {
     const likes: any[] = [];

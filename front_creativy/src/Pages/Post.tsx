@@ -69,7 +69,7 @@ export default function Post() {
     }).then(response => setUser(response.data.id));
   }, [auth]);
 
-  React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse]);
+  React.useEffect(() => {console.log(first)}, [first, loading, likeCommentResponse, likeCommentResponse]);
 
   if(!post) {
     return <div></div>
