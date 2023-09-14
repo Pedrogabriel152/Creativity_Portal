@@ -18,7 +18,6 @@ class CommentRepository
 
             $post->comment = $post->comment+1;
             $post->save();
-
             return $comment;
         });
     }
@@ -30,7 +29,6 @@ class CommentRepository
             ['post_id', '=', $post_id],
             ['flag', '=', true]
         ])->first();
-
         return $comment;
     }
 
@@ -71,7 +69,6 @@ class CommentRepository
             ['post_id', '=', $post_id],
             ['flag', '=', true]
         ])->first();
-
         return $comment;
     }
 
@@ -88,7 +85,6 @@ class CommentRepository
             ['post_id', '=', $post_id],
             ['flag', '=', true]
         ])->orderBy('created_at', 'desc')->paginate($first);
-
         return $comments;
     }
 }
