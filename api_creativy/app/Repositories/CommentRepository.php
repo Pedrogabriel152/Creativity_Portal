@@ -87,7 +87,7 @@ class CommentRepository
         $comments = Comment::where([
             ['post_id', '=', $post_id],
             ['flag', '=', true]
-        ])->paginate($first);
+        ])->orderBy('created_at', 'desc')->paginate($first);
 
         return $comments;
     }
