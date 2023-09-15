@@ -41,6 +41,7 @@ export default function Post() {
   const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
   const [likePost] = useLikePost();
   const likePostResponse = useReactiveVar(updatedCommentsVar);
+  const [update, setUpdate] = React.useState<boolean>(true);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -50,12 +51,14 @@ export default function Post() {
         first
       }
     });
+    setUpdate(false);
   }
 
   const likePostFunc = (id: number) => {
     likePost({
       variables: {
-        id
+        id,
+        first
       }
     })
   }
@@ -98,7 +101,7 @@ export default function Post() {
               </Typography>
             </Grid>
             <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
-            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first}/>
+            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>
           </Grid>
         </main>
       </Container>

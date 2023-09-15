@@ -130,7 +130,6 @@ class PostService
             return [
                 'message' => $ex->getMessage(),
                 'code' => $ex->getCode(),
-                'post' => []
             ];
         }
     }

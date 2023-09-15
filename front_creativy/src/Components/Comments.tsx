@@ -35,9 +35,10 @@ interface IComments {
   loadindMoreComment: boolean
   likeCommentFunc: (id: number, post_id: number) => void
   first: number
+  update: boolean
 }
 
-export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first}: IComments) {
+export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
   const {refetch} = useGetComments(id? parseInt(id) : 0, first);
@@ -48,7 +49,6 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
 
   const moreComments = () => {
     if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : first);
-    refetch();
   }
 
   useEffect(() => {
@@ -145,12 +145,18 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               ))
             )}
           </List>
-          {comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages 
+          {comments?.paginatorInfo?.hasMorePages
             ? !loadindMoreComment
               ?<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={moreComments}>
                   <ReplayIcon fontSize="inherit"/>
               </IconButton>
               : <CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
+          : updatedComments?.paginatorInfo?.hasMorePages && update
+          ? !loadindMoreComment
+            ?<IconButton aria-label="load" size='large' style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} onClick={moreComments}>
+                <ReplayIcon fontSize="inherit"/>
+            </IconButton>
+            : <CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
           : <div></div>
         }
         </Paper>
