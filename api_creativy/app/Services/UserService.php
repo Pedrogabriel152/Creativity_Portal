@@ -34,4 +34,19 @@ class UserService
             ];
         }
     }
+
+    public static function getUser() {
+        try{
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user){
+                throw new ErrorException('Usuário não encontrado', 404);
+            }
+
+            return $user;
+            
+        } catch (\Exception $ex) {
+            return null;
+        }
+    }
 }

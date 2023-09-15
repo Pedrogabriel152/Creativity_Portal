@@ -16,10 +16,10 @@ export const removeLocalStorage = () => {
     }
 }
 
-export const dateFormater = (create_at: string) => {
+export const dateFormater = (create_at: string, format?: 'numerica') => {
     const month = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul","Ago","Set","Out","Nov","Dez"];
     const newDate = new Date(create_at);
-    const dateFomarted = ((newDate.getDate() + " " + month[(newDate.getMonth())] + " " + newDate.getFullYear()));
+    const dateFomarted = format? ((newDate.getDate() + "/" + ((newDate.getMonth()+1)? "0"+(newDate.getMonth()+1) : newDate.getMonth()+1) + "/" + newDate.getFullYear())) : ((newDate.getDate() + " " + month[(newDate.getMonth())] + " " + newDate.getFullYear()));
     return dateFomarted;
 }
 

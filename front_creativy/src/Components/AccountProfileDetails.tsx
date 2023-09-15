@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Unstable_Grid2 as Grid} from '@mui/material';
+import { IUser } from '../interfaces/IUser';
 
 const states = [
   {
@@ -20,7 +21,12 @@ const states = [
   }
 ];
 
-export const AccountProfileDetails = () => {
+interface IAccount {
+  user: IUser
+  setUser: (user: IUser) => void
+}
+
+export const AccountProfileDetails = ({user, setUser}: IAccount) => {
   const [values, setValues] = useState({
     firstName: 'Anika',
     lastName: 'Visser',
@@ -75,7 +81,7 @@ export const AccountProfileDetails = () => {
                   name="firstName"
                   onChange={handleChange}
                   required
-                  value={values.firstName}
+                  value={user.name}
                 />
               </Grid>
               <Grid

@@ -41,7 +41,7 @@ interface IComments {
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
-  const {refetch} = useGetComments(id? parseInt(id) : 0, first);
+  useGetComments(id? parseInt(id) : 0, first);
   const [like, setLike] = useState<any[]>([]);
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const comments = useReactiveVar(getCommentsVar);

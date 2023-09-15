@@ -1,4 +1,6 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
+import { IUser } from '../interfaces/IUser';
+import { dateFormater } from '../Utils/functions';
   
 const user = {
 avatar: '/assets/avatars/avatar-anika-visser.png',
@@ -9,7 +11,11 @@ name: 'Anika Visser',
 timezone: 'GTM-7'
 };
 
-export const AccountProfile = () => (
+interface IAccount {
+    user: IUser
+}
+
+export const AccountProfile = ({user}: IAccount) => (
 <Card>
     <CardContent>
     <Box
@@ -20,7 +26,7 @@ export const AccountProfile = () => (
         }}
     >
         <Avatar
-        src={user.avatar}
+        src={user.image}
         sx={{
             height: 80,
             mb: 2,
@@ -37,13 +43,13 @@ export const AccountProfile = () => (
         color="text.secondary"
         variant="body2"
         >
-        {user.city} {user.country}
+        {user.email}
         </Typography>
         <Typography
         color="text.secondary"
         variant="body2"
         >
-        {user.timezone}
+        {dateFormater(user.created_at, "numerica")}
         </Typography>
     </Box>
     </CardContent>
@@ -53,7 +59,7 @@ export const AccountProfile = () => (
         fullWidth
         variant="text"
     >
-        Upload picture
+        Alterar imagem
     </Button>
     </CardActions>
 </Card>

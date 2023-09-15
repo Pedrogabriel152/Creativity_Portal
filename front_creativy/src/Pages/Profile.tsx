@@ -13,10 +13,32 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { AccountProfileDetails } from '../Components/AccountProfileDetails';
 import { AccountProfile } from '../Components/AccountProfile';
+import { useEffect, useState } from 'react';
+import { api } from '../Utils/Api';
+import { IUser } from '../interfaces/IUser';
+import { useAuthContext } from '../Context/AuthContext';
 
 export default function Profile() {
+    const { getLocalStorage } = useAuthContext();
+    const auth = getLocalStorage();
+    const [user, setUser] = useState<IUser>();
+
+    useEffect(() => {
+        if(auth) {
+            api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+            api.get('api/user', {
+            headers: {
+                Authorization: `Bearer ${auth?.token}`
+            }
+            }).then(response => setUser(response.data));
+        }
+      }, []);
 
     const defaultTheme = createTheme();
+
+    if(!user) return <div></div>
+
+    console.log(user);
 
     return(
         <ThemeProvider theme={defaultTheme}>
@@ -35,7 +57,7 @@ export default function Profile() {
                         <Stack spacing={3}>
                         <div>
                             <Typography variant="h4">
-                            Account
+                                Perfil
                             </Typography>
                         </div>
                         <div>
@@ -47,17 +69,17 @@ export default function Profile() {
                                 xs={12}
                                 md={6}
                                 lg={4}
-                                marginRight={2}
+                                marginRight={3}
                                 marginBottom={3}
                             >
-                                <AccountProfile />
+                                <AccountProfile user={user}/>
                             </Grid>
                             <Grid
                                 xs={12}
                                 md={5}
                                 lg={7}
                             >
-                                <AccountProfileDetails />
+                                <AccountProfileDetails user={user} setUser={setUser}/>
                             </Grid>
                             </Grid>
                         </div>
