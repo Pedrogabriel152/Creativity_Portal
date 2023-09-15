@@ -1,8 +1,16 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
-import { IUser } from '../interfaces/IUser';
-import { dateFormater } from '../Utils/functions';
-import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
 import { useState } from 'react';
+
+// Mui Material
+import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
+
+// Utils
+import { dateFormater } from '../Utils/functions';
+
+// Styles
+import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
+
+// Interfaces
+import { IUser } from '../interfaces/IUser';
 
 interface IAccount {
     user: IUser

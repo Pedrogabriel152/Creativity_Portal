@@ -1,6 +1,5 @@
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache, concat } from "@apollo/client";
 import { ReactElement } from "react";
-
 import { createUploadLink } from 'apollo-upload-client';
 
 const authMiddleware = new ApolloLink((operation, forward) => {

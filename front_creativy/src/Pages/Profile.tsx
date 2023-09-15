@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 // GraphQL
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -13,9 +15,14 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { AccountProfileDetails } from '../Components/AccountProfileDetails';
 import { AccountProfile } from '../Components/AccountProfile';
-import { useEffect, useState } from 'react';
+
+// Utils
 import { api } from '../Utils/Api';
+
+// Interfaces
 import { IUser } from '../interfaces/IUser';
+
+// Context
 import { useAuthContext } from '../Context/AuthContext';
 
 export default function Profile() {

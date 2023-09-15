@@ -1,7 +1,15 @@
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+
+// Mui Material
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Unstable_Grid2 as Grid} from '@mui/material';
+
+// Interfaces
 import { IUser } from '../interfaces/IUser';
+
+// Toastify
 import { toast } from 'react-toastify';
+
+// GraphQL
 import { useUpdateUSer } from '../GraphQL/Hooks/userHook';
 import { useReactiveVar } from '@apollo/client';
 import { updateUserVar } from '../GraphQL/States/userSatate';
