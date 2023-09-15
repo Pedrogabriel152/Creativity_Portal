@@ -38,8 +38,6 @@ export default function Profile() {
 
     if(!user) return <div></div>
 
-    console.log(user);
-
     return(
         <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
@@ -72,7 +70,7 @@ export default function Profile() {
                                 marginRight={3}
                                 marginBottom={3}
                             >
-                                <AccountProfile user={user}/>
+                                <AccountProfile user={user} setUser={setUser}/>
                             </Grid>
                             <Grid
                                 xs={12}

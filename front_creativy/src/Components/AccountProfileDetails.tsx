@@ -1,25 +1,10 @@
-import { useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField, Unstable_Grid2 as Grid} from '@mui/material';
 import { IUser } from '../interfaces/IUser';
-
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  },
-  {
-    value: 'los-angeles',
-    label: 'Los Angeles'
-  }
-];
+import { toast } from 'react-toastify';
+import { useUpdateUSer } from '../GraphQL/Hooks/userHook';
+import { useReactiveVar } from '@apollo/client';
+import { updateUserVar } from '../GraphQL/States/userSatate';
 
 interface IAccount {
   user: IUser
@@ -27,31 +12,49 @@ interface IAccount {
 }
 
 export const AccountProfileDetails = ({user, setUser}: IAccount) => {
-  const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA'
-  });
+  const [ updateUser ] = useUpdateUSer();
+  const updateUserResponse = useReactiveVar(updateUserVar);
 
-  const handleChange = useCallback(
-      (    event: { target: { name: any; value: any; }; }) => {
-      setValues((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value
-      }));
-    },
-    []
-  );
+  useEffect(() => {
+    if(updateUserResponse) {
+      if(updateUserResponse?.code === 200) toast.success(updateUserResponse.message);
+      if(updateUserResponse?.code !== 200) toast.error(updateUserResponse.message);
+    }
+  }, [updateUserResponse]);
 
-  const handleSubmit = useCallback(
-    (event: { preventDefault: () => void; }) => {
-      event.preventDefault();
-    },
-    []
-  );
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUser({
+      ...user,
+      [event.target.name]: event.target.value
+    })
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    if(!user.name) return toast.error('O campo nome é obrigatório');
+
+    if(!user.email) return toast.error('O campo email é obrigatório');
+
+    if(user.password) {
+      if(!user.confirmPassword) return toast.error('A confirmação da senha é obrigatório');
+
+      if(user.password !== user.confirmPassword) return toast.error('As senhas precisam iguais');
+    }
+
+    console.log(user)
+
+    updateUser({
+      variables: {
+        user: {
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          password: user.password
+        }
+      }
+    })
+  }
 
   return (
     <form
@@ -76,15 +79,15 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
               >
                 <TextField
                   fullWidth
-                  helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
+                  helperText="Digite seu nome"
+                  label="Nome"
+                  name="name"
                   onChange={handleChange}
                   required
                   value={user.name}
                 />
               </Grid>
-              <Grid
+              {/* <Grid
                 xs={12}
                 md={6}
               >
@@ -94,20 +97,20 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
                   name="lastName"
                   onChange={handleChange}
                   required
-                  value={values.lastName}
+                  value={user.name}
                 />
-              </Grid>
+              </Grid> */}
               <Grid
                 xs={12}
                 md={6}
               >
                 <TextField
                   fullWidth
-                  label="Email Address"
+                  label="Email"
                   name="email"
                   onChange={handleChange}
                   required
-                  value={values.email}
+                  value={user.email}
                 />
               </Grid>
               <Grid
@@ -116,11 +119,11 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
               >
                 <TextField
                   fullWidth
-                  label="Phone Number"
-                  name="phone"
+                  label="Senha"
+                  name="password"
                   onChange={handleChange}
-                  type="number"
-                  value={values.phone}
+                  type="password"
+                  value={user.password}
                 />
               </Grid>
               <Grid
@@ -129,18 +132,19 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
               >
                 <TextField
                   fullWidth
-                  label="Country"
-                  name="country"
+                  label="Confirme a Senha"
+                  name="confirmPassword"
                   onChange={handleChange}
+                  type='password'
                   required
-                  value={values.country}
+                  value={user.confirmPassword}
                 />
               </Grid>
-              <Grid
+              {/* <Grid
                 xs={12}
                 md={6}
-              >
-                <TextField
+              > */}
+                {/* <TextField
                   fullWidth
                   label="Select State"
                   name="state"
@@ -158,14 +162,14 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
                       {option.label}
                     </option>
                   ))}
-                </TextField>
-              </Grid>
+                </TextField> */}
+              {/* </Grid> */}
             </Grid>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained" type='submit'>
             Save details
           </Button>
         </CardActions>
