@@ -92,7 +92,6 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   }
 
   const updateLike = (comment: IComment, indexNum: number, user: number) => {
-    console.log(like)
     if((comment.user_comments?.filter(user => user.user_id == auth.user_id).length === 1 && comment.user_comments?.filter(user => user.user_id == auth.user_id)[0].user_id != user) || indexNum in like) {
       const likes:any[] = [];
       like.map((item, index) => {
