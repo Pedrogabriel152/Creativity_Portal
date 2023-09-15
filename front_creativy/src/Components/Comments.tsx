@@ -113,7 +113,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
         <CssBaseline /> 
         <Paper elevation={0} sx={{ p: 2, bgcolor: 'grey.100' }}>
           <List sx={{height: 610, overflow: 'auto', }}>
-            {updatedComments?.comments ? (
+            {updatedComments?.comments && update ? (
               updatedComments.comments?.map((comment: IComment, index: number) => (
                 <ListItem key={index} sx={{cursor: 'default'}}>
                 <ListItemAvatar>

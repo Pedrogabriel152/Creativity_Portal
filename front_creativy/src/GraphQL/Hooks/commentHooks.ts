@@ -18,7 +18,6 @@ export const useLikeComment = (id: number, first: number) => {
     return useMutation<{ likeComment: IResponse }>(LIKECOMMENT, {
         onCompleted(data) {
             if (data) {
-                console.log(data.likeComment);
                 updatedCommentsVar(data.likeComment);
             }
         },
