@@ -44,7 +44,7 @@ class UserService
             }
 
             return $user;
-            
+
         } catch (\Exception $ex) {
             return null;
         }
