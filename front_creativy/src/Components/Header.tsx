@@ -4,7 +4,8 @@ import { Fragment } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
@@ -46,7 +47,7 @@ export default function Header(props: HeaderProps) {
           </Link>
         ))}
         <IconButton>
-          <SearchIcon />
+          <NotificationsNoneIcon />
         </IconButton>
         <Button variant="outlined" size="small">
           Sair

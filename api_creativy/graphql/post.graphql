@@ -39,7 +39,7 @@ extend type Query @guard {
     posts(
         where: _ @whereConditions(columns: ["user_id", "flag"]),
         orderBy: _ @orderBy(columns: ["created_at"])
-    ): [Post]! @paginate(defaultCount: 10)
+    ): [Post]! @paginate(defaultCount: 6)
     mainPost: Post @field(resolver: "App\\GraphQL\\Queries\\PostQuery@mainPost")
     featuredPosts(
         where: _ @whereConditions(columns: ["flag"]),

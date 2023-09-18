@@ -11,6 +11,8 @@ type User {
 
   image: String
 
+  posts: [Post]! @hasMany
+
   "When the email was verified."
   email_verified_at: DateTime
 
