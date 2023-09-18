@@ -8,10 +8,10 @@ import { IResponse } from "../../interfaces/IResponse";
 
 // States
 import { getCommentsVar } from "../States/commentState";
-import { getFeaturedPostsVar, getMainPostVar, getPostVar, likePostVar } from "../States/postState";
+import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
 
 // Queries
-import { FEATUREDPOSTS, GETMAINPOST, GETPOST } from "../Queries/postQuery";
+import { FEATUREDPOSTS, GETMAINPOST, GETMYPOSTS, GETPOST } from "../Queries/postQuery";
 
 // Mutations
 import { LIKEPOST } from "../Mutations/postMutation";
@@ -65,6 +65,23 @@ export const useLikePost = () => {
                 likePostVar(data.likePost);
             }
         },
+    });
+};
+
+export const useGetMyPosts = (user_id: number, first: number) => {
+    return useQuery<{ posts: IFeaturedPosts }>(GETMYPOSTS, {
+        variables: {
+            userId: user_id,
+            flag: true,
+            first: first,
+        },
+        onCompleted(data) {
+            if (data) {
+                console.log('Aquwhgsididgu',data)
+                getMyPostsVar(data.posts);
+            }
+        },
+        fetchPolicy: 'cache-and-network',
     });
 };
 

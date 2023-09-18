@@ -6,6 +6,7 @@ import SignIn from "../Pages/SingIn";
 import Blog from "../Pages/Post";
 import Home from "../Pages/Home";
 import Profile from "../Pages/Profile";
+import MyPosts from "../Pages/MyPosts";
 
 const RoutesApp = () => {
     return(
@@ -14,6 +15,7 @@ const RoutesApp = () => {
             <Route path="/login" element={<SignIn />} />
             <Route path="/post/:id" element={<Blog />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/my-posts" element={<MyPosts />} />
             <Route path="/" element={<Home />} />            
         </Routes>
     );

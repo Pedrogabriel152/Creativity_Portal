@@ -86,6 +86,41 @@ export const GETPOST = gql`
     }
 `;
 
+export const GETMYPOSTS = gql`
+    query GetPosts($userId: Mixed!, $flag: Mixed!, $first: Int){
+        posts(where: {
+            AND: [
+                { column: USER_ID, operator: EQ, value: $userId},
+                { column: FLAG, operator: EQ, value: $flag}
+            ]},
+            orderBy: [{ column: CREATED_AT, order: DESC }],
+            first: $first){
+            data{
+                id
+                subtitle
+                like
+                flag
+                user_id
+                created_at
+                title
+                image
+                comment
+                user{
+                    image
+                    name
+                }
+                user_post{
+                    user_id
+                }
+            }
+            paginatorInfo{
+                hasMorePages
+                count
+            }
+        }
+    }
+`;
+
 export const LIKE = gql`   
     mutation Like($id: ID!, $post_id: ID!){
         likeComment(id: $id, post_id: $post_id){

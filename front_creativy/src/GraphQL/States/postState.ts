@@ -9,4 +9,5 @@ import { IResponse } from "../../interfaces/IResponse";
 export const getMainPostVar = makeVar<IMainPost | null>(null);
 export const getFeaturedPostsVar = makeVar<IFeaturedPosts | null>(null);
 export const getPostVar = makeVar<IPost | null>(null);
+export const getMyPostsVar = makeVar<IFeaturedPosts | null>(null);
 export const likePostVar = makeVar<IResponse | null>(null);
