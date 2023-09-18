@@ -24,16 +24,24 @@ import { getFeaturedPostsVar, getMainPostVar } from '../GraphQL/States/postState
 
 // Interfaces
 import { IPost } from '../interfaces/IPost';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const Home = () => {
     const [first, setFirst] = useState<number>(6);
     useGetMainPost();
-    const {loading: loadindMorePosts} = useGetFeaturedPosts(first);
+    const {loading: loadindMorePosts, error, } = useGetFeaturedPosts(first);
     const mainPost = useReactiveVar(getMainPostVar);
     const featuredPosts = useReactiveVar(getFeaturedPostsVar);
+    const navigate = useNavigate();
 
-    useEffect(() => {},[first]); 
+    useEffect(() => {
+        if(error){
+            navigate('/login');
+            toast.error('Entre na plataforma primeiro!');
+        }
+    },[first, error]); 
 
     const morePosts = () => {if(featuredPosts?.paginatorInfo.hasMorePages) setFirst(featuredPosts?.paginatorInfo.count+6);}
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // GraphQL
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,10 +26,14 @@ import { IUser } from '../interfaces/IUser';
 // Context
 import { useAuthContext } from '../Context/AuthContext';
 
+// Toastify
+import { toast } from 'react-toastify';
+
 export default function Profile() {
     const { getLocalStorage } = useAuthContext();
     const auth = getLocalStorage();
     const [user, setUser] = useState<IUser>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(auth) {
@@ -37,7 +42,11 @@ export default function Profile() {
             headers: {
                 Authorization: `Bearer ${auth?.token}`
             }
-            }).then(response => setUser(response.data));
+            }).then(response => setUser(response.data))
+            .catch(error => {
+                navigate('/login');
+                toast.error('Entre na plataforma primeiro!');
+            });
         }
       }, []);
 

@@ -50,7 +50,18 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
       if(user.password !== user.confirmPassword) return toast.error('As senhas precisam iguais');
     }
 
-    console.log(user)
+    if(typeof user.image === 'string') {
+      updateUser({
+        variables: {
+          user: {
+            name: user.name,
+            email: user.email,
+            password: user.password
+          }
+        }
+      });
+      return;
+    }
 
     updateUser({
       variables: {
@@ -61,7 +72,7 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
           password: user.password
         }
       }
-    })
+    });
   }
 
   return (

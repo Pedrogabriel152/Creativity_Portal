@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 // Material UI
@@ -27,6 +27,7 @@ import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks'
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
 import { ICommentInput } from '../interfaces/ICommentInput';
+import { toast } from 'react-toastify';
 
 interface IComments {
   user: number
@@ -41,15 +42,23 @@ interface IComments {
 export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
-  useGetComments(id? parseInt(id) : 0, first);
+  const {error} = useGetComments(id? parseInt(id) : 0, first);
   const [like, setLike] = useState<any[]>([]);
   const [createComment, {loading: loadingCreate}] = useCreateComment(id? parseInt(id) : 0, first);
   const comments = useReactiveVar(getCommentsVar);
   const updatedComments = useReactiveVar(updatedCommentsVar);
+  const navigate = useNavigate();
 
   const moreComments = () => {
     if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : first);
   }
+
+  useEffect(() => {
+    if(error) {
+      navigate('/login');
+      toast.error('Entre na plataflorma primeiro');
+    }
+  }, [error]);
 
   useEffect(() => {
     const likes: any[] = [];
@@ -117,7 +126,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               updatedComments.comments?.map((comment: IComment, index: number) => (
                 <ListItem key={index} sx={{cursor: 'default'}}>
                 <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
+                  <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}${comment.user.image}` : ''} />
                 </ListItemAvatar>
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
                 <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
@@ -132,7 +141,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               comments?.data?.map((comment: IComment, index) => (
                 <ListItem key={index} sx={{cursor: 'default'}}>
                   <ListItemAvatar>
-                    <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}/${comment.user.image}` : ''} />
+                    <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}${comment.user.image}` : ''} />
                   </ListItemAvatar>
                   <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
                   <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>

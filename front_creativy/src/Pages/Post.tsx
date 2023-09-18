@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Utils
 import { api } from '../Utils/Api';
@@ -25,6 +25,7 @@ import Header from '../Components/Header';
 import Main from '../Components/Main';
 import Footer from '../Components/Footer';
 import Comments from '../Components/Comments';
+import { toast } from 'react-toastify';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -42,6 +43,7 @@ export default function Post() {
   const [likePost] = useLikePost();
   const likePostResponse = useReactiveVar(updatedCommentsVar);
   const [update, setUpdate] = React.useState<boolean>(true);
+  const navigate = useNavigate();
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -69,7 +71,11 @@ export default function Post() {
       headers: {
         Authorization: `Bearer ${auth?.token}`
       }
-    }).then(response => setUser(response.data.id));
+    }).then(response => setUser(response.data.id))
+    .catch(error => {
+      navigate('/login');
+      toast.error('Entre na plataforma primeiro!');
+    });
   }, [auth]);
 
   React.useEffect(() => {console.log(first)}, [first, loading, likeCommentResponse, likeCommentResponse]);
