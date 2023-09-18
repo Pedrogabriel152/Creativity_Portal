@@ -34,8 +34,6 @@ export default function CreatedPost() {
                     return;
                 }
             } 
-
-            console.log(image)
         }
     }
 
