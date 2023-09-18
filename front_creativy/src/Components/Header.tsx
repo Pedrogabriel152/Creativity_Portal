@@ -21,8 +21,8 @@ export default function Header(props: HeaderProps) {
 
   return (
     <Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Button size="small">Subscribe</Button>
+      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 3 }}>
+        {/* <Button size="small">Subscribe</Button> */}
         <Typography
           component="h2"
           variant="h5"
@@ -33,18 +33,6 @@ export default function Header(props: HeaderProps) {
         >
           {title}
         </Typography>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <Button variant="outlined" size="small">
-          Login
-        </Button>
-      </Toolbar>
-      <Toolbar
-        component="nav"
-        variant="dense"
-        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
-      >
         {sections.map((section) => (
           <Link
             color="inherit"
@@ -57,6 +45,12 @@ export default function Header(props: HeaderProps) {
             {section.title}
           </Link>
         ))}
+        <IconButton>
+          <SearchIcon />
+        </IconButton>
+        <Button variant="outlined" size="small">
+          Sair
+        </Button>
       </Toolbar>
     </Fragment>
   );
