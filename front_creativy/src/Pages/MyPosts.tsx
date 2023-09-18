@@ -5,8 +5,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CircularProgress, IconButton } from '@mui/material';
+import { Box, Button, ButtonGroup, CircularProgress, IconButton, Typography } from '@mui/material';
+import Modal from '@mui/material/Modal';
 import ReplayIcon from '@mui/icons-material/Replay';
+import AddIcon from '@mui/icons-material/Add';
 
 // Components
 import Header from '../Components/Header';
@@ -28,6 +30,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuthContext } from '../Context/AuthContext';
 import { api } from '../Utils/Api';
+import CreatedPost from '../Components/CreatedPost';
 
 export default function MyPosts() {
     const [first, setFirst] = useState<number>(10);
@@ -37,7 +40,11 @@ export default function MyPosts() {
     const navigate = useNavigate();
     const {loading: loadindMorePosts, error} = useGetMyPosts(auth?.user_id, first);
     const myPosts = useReactiveVar(getMyPostsVar);
-    console.log(myPosts)
+    const [open, setOpen] = useState(false);
+
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
@@ -72,12 +79,15 @@ export default function MyPosts() {
         <Container maxWidth="lg">
             <Header title="Creativy Portal" sections={sections} />
             <main>
-            {/* <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} id={mainPost.id}/>*/}
+            <Button variant="outlined" startIcon={<AddIcon />} sx={{marginBottom: 3, marginLeft: '75%'}} onClick={handleOpen}>
+                New Post
+            </Button>
             <Grid container spacing={4}>
                 {myPosts?.data.map((post: IPost) => (
                 <FeaturedPost key={post.id} post={post} />
                 ))}
             </Grid>
+            
             {myPosts?.paginatorInfo?.hasMorePages?
                 loadindMorePosts 
                 ?<CircularProgress disableShrink style={{margin: '0 auto', marginLeft: '48%', marginTop: '15px'}} size={25}/>
@@ -85,13 +95,21 @@ export default function MyPosts() {
                     <ReplayIcon fontSize="inherit"/>
                 </IconButton>
                 :<div></div>
-            } 
+            }             
             </main>
         </Container>
         <Footer
             title="Mais informações"
             description="Something here to give the footer a purpose!"
         />
+        <Modal keepMounted 
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+        >
+            <CreatedPost/>
+        </Modal>
         </ThemeProvider>
     );
 }
