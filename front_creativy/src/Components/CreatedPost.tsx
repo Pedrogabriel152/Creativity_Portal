@@ -24,13 +24,15 @@ export default function CreatedPost() {
         if(e.target.files){
             const image = e.target.files[0];
 
-            if(image.type === 'image/jpeg' || image.type=== 'image/png') {
-                setImage(image);
-            }
-            else{
-                alert("Mande uma imagem do tipo PNG ou JPEG");
-                setImage(null);
-                return;
+            if(image) {
+                if(image.type === 'image/jpeg' || image.type=== 'image/png') {
+                    setImage(image);
+                }
+                else{
+                    alert("Mande uma imagem do tipo PNG ou JPEG");
+                    setImage(null);
+                    return;
+                }
             } 
 
             console.log(image)
@@ -71,7 +73,7 @@ export default function CreatedPost() {
                 fullWidth
                 variant="text"        
             >
-                Alterar Imagem
+                {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
                 <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
             </Button>
 
@@ -93,18 +95,6 @@ export default function CreatedPost() {
             >
               Postar
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Esqueceu a senha?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Não tem uma conta? Cadastre-se"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
     );
