@@ -106,6 +106,7 @@ export const GETMYPOSTS = gql`
                 image
                 comment
                 user{
+                    id
                     image
                     name
                 }

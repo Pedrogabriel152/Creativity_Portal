@@ -108,7 +108,7 @@ export default function MyPosts() {
             aria-labelledby="keep-mounted-modal-title"
             aria-describedby="keep-mounted-modal-description"
         >
-            <CreatedPost/>
+            <CreatedPost />
         </Modal>
         </ThemeProvider>
     );

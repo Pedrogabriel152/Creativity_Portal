@@ -13,6 +13,7 @@ export interface IPost {
     user_id?: number
     comments?: ICommentPaginator
     user? :{
+        id: number
         image: string
         name: string
     }

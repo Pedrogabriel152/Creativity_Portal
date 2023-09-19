@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, ImageList, Image
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IPost } from "../interfaces/IPost";
 import { useCreatePost } from "../GraphQL/Hooks/postHooks";
 import { toast } from "react-toastify";
@@ -23,8 +23,14 @@ const style = {
     p: 4,
   };
 
-export default function CreatedPost() {
+interface ICreated {
+  title?: string
+  post?: IPost
+}
+
+export default function CreatedPost({title, post}: ICreated) {
     const [image, setImage] = useState<any>('');
+    const [newPost, setNewPost] = useState<any>({});
     const [createPost, {error}] = useCreatePost();
     const createdPostResponse = useReactiveVar(createdPostVar);
     const navigate = useNavigate();
@@ -43,6 +49,12 @@ export default function CreatedPost() {
       toast.success(createdPostResponse?.message);
       navigate('/');
     }, [error, createdPostResponse]);
+
+    useEffect(() => {
+      if(post) {
+        setNewPost(post);
+      }
+    }, [post])
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
       if(e.target.files){
@@ -77,16 +89,22 @@ export default function CreatedPost() {
             image: image
           }
         }
-      });
-      
+      }); 
     };
+
+    const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setNewPost({
+        ...newPost,
+        [event.target.name]: event.target.value
+      });
+    }
 
     return(
         <Box
           sx={style}
         >
           <Typography component="h1" variant="h5">
-            New Post
+            {title? title : 'New Post'}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -99,6 +117,7 @@ export default function CreatedPost() {
               autoComplete="title"
               autoFocus
               type="text"
+              value={newPost.title}
             />
             <TextField
               margin="normal"
@@ -109,6 +128,7 @@ export default function CreatedPost() {
               type="text"
               id="subtitle"
               autoComplete="current-subtitle"
+              value={newPost.subtitle}
             />
             <Button
             component="label"
@@ -119,11 +139,20 @@ export default function CreatedPost() {
                 <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
             </Button>
 
-            {image&& (
+            {image ? (
                 <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
                 <img
                     srcSet={URL.createObjectURL(image)}
                     src={URL.createObjectURL(image)}
+                //   alt={item.title}
+                    loading="lazy"
+                />
+                </ImageListItem>
+            ): post?.image &&(
+              <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
+                <img
+                    srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
+                    src={`${process.env.REACT_APP_API_URL}${post.image}`}
                 //   alt={item.title}
                     loading="lazy"
                 />
@@ -135,7 +164,7 @@ export default function CreatedPost() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Postar
+              {title? 'Salvar' : 'Postar'}
             </Button>
           </Box>
         </Box>

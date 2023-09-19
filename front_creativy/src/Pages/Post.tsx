@@ -10,7 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, IconButton, Typography } from '@mui/material';
+import { Avatar, IconButton, Modal, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
@@ -18,7 +18,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useAuthContext } from '../Context/AuthContext';
 import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
 import { updatedCommentsVar } from '../GraphQL/States/commentState';
-import { useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
+import { useDeletePost, useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { getPostVar } from '../GraphQL/States/postState';
 
@@ -28,6 +28,7 @@ import Main from '../Components/Main';
 import Footer from '../Components/Footer';
 import Comments from '../Components/Comments';
 import { toast } from 'react-toastify';
+import CreatedPost from '../Components/CreatedPost';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -46,6 +47,26 @@ export default function Post() {
   const likePostResponse = useReactiveVar(updatedCommentsVar);
   const [update, setUpdate] = React.useState<boolean>(true);
   const navigate = useNavigate();
+  const [deletePost] = useDeletePost();
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+    api.get('api/user', {
+      headers: {
+        Authorization: `Bearer ${auth?.token}`
+      }
+    }).then(response => setUser(response.data.id))
+    .catch(error => {
+      navigate('/login');
+      toast.error('Entre na plataforma primeiro!');
+    });
+  }, [auth]);
+
+  React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse, user]);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -64,23 +85,12 @@ export default function Post() {
         id,
         first
       }
-    })
+    });
   }
 
-  React.useEffect(() => {
-    api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
-    api.get('api/user', {
-      headers: {
-        Authorization: `Bearer ${auth?.token}`
-      }
-    }).then(response => setUser(response.data.id))
-    .catch(error => {
-      navigate('/login');
-      toast.error('Entre na plataforma primeiro!');
-    });
-  }, [auth]);
+  const hadleDeletePost = () => {
 
-  React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse]);
+  }
 
   if(!post) {
     return <div></div>
@@ -100,20 +110,23 @@ export default function Post() {
               sx={{
                 '& .markdown': {
                   py: 3,
-                },
+                },  
               }}
             >
               <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                 <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
-              <IconButton aria-label="load" size='large' style={{ color: 'blue', marginLeft: '80%' }} onClick={() => {}}>
-                <EditNoteIcon fontSize="inherit"/>
-              </IconButton>
-              <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={() => {}}>
-                <DeleteIcon fontSize="inherit"/>
-              </IconButton>
-              
+              {post?.user_id === user && (
+                <>
+                <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>
+                  <EditNoteIcon fontSize="inherit"/>
+                </IconButton>
+                <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={() => {}}>
+                  <DeleteIcon fontSize="inherit"/>
+                </IconButton>
+                </>
+              )}              
             </Grid>
             <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
             <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>
@@ -124,6 +137,15 @@ export default function Post() {
         title="Footer"
         description="Something here to give the footer a purpose!"
       />
+
+      <Modal keepMounted 
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+      >
+          <CreatedPost title="Editar Post" post={post}/>
+      </Modal>
     </ThemeProvider>
   );
 }
