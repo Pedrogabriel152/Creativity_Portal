@@ -29,6 +29,7 @@ import Footer from '../Components/Footer';
 import Comments from '../Components/Comments';
 import { toast } from 'react-toastify';
 import CreatedPost from '../Components/CreatedPost';
+import ConfirmeModal from '../Components/ConfirmeModal';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -48,7 +49,8 @@ export default function Post() {
   const [update, setUpdate] = React.useState<boolean>(true);
   const navigate = useNavigate();
   const [deletePost] = useDeletePost();
-  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
 
   React.useEffect(() => {
     api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
@@ -65,8 +67,10 @@ export default function Post() {
 
   React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse, user]);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpenEdit(true);
+  const handleClose = () => setOpenEdit(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
 
   const likeCommentFunc = (id: number, post_id: number) => {
     likeComment({
@@ -122,7 +126,7 @@ export default function Post() {
                 <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>
                   <EditNoteIcon fontSize="inherit"/>
                 </IconButton>
-                <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={() => {}}>
+                <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={handleOpenDelete}>
                   <DeleteIcon fontSize="inherit"/>
                 </IconButton>
                 </>
@@ -139,12 +143,20 @@ export default function Post() {
       />
 
       <Modal keepMounted 
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="keep-mounted-modal-title"
-          aria-describedby="keep-mounted-modal-description"
+        open={openEdit}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
       >
-          <CreatedPost title="Editar Post" post={post}/>
+        <CreatedPost title="Editar Post" post={post}/>
+      </Modal>
+      <Modal keepMounted 
+        open={openDelete}
+        onClose={handleCloseDelete}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <ConfirmeModal/>
       </Modal>
     </ThemeProvider>
   );

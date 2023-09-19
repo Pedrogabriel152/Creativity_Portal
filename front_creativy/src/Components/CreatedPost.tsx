@@ -1,6 +1,4 @@
-import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, ImageList, ImageListItem, Link, TextField, Typography } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import { Box, Button, ImageListItem, Link, TextField, Typography } from "@mui/material";
 import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPost } from "../interfaces/IPost";
@@ -100,73 +98,75 @@ export default function CreatedPost({title, post}: ICreated) {
     }
 
     return(
-        <Box
-          sx={style}
-        >
-          <Typography component="h1" variant="h5">
-            {title? title : 'New Post'}
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
+      <Box
+        sx={style}
+      >
+        <Typography component="h1" variant="h5">
+          {title? title : 'New Post'}
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="title"
+            label="Titulo"
+            name="title"
+            autoComplete="title"
+            autoFocus
+            type="text"
+            value={newPost.title}
+            onChange={handleOnChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="subtitle"
+            label="Legenda"
+            type="text"
+            id="subtitle"
+            autoComplete="current-subtitle"
+            value={newPost.subtitle}
+            onChange={handleOnChange}
+          />
+          <Button
+          component="label"
               fullWidth
-              id="title"
-              label="Titulo"
-              name="title"
-              autoComplete="title"
-              autoFocus
-              type="text"
-              value={newPost.title}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="subtitle"
-              label="Legenda"
-              type="text"
-              id="subtitle"
-              autoComplete="current-subtitle"
-              value={newPost.subtitle}
-            />
-            <Button
-            component="label"
-                fullWidth
-                variant="text"        
-            >
-                {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
-                <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
-            </Button>
+              variant="text"        
+          >
+              {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
+              <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
+          </Button>
 
-            {image ? (
-                <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
-                <img
-                    srcSet={URL.createObjectURL(image)}
-                    src={URL.createObjectURL(image)}
-                //   alt={item.title}
-                    loading="lazy"
-                />
-                </ImageListItem>
-            ): post?.image &&(
+          {image ? (
               <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
-                <img
-                    srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
-                    src={`${process.env.REACT_APP_API_URL}${post.image}`}
-                //   alt={item.title}
-                    loading="lazy"
-                />
-                </ImageListItem>
-            )}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {title? 'Salvar' : 'Postar'}
-            </Button>
-          </Box>
+              <img
+                  srcSet={URL.createObjectURL(image)}
+                  src={URL.createObjectURL(image)}
+              //   alt={item.title}
+                  loading="lazy"
+              />
+              </ImageListItem>
+          ): post?.image &&(
+            <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
+              <img
+                  srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
+                  src={`${process.env.REACT_APP_API_URL}${post.image}`}
+              //   alt={item.title}
+                  loading="lazy"
+              />
+              </ImageListItem>
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            {title? 'Salvar' : 'Postar'}
+          </Button>
         </Box>
+      </Box>
     );
 }
