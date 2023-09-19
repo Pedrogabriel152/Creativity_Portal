@@ -8,7 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService 
 {
-    public static function update(array $args) {
+    private $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
+    public function update(array $args) {
         try {
             $user = Auth::guard('sanctum')->user();
 
@@ -16,7 +23,7 @@ class UserService
                 throw new ErrorException('Usuário não encontrado', 404);
             }
             
-            $updateUser = UserRepository::update($user, $args['user']);
+            $updateUser = $this->userRepository->update($user, $args['user']);
 
             if(!$updateUser) {
                 throw new ErrorException('Erro ao atualizar o usuário', 500);
@@ -35,7 +42,7 @@ class UserService
         }
     }
 
-    public static function getUser() {
+    public function getUser() {
         try{
             $user = Auth::guard('sanctum')->user();
 

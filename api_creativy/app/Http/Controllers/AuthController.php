@@ -9,6 +9,13 @@ use Faker\Provider\pt_BR\Text;
 
 class AuthController extends Controller
 {
+    private $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
     public function register(Request $request) {
         if(!$request->name) {
             return response()->json(['message' => 'O campo nome é obrigatório'], 402);
@@ -27,13 +34,13 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password = $request->password;
 
-        $userExist = UserRepository::getUserByEmail($user->email);
+        $userExist = $this->userRepository->getUserByEmail($user->email);
         
         if($userExist){
             return response()->json(['message' => 'Algo deu errado'], 500);
         }
 
-        $newUser = UserRepository::create($user);
+        $newUser = $this->userRepository->create($user);
 
         if(!$newUser) {
             return response()->json(['message' => 'Erro ao criar usuário, tente novamente mais tarde!'], 500);
@@ -57,7 +64,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'O campo email é obrigatório'], 402);
         }
 
-        $userExist = UserRepository::getUserByEmail($request->email);
+        $userExist = $this->userRepository->getUserByEmail($request->email);
 
         if(!$userExist) {
             return response()->json(['message' => 'Email ou senha incorreta'], 404);

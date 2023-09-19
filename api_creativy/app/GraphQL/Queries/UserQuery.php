@@ -6,6 +6,12 @@ use App\Services\UserService;
 
 final readonly class UserQuery
 {
+    private $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+    }
     /** @param  array{}  $args */
     public function __invoke(null $_, array $args)
     {
@@ -14,7 +20,7 @@ final readonly class UserQuery
 
     public function getUser($_, array $args)
     {
-        $response = UserService::getUser();
+        $response = $this->userService->getUser();
         return $response;
     }
 }

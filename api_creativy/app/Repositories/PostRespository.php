@@ -8,7 +8,14 @@ use Laravel\Sanctum\Sanctum;
 
 class PostRespository 
 {
-    public static function create(array $args, int $user_id){
+    private $userPostRepository;
+
+    public function __construct()
+    {
+        $this->userPostRepository = new UserPostRepository();
+    }
+
+    public function create(array $args, int $user_id){
         return DB::transaction(function() use($args, $user_id) {
             $post = Post::create([
                 'title' => $args['title'],
@@ -29,7 +36,7 @@ class PostRespository
         });
     }
 
-    public static function getPost(int $id, int $user_id){
+    public function getPost(int $id, int $user_id){
         $post = Post::where([
             ['id', '=', $id],
             ['user_id', '=', $user_id],
@@ -37,7 +44,7 @@ class PostRespository
         return $post;
     }
 
-    public static function delete(Post $post) {
+    public function delete(Post $post) {
         return DB::transaction(function() use($post) {
             $post->flag = false;
             $post->save();
@@ -45,7 +52,7 @@ class PostRespository
         });
     }
 
-    public static function update(Post $post, array $newData) {
+    public function update(Post $post, array $newData) {
         return DB::transaction(function () use ($post, $newData) {
             $post->title = $newData['title'];
             $post->subtitle = $newData['subtitle'];
@@ -62,18 +69,18 @@ class PostRespository
         });
     }
 
-    public static function like(Post $post, int $user_id) {
+    public function like(Post $post, int $user_id) {
         return DB::transaction(function () use ($post, $user_id) {
-            $userLikeExists = UserPostRepository::get($user_id, $post->id);
+            $userLikeExists = $this->userPostRepository->get($user_id, $post->id);
 
             if($userLikeExists) {
-                UserPostRepository::delete($userLikeExists);
+                $this->userPostRepository->delete($userLikeExists);
                 $post->like = $post->like-1;
                 $post->save();
                 return $post;
             }
 
-            $userLike = UserPostRepository::create($user_id, $post->id);
+            $userLike = $this->userPostRepository->create($user_id, $post->id);
 
             if(!$userLike){
                 return DB::rollBack();
@@ -85,7 +92,7 @@ class PostRespository
         });
     }
 
-    public static function getPostById(int $id) {
+    public function getPostById(int $id) {
         $post = Post::where([
             ['id', '=', $id],
             ['flag', '=', true]
@@ -93,7 +100,7 @@ class PostRespository
         return $post;
     }
 
-    public static function mainPost() {
+    public function mainPost() {
         $post = Post::whereFlag(true)->orderBy('like', 'desc')->first();
         return $post;
     }

@@ -6,6 +6,12 @@ use App\Services\UserService;
 
 final class UserMutation
 {
+    private $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+    }
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -17,7 +23,7 @@ final class UserMutation
 
     public function update($_, array $args)
     {
-        $response = UserService::update($args);
+        $response = $this->userService->update($args);
         return $response;
     }
 }

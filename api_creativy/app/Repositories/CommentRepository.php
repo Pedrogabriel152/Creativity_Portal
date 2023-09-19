@@ -8,7 +8,14 @@ use Illuminate\Support\Facades\DB;
 
 class CommentRepository
 {
-    public static function create(array $args, Post $post, int $user_id) {
+    private $userCommentRopository;
+
+    public function __construct()
+    {
+        $this->userCommentRopository = new UserCommentRopository();
+    }
+
+    public function create(array $args, Post $post, int $user_id) {
         return DB::transaction(function () use ($args, $post, $user_id) {
             $comment = Comment::create([
                 'text' => $args['text'],
@@ -22,7 +29,7 @@ class CommentRepository
         });
     }
 
-    public static function getComment(int $user_id, int $post_id, int $id) {
+    public function getComment(int $user_id, int $post_id, int $id) {
         $comment = Comment::where([
             ['id', '=', $id],
             ['user_id', '=', $user_id],
@@ -32,7 +39,7 @@ class CommentRepository
         return $comment;
     }
 
-    public static function update(Comment $comment, array $newData) {
+    public function update(Comment $comment, array $newData) {
         return DB::transaction(function () use ($comment, $newData) {
             $comment->text = $newData['text'];
             $comment->save();
@@ -40,18 +47,18 @@ class CommentRepository
         });
     }
 
-    public static function like(Comment $comment, int $user_id, int $post_id) {
+    public function like(Comment $comment, int $user_id, int $post_id) {
         return DB::transaction(function () use ($comment, $user_id, $post_id) {
-            $userCommentExist = UserCommentRopository::get($user_id, $comment->id, $post_id);
+            $userCommentExist = $this->userCommentRopository->get($user_id, $comment->id, $post_id);
 
             if($userCommentExist) {
-                UserCommentRopository::delete($userCommentExist);
+                $this->userCommentRopository->delete($userCommentExist);
                 $comment->like = $comment->like-1;
                 $comment->save();
                 return $comment;
             }
             
-            $userComment = UserCommentRopository::create($comment->id, $user_id, $post_id);
+            $userComment = $this->userCommentRopository->create($comment->id, $user_id, $post_id);
 
             if(!$userComment){
                 return DB::rollBack();
@@ -63,7 +70,7 @@ class CommentRepository
         });
     }
 
-    public static function getCommentPost(int $id, int $post_id) {
+    public function getCommentPost(int $id, int $post_id) {
         $comment = Comment::where([
             ['id', '=', $id],
             ['post_id', '=', $post_id],
@@ -72,7 +79,7 @@ class CommentRepository
         return $comment;
     }
 
-    public static function delete(Comment $comment) {
+    public function delete(Comment $comment) {
         return DB::transaction(function () use ($comment) {
             $comment->flag = false;
             $comment->save();
@@ -80,7 +87,7 @@ class CommentRepository
         });
     }
 
-    public static function getComments(int $post_id, int $first){
+    public function getComments(int $post_id, int $first){
         $comments = Comment::where([
             ['post_id', '=', $post_id],
             ['flag', '=', true]

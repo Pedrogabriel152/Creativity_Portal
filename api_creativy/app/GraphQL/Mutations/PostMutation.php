@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 final class PostMutation
 {
+    private $postService;
+
+    public function __construct()
+    {
+        $this->postService = new PostService();
+    }
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,25 +24,25 @@ final class PostMutation
 
     public function create($_, array $args)
     {
-        $response = PostService::create($args['post']);
+        $response = $this->postService->create($args['post']);
         return $response;
     }
 
     public function delete($_, array $args)
     {
-        $response = PostService::delete($args);
+        $response = $this->postService->delete($args);
         return $response;
     }
 
     public function update($_, array $args)
     {
-        $response = PostService::update($args);
+        $response = $this->postService->update($args);
         return $response;
     }
 
     public function like($_, array $args)
     {
-        $response = PostService::like($args['id']);
+        $response = $this->postService->like($args['id']);
         return $response;
     }
 }

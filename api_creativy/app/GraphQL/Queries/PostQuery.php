@@ -6,6 +6,12 @@ use App\Services\PostService;
 
 final class PostQuery
 {
+    private $postService;
+
+    public function __construct()
+    {
+        $this->postService = new PostService();
+    }
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -17,7 +23,7 @@ final class PostQuery
 
     public function mainPost($_, array $args)
     {
-        $response = PostService::mainPost();
+        $response = $this->postService->mainPost();
         return $response;
     }
 }
