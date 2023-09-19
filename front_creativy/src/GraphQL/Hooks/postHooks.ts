@@ -8,13 +8,13 @@ import { IResponse } from "../../interfaces/IResponse";
 
 // States
 import { getCommentsVar } from "../States/commentState";
-import { createdPostVar, getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
+import { createdPostVar, deletedPostVar, getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
 
 // Queries
 import { FEATUREDPOSTS, GETMAINPOST, GETMYPOSTS, GETPOST } from "../Queries/postQuery";
 
 // Mutations
-import { CREATEPOST, LIKEPOST } from "../Mutations/postMutation";
+import { CREATEPOST, DELETEPOST, LIKEPOST } from "../Mutations/postMutation";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -90,6 +90,16 @@ export const useCreatePost = () => {
         onCompleted(data) {
             if (data) {
                 createdPostVar(data.createPost);
+            }
+        }
+    });
+}
+
+export const useDeletePost = () => {
+    return useMutation<{ deletePost: IResponse }>(DELETEPOST, {
+        onCompleted(data) {
+            if (data) {
+                deletedPostVar(data.deletePost);
             }
         }
     });

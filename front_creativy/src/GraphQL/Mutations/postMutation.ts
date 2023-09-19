@@ -57,3 +57,12 @@ export const CREATEPOST = gql`
         }
     }
 `;
+
+export const DELETEPOST = gql`
+    mutation DeletePost($id: ID!, $user_id: Int!) {
+        deletePost(id: $id, user_id: $user_id) {
+            code
+            message
+        }
+    }
+`;
