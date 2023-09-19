@@ -2,10 +2,10 @@ import { Box, Button, ImageListItem, Link, TextField, Typography } from "@mui/ma
 import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPost } from "../interfaces/IPost";
-import { useCreatePost } from "../GraphQL/Hooks/postHooks";
+import { useCreatePost, useUpdatePost } from "../GraphQL/Hooks/postHooks";
 import { toast } from "react-toastify";
 import { useReactiveVar } from "@apollo/client";
-import { createdPostVar } from "../GraphQL/States/postState";
+import { createdPostVar, updatedPostVar } from "../GraphQL/States/postState";
 import { useNavigate } from "react-router-dom";
 
 
@@ -29,13 +29,15 @@ interface ICreated {
 export default function CreatedPost({title, post}: ICreated) {
     const [image, setImage] = useState<any>('');
     const [newPost, setNewPost] = useState<any>({});
-    const [createPost, {error}] = useCreatePost();
+    const [createPost, {error: errorCreate}] = useCreatePost();
+    const [updatePost, {error: errorUpdate}] = useUpdatePost();
     const createdPostResponse = useReactiveVar(createdPostVar);
+    const updatePostResponse = useReactiveVar(updatedPostVar);
     const navigate = useNavigate();
 
     useEffect(() => {
-      if(error) {
-        toast.error('Algo deu errador');
+      if(errorCreate) {
+        toast.error('Algo deu errado');
         return;
       }
 
@@ -46,7 +48,22 @@ export default function CreatedPost({title, post}: ICreated) {
 
       toast.success(createdPostResponse?.message);
       navigate('/');
-    }, [error, createdPostResponse]);
+    }, [errorCreate, createdPostResponse]);
+
+    useEffect(() => {
+      if(errorUpdate) {
+        toast.error('Algo deu errado');
+        return;
+      }
+
+      if(updatePostResponse?.code !== 200) {
+        toast.error(updatePostResponse?.message);
+        return;
+      }
+
+      toast.success(updatePostResponse?.message);
+      navigate('/');
+    }, [errorUpdate, updatePostResponse])
 
     useEffect(() => {
       if(post) {
@@ -79,12 +96,54 @@ export default function CreatedPost({title, post}: ICreated) {
 
       if(!data.get('subtitle')) return toast.error('A legenda é obrigatória');
 
+      if(title) {
+        if(image) {
+          updatePost({
+            variables: {
+              id: data.get('id'),
+              post: {
+                id: data.get('id'),
+                title: `${data.get('title')}`,
+                subtitle: `${data.get('subtitle')}`,
+                image: image
+              }
+            }
+          });
+          return;
+        }
+  
+        updatePost({
+          variables: {
+            id: data.get('id'),
+            post: {
+              id: data.get('id'),
+              title: `${data.get('title')}`,
+              subtitle: `${data.get('subtitle')}`,
+            }
+          }
+        }); 
+
+        return;
+      }
+
+      if(image) {
+        createPost({
+          variables: {
+            post: {
+              title: `${data.get('title')}`,
+              subtitle: `${data.get('subtitle')}`,
+              image: image
+            }
+          }
+        });
+        return;
+      }
+
       createPost({
         variables: {
           post: {
             title: `${data.get('title')}`,
             subtitle: `${data.get('subtitle')}`,
-            image: image
           }
         }
       }); 
@@ -105,6 +164,7 @@ export default function CreatedPost({title, post}: ICreated) {
           {title? title : 'New Post'}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <input type="hidden" name="id" value={newPost.id}/>
           <TextField
             margin="normal"
             required

@@ -8,13 +8,13 @@ import { IResponse } from "../../interfaces/IResponse";
 
 // States
 import { getCommentsVar } from "../States/commentState";
-import { createdPostVar, deletedPostVar, getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
+import { createdPostVar, deletedPostVar, getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar, updatedPostVar } from "../States/postState";
 
 // Queries
 import { FEATUREDPOSTS, GETMAINPOST, GETMYPOSTS, GETPOST } from "../Queries/postQuery";
 
 // Mutations
-import { CREATEPOST, DELETEPOST, LIKEPOST } from "../Mutations/postMutation";
+import { CREATEPOST, DELETEPOST, LIKEPOST, UPDATEPOST } from "../Mutations/postMutation";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -91,7 +91,13 @@ export const useCreatePost = () => {
             if (data) {
                 createdPostVar(data.createPost);
             }
-        }
+        },
+        refetchQueries: [
+            {query: FEATUREDPOSTS, variables: {
+                first: 8
+            }}, // DocumentNode object parsed with gql
+        ],
+        fetchPolicy: "network-only"
     });
 }
 
@@ -101,7 +107,29 @@ export const useDeletePost = () => {
             if (data) {
                 deletedPostVar(data.deletePost);
             }
-        }
+        },
+        refetchQueries: [
+            {query: FEATUREDPOSTS, variables: {
+                first: 8
+            }}, // DocumentNode object parsed with gql
+        ],
+        fetchPolicy: "network-only"
+    });
+}
+
+export const useUpdatePost = () => {
+    return useMutation<{ updatePost: IResponse }>(UPDATEPOST, {
+        onCompleted(data) {
+            if (data) {
+                updatedPostVar(data.updatePost);
+            }
+        },
+        refetchQueries: [
+            {query: FEATUREDPOSTS, variables: {
+                first: 8
+            }}, // DocumentNode object parsed with gql
+        ],
+        fetchPolicy: "network-only"
     });
 }
 
