@@ -8,13 +8,13 @@ import { IResponse } from "../../interfaces/IResponse";
 
 // States
 import { getCommentsVar } from "../States/commentState";
-import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
+import { createdPostVar, getFeaturedPostsVar, getMainPostVar, getMyPostsVar, getPostVar, likePostVar } from "../States/postState";
 
 // Queries
 import { FEATUREDPOSTS, GETMAINPOST, GETMYPOSTS, GETPOST } from "../Queries/postQuery";
 
 // Mutations
-import { LIKEPOST } from "../Mutations/postMutation";
+import { CREATEPOST, LIKEPOST } from "../Mutations/postMutation";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -84,6 +84,16 @@ export const useGetMyPosts = (user_id: number, first: number) => {
         fetchPolicy: 'cache-and-network',
     });
 };
+
+export const useCreatePost = () => {
+    return useMutation<{ createPost: IResponse }>(CREATEPOST, {
+        onCompleted(data) {
+            if (data) {
+                createdPostVar(data.createPost);
+            }
+        }
+    });
+}
 
 // export const useCreateExpense = () => {
 //     const {getAuthentication} = useUserContext();

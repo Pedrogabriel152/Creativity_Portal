@@ -48,3 +48,12 @@ export const LIKEPOST = gql`
         }
     }
 `;
+
+export const CREATEPOST = gql`
+    mutation CreatePost($post: PostInput!) {
+        createPost(post: $post) {
+            code
+            message
+        }
+    }
+`;

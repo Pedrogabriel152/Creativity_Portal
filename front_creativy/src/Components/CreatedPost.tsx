@@ -2,7 +2,13 @@ import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, ImageList, Image
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IPost } from "../interfaces/IPost";
+import { useCreatePost } from "../GraphQL/Hooks/postHooks";
+import { toast } from "react-toastify";
+import { useReactiveVar } from "@apollo/client";
+import { createdPostVar } from "../GraphQL/States/postState";
+import { useNavigate } from "react-router-dom";
 
 
 const style = {
@@ -19,23 +25,61 @@ const style = {
 
 export default function CreatedPost() {
     const [image, setImage] = useState<any>('');
+    const [createPost, {error}] = useCreatePost();
+    const createdPostResponse = useReactiveVar(createdPostVar);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if(error) {
+        toast.error('Algo deu errador');
+        return;
+      }
+
+      if(createdPostResponse?.code !== 200) {
+        toast.error(createdPostResponse?.message);
+        return;
+      }
+
+      toast.success(createdPostResponse?.message);
+      navigate('/');
+    }, [error, createdPostResponse]);
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.files){
-            const image = e.target.files[0];
+      if(e.target.files){
+        const image = e.target.files[0];
 
-            if(image) {
-                if(image.type === 'image/jpeg' || image.type=== 'image/png') {
-                    setImage(image);
-                }
-                else{
-                    alert("Mande uma imagem do tipo PNG ou JPEG");
-                    setImage(null);
-                    return;
-                }
-            } 
-        }
+        if(image) {
+          if(image.type === 'image/jpeg' || image.type=== 'image/png') {
+            setImage(image);
+          }
+          else{
+            alert("Mande uma imagem do tipo PNG ou JPEG");
+            setImage(null);
+            return;
+          }
+        } 
+      }
     }
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+
+      if(!data.get('title')) return toast.error('O titulo é obrigatório');
+
+      if(!data.get('subtitle')) return toast.error('A legenda é obrigatória');
+
+      createPost({
+        variables: {
+          post: {
+            title: `${data.get('title')}`,
+            subtitle: `${data.get('subtitle')}`,
+            image: image
+          }
+        }
+      });
+      
+    };
 
     return(
         <Box
@@ -44,7 +88,7 @@ export default function CreatedPost() {
           <Typography component="h1" variant="h5">
             New Post
           </Typography>
-          <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required

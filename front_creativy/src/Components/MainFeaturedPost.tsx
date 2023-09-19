@@ -19,7 +19,7 @@ export default function MainFeaturedPost(mainPost: IMainFeatured) {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: mainPost.image? `url(${process.env.REACT_APP_API_URL}/${mainPost.image})` : '',
+        backgroundImage: mainPost.image? `url(${process.env.REACT_APP_API_URL}${mainPost.image})` : '',
       }}
     >
       {/* Increase the priority of the hero background image */}

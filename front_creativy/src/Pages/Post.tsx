@@ -10,7 +10,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, IconButton, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 // GraphQL
 import { useAuthContext } from '../Context/AuthContext';
@@ -78,7 +80,7 @@ export default function Post() {
     });
   }, [auth]);
 
-  React.useEffect(() => {console.log(first)}, [first, loading, likeCommentResponse, likeCommentResponse]);
+  React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse]);
 
   if(!post) {
     return <div></div>
@@ -102,9 +104,16 @@ export default function Post() {
               }}
             >
               <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
-                <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}/${post.user?.image}`:''} />
+                <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
+              <IconButton aria-label="load" size='large' style={{ color: 'blue', marginLeft: '80%' }} onClick={() => {}}>
+                <EditNoteIcon fontSize="inherit"/>
+              </IconButton>
+              <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={() => {}}>
+                <DeleteIcon fontSize="inherit"/>
+              </IconButton>
+              
             </Grid>
             <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
             <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>

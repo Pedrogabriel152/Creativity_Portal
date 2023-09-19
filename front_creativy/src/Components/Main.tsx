@@ -56,14 +56,14 @@ export default function Main({post, user, auth, first, likePostFunc}: IMain) {
         {post.title}
       </Typography>
       <Divider />
-      <Typography variant="subtitle1" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom marginBottom={5}>
         {post.subtitle}
       </Typography>
       <Card sx={{ display: 'flex' }}>
         <CardMedia
           component="img"
           sx={{ width: 750, display: { xs: 'none', sm: 'block' } }}
-          image={post.image? `${process.env.REACT_APP_API_URL}/${post.image}` : ''}
+          image={post.image? `${process.env.REACT_APP_API_URL}${post.image}` : ''}
           alt={post.title}
         />
       </Card>

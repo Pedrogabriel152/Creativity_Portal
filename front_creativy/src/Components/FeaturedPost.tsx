@@ -43,7 +43,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
           <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={post.image? `${process.env.REACT_APP_API_URL}/${post.image}` : ''}
+            image={post.image? `${process.env.REACT_APP_API_URL}${post.image}` : ''}
             alt={post.title}
           />
         </Card>
