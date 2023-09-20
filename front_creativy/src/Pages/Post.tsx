@@ -27,9 +27,11 @@ import Header from '../Components/Header';
 import Main from '../Components/Main';
 import Footer from '../Components/Footer';
 import Comments from '../Components/Comments';
-import { toast } from 'react-toastify';
 import CreatedPost from '../Components/CreatedPost';
 import ConfirmeModal from '../Components/ConfirmeModal';
+
+// Toatify
+import { toast } from 'react-toastify';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();

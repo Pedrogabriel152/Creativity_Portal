@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Mui Material
 import CssBaseline from '@mui/material/CssBaseline';
@@ -24,7 +25,8 @@ import { getFeaturedPostsVar, getMainPostVar } from '../GraphQL/States/postState
 
 // Interfaces
 import { IPost } from '../interfaces/IPost';
-import { useNavigate } from 'react-router-dom';
+
+// Toastify
 import { toast } from 'react-toastify';
 
 

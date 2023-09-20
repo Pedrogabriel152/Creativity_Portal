@@ -1,14 +1,23 @@
-import { Box, Button, ImageListItem, Link, TextField, Typography } from "@mui/material";
-import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
+import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
-import { IPost } from "../interfaces/IPost";
+
+// Mui Material
+import { Box, Button, ImageListItem, Link, TextField, Typography } from "@mui/material";
+
+// GraphQL
 import { useCreatePost, useUpdatePost } from "../GraphQL/Hooks/postHooks";
+import { createdPostVar, updatedPostVar } from "../GraphQL/States/postState";
+
+// Toastify
 import { toast } from "react-toastify";
 import { useReactiveVar } from "@apollo/client";
-import { createdPostVar, updatedPostVar } from "../GraphQL/States/postState";
-import { useNavigate } from "react-router-dom";
-import { StyledTextarea } from "../Styles/TextArea";
 
+// Styles
+import { StyledTextarea } from "../Styles/TextArea";
+import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
+
+// Interface
+import { IPost } from "../interfaces/IPost";
 
 const style = {
     position: 'absolute' as 'absolute',

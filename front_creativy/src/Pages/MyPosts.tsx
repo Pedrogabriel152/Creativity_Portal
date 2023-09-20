@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 // Components
 import Header from '../Components/Header';
-import MainFeaturedPost from '../Components/MainFeaturedPost';
+import CreatedPost from '../Components/CreatedPost';
 import FeaturedPost from '../Components/FeaturedPost';
 import Footer from '../Components/Footer';
 
@@ -27,10 +27,15 @@ import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar } from '../GraphQL/S
 // Interfaces
 import { IPost } from '../interfaces/IPost';
 import { useNavigate } from 'react-router-dom';
+
+// Toastify
 import { toast } from 'react-toastify';
+
+// Context
 import { useAuthContext } from '../Context/AuthContext';
+
+// Utils
 import { api } from '../Utils/Api';
-import CreatedPost from '../Components/CreatedPost';
 
 export default function MyPosts() {
     const [first, setFirst] = useState<number>(10);
