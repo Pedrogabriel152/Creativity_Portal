@@ -186,18 +186,6 @@ export default function CreatedPost({title, post}: ICreated) {
             value={newPost.title}
             onChange={handleOnChange}
           />
-          {/* <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="subtitle"
-            label="Legenda"
-            type="text"
-            id="subtitle"
-            autoComplete="current-subtitle"
-            value={newPost.subtitle}
-            onChange={handleOnChange}
-          /> */}
           <StyledTextarea 
             value={newPost.subtitle}
             onChange={handleTextAreaOnChange}
@@ -208,26 +196,24 @@ export default function CreatedPost({title, post}: ICreated) {
               fullWidth
               variant="text"        
           >
-              {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
-              <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
+            {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
+            <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
           </Button>
 
           {image ? (
               <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
               <img
-                  srcSet={URL.createObjectURL(image)}
-                  src={URL.createObjectURL(image)}
-              //   alt={item.title}
-                  loading="lazy"
+                srcSet={URL.createObjectURL(image)}
+                src={URL.createObjectURL(image)}
+                loading="lazy"
               />
               </ImageListItem>
           ): post?.image &&(
             <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
               <img
-                  srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
-                  src={`${process.env.REACT_APP_API_URL}${post.image}`}
-              //   alt={item.title}
-                  loading="lazy"
+                srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
+                src={`${process.env.REACT_APP_API_URL}${post.image}`}
+                loading="lazy"
               />
               </ImageListItem>
           )}
