@@ -21,7 +21,10 @@ export const GETMAINPOST = gql`
 
 export const FEATUREDPOSTS = gql`
     query featuredPosts($first: Int!){
-        featuredPosts (first: $first,orderBy: [{ column: CREATED_AT, order: DESC }]) {
+        featuredPosts (first: $first,
+            where: {AND: [
+                { column: FLAG, operator: EQ, value: true}]},
+            orderBy: [{ column: CREATED_AT, order: DESC }]) {
             data{
                 id
                 title

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useReactiveVar } from "@apollo/client";
 import { createdPostVar, updatedPostVar } from "../GraphQL/States/postState";
 import { useNavigate } from "react-router-dom";
+import { StyledTextarea } from "../Styles/TextArea";
 
 
 const style = {
@@ -69,7 +70,7 @@ export default function CreatedPost({title, post}: ICreated) {
       if(post) {
         setNewPost(post);
       }
-    }, [post])
+    }, [])
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
       if(e.target.files){
@@ -156,6 +157,13 @@ export default function CreatedPost({title, post}: ICreated) {
       });
     }
 
+    const handleTextAreaOnChange = (event:  React.ChangeEvent<HTMLTextAreaElement>) => {
+      setNewPost({
+        ...newPost,
+        subtitle: event.target.value,
+      });
+    }
+
     return(
       <Box
         sx={style}
@@ -178,7 +186,7 @@ export default function CreatedPost({title, post}: ICreated) {
             value={newPost.title}
             onChange={handleOnChange}
           />
-          <TextField
+          {/* <TextField
             margin="normal"
             required
             fullWidth
@@ -189,6 +197,11 @@ export default function CreatedPost({title, post}: ICreated) {
             autoComplete="current-subtitle"
             value={newPost.subtitle}
             onChange={handleOnChange}
+          /> */}
+          <StyledTextarea 
+            value={newPost.subtitle}
+            onChange={handleTextAreaOnChange}
+            sx={{ width: '100%', resize: 'none' }}
           />
           <Button
           component="label"
