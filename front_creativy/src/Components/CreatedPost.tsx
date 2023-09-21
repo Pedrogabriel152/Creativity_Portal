@@ -211,7 +211,7 @@ export default function CreatedPost({title, post}: ICreated) {
           </Button>
 
           {image ? (
-              <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
+              <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: '25%'}}>
               <img
                 srcSet={URL.createObjectURL(image)}
                 src={URL.createObjectURL(image)}
@@ -219,7 +219,7 @@ export default function CreatedPost({title, post}: ICreated) {
               />
               </ImageListItem>
           ): post?.image &&(
-            <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: 28}}>
+            <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: '25%'}}>
               <img
                 srcSet={`${process.env.REACT_APP_API_URL}${post.image}`}
                 src={`${process.env.REACT_APP_API_URL}${post.image}`}
