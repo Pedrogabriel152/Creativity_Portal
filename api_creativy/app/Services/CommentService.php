@@ -74,9 +74,17 @@ class CommentService
                 throw new ErrorException('Falha ao atualizar o comentário, tente novamente mais tarde', 500);
             }
 
+            $comments = $this->commentRepository->getComments($args['post_id'], $args['first']);
+
+            $paginatorInfo = new \stdClass();
+            $paginatorInfo->hasMorePages = $comments->lastPage() > 1;
+            $paginatorInfo->count = $comments->perPage();
+
             return [
                 'message' => 'Comentário atualizado com sucesso',
-                'code' => 200
+                'code' => 200,
+                'comments' => $comments,
+                'paginatorInfo' => $paginatorInfo
             ];
         } catch (\Exception $ex) {
             return [
