@@ -198,6 +198,7 @@ export default function CreatedPost({title, post}: ICreated) {
           <StyledTextarea 
             value={newPost.subtitle}
             onChange={handleTextAreaOnChange}
+            placeholder="Legenda"
             sx={{ width: '100%', resize: 'none' }}
           />
           <Button
