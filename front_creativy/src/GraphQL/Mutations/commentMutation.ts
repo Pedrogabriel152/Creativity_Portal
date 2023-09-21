@@ -56,4 +56,33 @@ export const CREATECOMMENT = gql`
             }
         }
     }
-`
+`;
+
+export const UPDATECOMMENT = gql`
+    mutation UpdateComment($id: ID!, $post: ID!, $comment: CommentInput!) {
+        updateComment(id: $id, post_id: $post, comment: $comment){
+            code
+            message
+            comments {
+                id
+                text
+                user_id
+                like
+                post_id
+                user{
+                    name
+                    image
+                }
+                user_comments{
+                    comment_id
+                    user_id
+                    id
+                }
+            }
+            paginatorInfo {
+                hasMorePages
+                count
+            }
+        }
+    }
+`;

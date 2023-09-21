@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 
 // Mutations
-import { CREATECOMMENT, LIKECOMMENT } from "../Mutations/commentMutation";
+import { CREATECOMMENT, LIKECOMMENT, UPDATECOMMENT } from "../Mutations/commentMutation";
 
 // States
 import { updatedCommentsVar, getCommentsVar } from "../States/commentState";
@@ -65,4 +65,22 @@ export const useGetComments = (post_id: number, first: number) => {
             if(data) getCommentsVar(data.comments);
         },
     })
-}
+};
+
+export const useUpdateComment = (id: number, first: number) => {
+    return useMutation<{ updateComment: IResponse }>(UPDATECOMMENT, {
+        onCompleted(data) {
+            if (data) {
+                updatedCommentsVar(data.updateComment);
+            }
+        },
+        refetchQueries: [
+            {query: GETPOST, variables: {
+                id,
+                first,
+                flag: true
+            }}
+        ],
+
+    });
+};
