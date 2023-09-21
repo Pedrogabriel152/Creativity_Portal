@@ -11,6 +11,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import { CircularProgress, Grid, IconButton, ListItemButton, TextField } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 // Icons
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -28,6 +30,7 @@ import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { toast } from 'react-toastify';
+import ToogleMenu from './ToogleMenu';
 
 interface IComments {
   user: number
@@ -48,6 +51,8 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const comments = useReactiveVar(getCommentsVar);
   const updatedComments = useReactiveVar(updatedCommentsVar);
   const navigate = useNavigate();
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const moreComments = () => {
     if(comments?.paginatorInfo?.hasMorePages || updatedComments?.paginatorInfo?.hasMorePages) setFirst(updatedComments?.paginatorInfo?.count? updatedComments?.paginatorInfo?.count+8 : comments?.paginatorInfo?.count? comments?.paginatorInfo?.count+8 : first);
@@ -78,6 +83,11 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
     });
     setLike(likes);
   }, [comments, updatedComments]);
+
+  const handleOpen = () => setOpenEdit(true);
+  const handleClose = () => setOpenEdit(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -135,6 +145,17 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                     : <FavoriteBorderIcon color="error"/>     
                   }
                 </ListItemButton>
+                {comment?.user_id == parseInt(id? id : '0') && (
+                  <>
+                  {/* <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpen}>
+                    <EditNoteIcon fontSize="inherit"/>
+                  </ListItemButton>
+                  <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpenDelete}>
+                    <DeleteIcon fontSize="inherit"/>
+                  </ListItemButton> */}
+                  <ToogleMenu />
+                  </>
+                )}
               </ListItem>
               ))
             ) : (
@@ -150,6 +171,17 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                       : <FavoriteBorderIcon color="error"/>     
                     }
                   </ListItemButton>
+                  {comment?.user_id == parseInt(id? id : '0') && (
+                    <>
+                    {/* <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpen}>
+                      <EditNoteIcon fontSize="inherit"/>
+                    </ListItemButton>
+                    <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpenDelete}>
+                      <DeleteIcon fontSize="inherit"/>
+                    </ListItemButton> */}
+                    <ToogleMenu />
+                    </>
+                  )}
                 </ListItem>
               ))
             )}
