@@ -1,5 +1,5 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import { styleModal } from "../Styles/StyleModal";
+import { styleModalComment } from "../Styles/StyleModal";
 import { StyledTextarea } from "../Styles/TextArea";
 import { IModalComment } from "../interfaces/IModalComment";
 
@@ -12,7 +12,7 @@ export default function ModalComment({comment, handleCloseModal, handleSubmit, h
             aria-describedby="keep-mounted-modal-description"
         >
             <Box
-                sx={styleModal}
+                sx={styleModalComment}
             >
                 <Typography component="h1" variant="h5">
                 Editar Comentario
@@ -27,11 +27,14 @@ export default function ModalComment({comment, handleCloseModal, handleSubmit, h
                     />
                     <Button
                         type="submit"
-                        fullWidth
+                        size="large"
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{ mt: 3, mb: 2, marginLeft: '20%' }}
                     >
                         Salvar
+                    </Button>
+                    <Button variant="contained" color="error" size="large" sx={{ marginLeft: 3 }} onClick={() => handleCloseModal(false)}>
+                        Cancelar
                     </Button>
                 </Box>
             </Box>

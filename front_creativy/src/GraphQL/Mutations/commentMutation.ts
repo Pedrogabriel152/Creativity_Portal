@@ -86,3 +86,32 @@ export const UPDATECOMMENT = gql`
         }
     }
 `;
+
+export const DELETECOMMENT = gql`
+    mutation DeletePost($id: ID!, $post_id: ID!, $first: Int!) {
+        deleteComment(id: $id, post_id: $post_id, first: $first) {
+            code
+            message
+            comments {
+                id
+                text
+                user_id
+                like
+                post_id
+                user{
+                    name
+                    image
+                }
+                user_comments{
+                    comment_id
+                    user_id
+                    id
+                }
+            }
+            paginatorInfo {
+                hasMorePages
+                count
+            }
+        }
+    }
+`;

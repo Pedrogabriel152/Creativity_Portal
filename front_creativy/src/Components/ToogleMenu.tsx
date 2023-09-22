@@ -11,7 +11,7 @@ import { styleModal } from '../Styles/StyleModal';
 import { StyledTextarea } from '../Styles/TextArea';
 import ModalComment from './ModalComment';
 import { IComment } from '../interfaces/IComment';
-import { useUpdateComment } from '../GraphQL/Hooks/commentHooks';
+import { useDeleteComment, useUpdateComment } from '../GraphQL/Hooks/commentHooks';
 import { ICommentInput } from '../interfaces/ICommentInput';
 
 const ITEM_HEIGHT = 48;
@@ -28,6 +28,7 @@ export default function ToogleMenu({comment, first, post_id}: IToogleMenu) {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openModalConfirm, setOpenModalConfirm] = React.useState<boolean>(false);
   const [updateComment] = useUpdateComment(post_id, first);
+  const [deleteComment] = useDeleteComment(post_id, first);
   const [text, setText] = React.useState<string>(comment.text);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -63,6 +64,18 @@ export default function ToogleMenu({comment, first, post_id}: IToogleMenu) {
         comment: newComment,
         first: first
       },
+    });
+
+    handleCloseModal();
+  }
+
+  const handleDelete = () => {
+    deleteComment({
+      variables: {
+        id: comment.id,
+        post_id: post_id,
+        first: first,
+      }
     });
 
     handleCloseModal();
@@ -129,7 +142,7 @@ export default function ToogleMenu({comment, first, post_id}: IToogleMenu) {
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <ConfirmeModal text='Deseja excluir o comentário' handleClose={handleCloseModalConfirm} handleClick={() => {}}/>
+        <ConfirmeModal text='Deseja excluir o comentário' handleClose={handleCloseModalConfirm} handleClick={handleDelete}/>
 
       </Modal>
     </div>

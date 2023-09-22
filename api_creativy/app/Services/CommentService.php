@@ -161,14 +161,23 @@ class CommentService
                 throw new ErrorException('Erro ao deletar comentário', 500);
             }
 
+            $comments = $this->commentRepository->getComments($args['post_id'], $args['first']);
+
+            $paginatorInfo = new \stdClass();
+            $paginatorInfo->hasMorePages = $comments->lastPage() > 1;
+            $paginatorInfo->count = $comments->perPage();
+
             return [
                 'message' => 'Comentário deletado com sucesso',
-                'code' => 200
+                'code' => 200,
+                'comments' => $comments,
+                'paginatorInfo' => $paginatorInfo
             ];
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
-                'code' => $ex->getCode()
+                'code' => $ex->getCode(),
+                'comments' => []
             ];
         }
     }
