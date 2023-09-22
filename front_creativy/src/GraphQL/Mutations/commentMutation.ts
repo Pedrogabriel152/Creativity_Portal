@@ -59,8 +59,8 @@ export const CREATECOMMENT = gql`
 `;
 
 export const UPDATECOMMENT = gql`
-    mutation UpdateComment($id: ID!, $post: ID!, $comment: CommentInput!) {
-        updateComment(id: $id, post_id: $post, comment: $comment){
+    mutation UpdateComment($id: ID!, $post_id: ID!, $comment: CommentInput!, $first: Int!) {
+        updateComment(id: $id, post_id: $post_id, comment: $comment, first: $first){
             code
             message
             comments {

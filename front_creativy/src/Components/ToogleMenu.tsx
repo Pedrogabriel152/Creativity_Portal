@@ -3,22 +3,33 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { ListItemIcon, ListItemText, Modal } from '@mui/material';
+import { Box, Button, ListItemIcon, ListItemText, Modal, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ConfirmeModal from './ConfirmeModal';
-
-const options = [
-  'Editar',
-  'Excluir',
-];
+import { styleModal } from '../Styles/StyleModal';
+import { StyledTextarea } from '../Styles/TextArea';
+import ModalComment from './ModalComment';
+import { IComment } from '../interfaces/IComment';
+import { useUpdateComment } from '../GraphQL/Hooks/commentHooks';
+import { ICommentInput } from '../interfaces/ICommentInput';
 
 const ITEM_HEIGHT = 48;
 
-export default function ToogleMenu() {
+interface IToogleMenu{
+  comment: IComment
+  post_id: number
+  first: number
+}
+
+export default function ToogleMenu({comment, first, post_id}: IToogleMenu) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [openModalConfirm, setOpenModalConfirm] = React.useState<boolean>(false);
+  const [updateComment] = useUpdateComment(post_id, first);
+  const [text, setText] = React.useState<string>(comment.text);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,8 +37,40 @@ export default function ToogleMenu() {
     setAnchorEl(null);
   };
 
-  const handleOpenModal = () => setOpenModal(true);
+  const handleOpenModal = () => {
+    handleClose();
+    setOpenModal(true)
+  };
   const handleCloseModal = () => setOpenModal(false);
+
+  const handleOpenModalConfirm = () => {
+    handleClose();
+    setOpenModalConfirm(true)
+  };
+  const handleCloseModalConfirm = () => setOpenModalConfirm(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const newComment: ICommentInput = {
+      text: text,
+      post_id: post_id,
+    };
+
+    updateComment({
+      variables: {
+        id: comment.id,
+        post_id: post_id,
+        comment: newComment,
+        first: first
+      },
+    });
+
+    handleCloseModal();
+  }
+
+  const handleTextAreaOnChange = (event:  React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
+  }
 
   return (
     <div>
@@ -63,7 +106,7 @@ export default function ToogleMenu() {
                 <ListItemText color='#000'>Editar</ListItemText>
             </ListItemIcon>
         </MenuItem>
-        <MenuItem  onClick={handleClose}>
+        <MenuItem  onClick={handleOpenModalConfirm}>
             <ListItemIcon color='#000'>
                 <DeleteIcon fontSize="small" sx={{ marginRight: 1 }} color='error'/>
                 <ListItemText color='#000'>Excluir</ListItemText>
@@ -71,14 +114,23 @@ export default function ToogleMenu() {
         </MenuItem>
       </Menu>
 
+      <ModalComment 
+        comment={comment} 
+        handleCloseModal={handleCloseModal} 
+        handleSubmit={handleSubmit} 
+        handleTextAreaOnChange={handleTextAreaOnChange} 
+        openModal={openModal}
+        text={text}
+      />
+
       <Modal keepMounted 
-        open={openModal}
-        onClose={handleCloseModal}
+        open={openModalConfirm}
+        onClose={handleCloseModalConfirm}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        {/* <ConfirmeModal text='Deseja excluir o post' handleClick={handleDeletePost} handleClose={handleCloseDelete}/> */}
-        <h1>Teste</h1>
+        <ConfirmeModal text='Deseja excluir o comentário' handleClose={handleCloseModalConfirm} handleClick={() => {}}/>
+
       </Modal>
     </div>
   );

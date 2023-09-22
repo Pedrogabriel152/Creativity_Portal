@@ -18,18 +18,7 @@ import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
 
 // Interface
 import { IPost } from "../interfaces/IPost";
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
+import { styleModal } from "../Styles/StyleModal";
 
 interface ICreated {
   title?: string
@@ -175,7 +164,7 @@ export default function CreatedPost({title, post}: ICreated) {
 
     return(
       <Box
-        sx={style}
+        sx={styleModal}
       >
         <Typography component="h1" variant="h5">
           {title? title : 'New Post'}
@@ -202,22 +191,22 @@ export default function CreatedPost({title, post}: ICreated) {
             sx={{ width: '100%', resize: 'none' }}
           />
           <Button
-          component="label"
-              fullWidth
-              variant="text"        
+            component="label"
+            fullWidth
+            variant="text"        
           >
             {image? 'Alterar Imagem' : 'Adicionar uma imagem'}
             <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFile} multiple/>
           </Button>
 
           {image ? (
-              <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: '25%'}}>
-              <img
-                srcSet={URL.createObjectURL(image)}
-                src={URL.createObjectURL(image)}
-                loading="lazy"
-              />
-              </ImageListItem>
+            <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: '25%'}}>
+            <img
+              srcSet={URL.createObjectURL(image)}
+              src={URL.createObjectURL(image)}
+              loading="lazy"
+            />
+            </ImageListItem>
           ): post?.image &&(
             <ImageListItem key={image} sx={{ width: '50%', height: 200, textAlign: 'center', marginLeft: '25%'}}>
               <img
@@ -225,7 +214,7 @@ export default function CreatedPost({title, post}: ICreated) {
                 src={`${process.env.REACT_APP_API_URL}${post.image}`}
                 loading="lazy"
               />
-              </ImageListItem>
+            </ImageListItem>
           )}
           <Button
             type="submit"

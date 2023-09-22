@@ -74,6 +74,9 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
         }
       });
       setLike(likes);
+      if(updatedComments.code !== 200) toast.error(updatedComments.message);
+      if(updatedComments.code === 200) toast.success(updatedComments.message);
+
       return;
     }
     comments?.data?.map((comment: IComment, index: number) => {
@@ -147,13 +150,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                 </ListItemButton>
                 {comment?.user_id == parseInt(id? id : '0') && (
                   <>
-                  {/* <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpen}>
-                    <EditNoteIcon fontSize="inherit"/>
-                  </ListItemButton>
-                  <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpenDelete}>
-                    <DeleteIcon fontSize="inherit"/>
-                  </ListItemButton> */}
-                  <ToogleMenu />
+                  <ToogleMenu comment={comment} first={first} post_id={comment.post_id}/>
                   </>
                 )}
               </ListItem>
@@ -173,13 +170,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                   </ListItemButton>
                   {comment?.user_id == parseInt(id? id : '0') && (
                     <>
-                    {/* <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpen}>
-                      <EditNoteIcon fontSize="inherit"/>
-                    </ListItemButton>
-                    <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={handleOpenDelete}>
-                      <DeleteIcon fontSize="inherit"/>
-                    </ListItemButton> */}
-                    <ToogleMenu />
+                    <ToogleMenu comment={comment} first={first} post_id={comment.post_id}/>
                     </>
                   )}
                 </ListItem>
