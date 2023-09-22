@@ -47,7 +47,6 @@ export default function Post() {
   const [user, setUser] = React.useState<number>(0);
   const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
   const [likePost] = useLikePost();
-  const likePostResponse = useReactiveVar(updatedCommentsVar);
   const [update, setUpdate] = React.useState<boolean>(true);
   const navigate = useNavigate();
   const [deletePost] = useDeletePost();
@@ -66,7 +65,7 @@ export default function Post() {
       navigate('/login');
       toast.error('Entre na plataforma primeiro!');
     });
-  }, [auth]);
+  }, []);
 
   React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse, user]);
 

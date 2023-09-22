@@ -40,8 +40,16 @@ class UserRepository
                 $image = $newData['image'];
                 $extension = $image->extension();
                 $imageName = md5($image->getClientOriginalName() . strtotime("now")).".".$extension;
-                $image->move(public_path("img/users/$user->id"), $imageName);
-                $user->image = "img/users/$user->id/$imageName";     
+                $image->move(public_path("img/users/profile/$user->id"), $imageName);
+                $user->image = "img/users/profile/$user->id/$imageName";     
+            }
+
+            if(array_key_exists('cover_image', $newData)){
+                $cover_image = $newData['cover_image'];
+                $extension = $image->extension();
+                $imageName = md5($cover_image->getClientOriginalName() . strtotime("now")).".".$extension;
+                $cover_image->move(public_path("img/users/cover/$user->id"), $imageName);
+                $user->cover_image = "img/users/cover/$user->id/$imageName";     
             }
             $user->save();
             return $user;

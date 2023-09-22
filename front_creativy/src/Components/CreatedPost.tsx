@@ -15,10 +15,10 @@ import { useReactiveVar } from "@apollo/client";
 // Styles
 import { StyledTextarea } from "../Styles/TextArea";
 import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
+import { styleModal } from "../Styles/StyleModal";
 
 // Interface
 import { IPost } from "../interfaces/IPost";
-import { styleModal } from "../Styles/StyleModal";
 
 interface ICreated {
   title?: string

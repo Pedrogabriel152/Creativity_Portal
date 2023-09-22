@@ -1,6 +1,10 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+
+// Styles
 import { styleModalComment } from "../Styles/StyleModal";
 import { StyledTextarea } from "../Styles/TextArea";
+
+// Interfaces
 import { IModalComment } from "../interfaces/IModalComment";
 
 export default function ModalComment({comment, handleCloseModal, handleSubmit, handleTextAreaOnChange, openModal, text}: IModalComment) {

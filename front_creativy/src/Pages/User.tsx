@@ -32,12 +32,34 @@ import ConfirmeModal from '../Components/ConfirmeModal';
 // Toatify
 import { toast } from 'react-toastify';
 import CardProfile from '../Components/CardProfile';
+import { useEffect, useState } from 'react';
+import { IUser } from '../interfaces/IUser';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 
 export default function User() {
+    const { getLocalStorage } = useAuthContext();
+    const auth = getLocalStorage();
+    const [user, setUser] = useState<IUser>();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+        api.get('api/user', {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`
+          }
+        }).then(response => setUser(response.data))
+        .catch(error => {
+          navigate('/login');
+          toast.error('Entre na plataforma primeiro!');
+        });
+      }, []);
+
+    if(!user) return <div></div>
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -55,26 +77,9 @@ export default function User() {
                         },  
                     }}
                     >
-                        <CardProfile />
-                    {/* <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
-                    <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
-                        <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
-                        <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
-                    </Typography>
-                    </Link>
-                    {post?.user_id === user && (
-                        <>
-                        <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>
-                        <EditNoteIcon fontSize="inherit"/>
-                        </IconButton>
-                        <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={handleOpenDelete}>
-                        <DeleteIcon fontSize="inherit"/>
-                        </IconButton>
-                        </>
-                    )}               */}
+                        <CardProfile user={user}/>
+                       
                     </Grid>
-                    {/* <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
-                    <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/> */}
                 </Grid>
                 </main>
             </Container>

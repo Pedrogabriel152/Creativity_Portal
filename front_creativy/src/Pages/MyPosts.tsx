@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box, Button, ButtonGroup, CircularProgress, IconButton, Typography } from '@mui/material';
+import { Button, CircularProgress, IconButton } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import ReplayIcon from '@mui/icons-material/Replay';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,9 +20,9 @@ import Footer from '../Components/Footer';
 import { sections } from '../Utils/variable';
 
 // GraphQL
-import { useGetFeaturedPosts, useGetMainPost, useGetMyPosts } from '../GraphQL/Hooks/postHooks';
+import {  useGetMyPosts } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
-import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar } from '../GraphQL/States/postState';
+import { getMyPostsVar } from '../GraphQL/States/postState';
 
 // Interfaces
 import { IPost } from '../interfaces/IPost';
@@ -62,7 +62,7 @@ export default function MyPosts() {
           navigate('/login');
           toast.error('Entre na plataforma primeiro!');
         });
-    }, [auth]);
+    }, []);
 
     useEffect(() => {
         if(error){
