@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import { CircularProgress, Grid, IconButton, ListItemButton, TextField } from "@mui/material";
+import { CircularProgress, Grid, IconButton, Link, ListItemButton, TextField } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
@@ -139,9 +139,12 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               updatedComments.comments?.map((comment: IComment, index: number) => (
                 <ListItem key={index} sx={{cursor: 'default'}}>
                 <ListItemAvatar>
-                  <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}${comment.user.image}` : ''} />
-                </ListItemAvatar>
+                  <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${comment.user_id}`}>
+                    <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}${comment.user.image}` : ''} />
+                  </Link>
+                  </ListItemAvatar>    
                 <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
+                
                 <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>
                   {like[index] 
                     ? <FavoriteIcon color="error"/> 
@@ -159,7 +162,9 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               comments?.data?.map((comment: IComment, index) => (
                 <ListItem key={index} sx={{cursor: 'default'}}>
                   <ListItemAvatar>
+                  <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${comment.user_id}`}>
                     <Avatar alt="Profile Picture" src={comment.user.image? `${process.env.REACT_APP_API_URL}${comment.user.image}` : ''} />
+                  </Link>
                   </ListItemAvatar>
                   <ListItemText primary={comment.user.name} secondary={comment.text} sx={{width: 500}} />
                   <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent', cursor: 'pointer'}}} autoFocus={false} onClick={() => {likeCommentFunc(comment.id, comment.post_id); updateLike(comment, index, user)}}>

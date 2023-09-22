@@ -31,6 +31,7 @@ import ConfirmeModal from '../Components/ConfirmeModal';
 
 // Toatify
 import { toast } from 'react-toastify';
+import CardProfile from '../Components/CardProfile';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -54,7 +55,7 @@ export default function User() {
                         },  
                     }}
                     >
-                        <h1>Teste</h1>
+                        <CardProfile />
                     {/* <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
                     <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                         <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />

@@ -8,6 +8,8 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import SearchIcon from '@mui/icons-material/Search';
+import { Box, InputBase } from '@mui/material';
 
 interface HeaderProps {
   sections: ReadonlyArray<{
@@ -23,6 +25,16 @@ export default function Header(props: HeaderProps) {
   return (
     <Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 3 }}>
+        <Box>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Buscar usuário"
+            inputProps={{ 'aria-label': 'Buscar usuário' }}
+          />
+          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Box>
         <Typography
           component="h2"
           variant="h5"
