@@ -23,7 +23,6 @@ export default function Header(props: HeaderProps) {
   return (
     <Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 3 }}>
-        {/* <Button size="small">Subscribe</Button> */}
         <Typography
           component="h2"
           variant="h5"

@@ -7,6 +7,7 @@ import Blog from "../Pages/Post";
 import Home from "../Pages/Home";
 import Profile from "../Pages/Profile";
 import MyPosts from "../Pages/MyPosts";
+import User from "../Pages/User";
 
 const RoutesApp = () => {
     return(
@@ -16,6 +17,7 @@ const RoutesApp = () => {
             <Route path="/post/:id" element={<Blog />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-posts" element={<MyPosts />} />
+            <Route path="/user/:id" element={<User />} />
             <Route path="/" element={<Home />} />            
         </Routes>
     );

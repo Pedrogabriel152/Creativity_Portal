@@ -20,7 +20,9 @@ class Post extends Model
     ];
 
     public function comments() {
-        return $this->hasMany(Comment::class, 'post_id', 'id')->orderBy('created_at', 'desc');
+        return $this->hasMany(Comment::class, 'post_id', 'id')->orderBy('created_at', 'desc')->where([
+            ['flag', '=', true]
+        ]);
     }
 
     public function user() {

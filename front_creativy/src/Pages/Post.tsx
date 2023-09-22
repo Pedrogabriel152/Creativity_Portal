@@ -10,7 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, IconButton, Modal, Typography } from '@mui/material';
+import { Avatar, IconButton, Link, Modal, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
@@ -133,10 +133,12 @@ export default function Post() {
                 },  
               }}
             >
+              <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
               <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                 <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
+              </Link>
               {post?.user_id === user && (
                 <>
                 <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>

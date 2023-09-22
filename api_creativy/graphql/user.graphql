@@ -11,6 +11,8 @@ type User {
 
   image: String
 
+  cover_image: String
+
   posts: [Post]! @hasMany
 
   "When the email was verified."
@@ -31,6 +33,8 @@ input UserInput {
   email: String!
 
   image: Upload
+
+  cover_image: Upload
 
   password: String
 }
