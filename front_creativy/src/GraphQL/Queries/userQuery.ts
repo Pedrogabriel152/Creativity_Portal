@@ -18,3 +18,21 @@ export const GETUSERS = gql`
         }
     }
 `;
+
+export const GETUSER = gql`
+    query GetUser($id: ID!) {
+        user(id: $id){
+            id
+            name
+            image
+            cover_image
+            posts {
+                id
+                title
+                subtitle
+                created_at
+                image
+            }
+        }
+    }
+`;

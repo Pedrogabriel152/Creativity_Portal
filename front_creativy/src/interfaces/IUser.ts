@@ -1,3 +1,5 @@
+import { IPost } from "./IPost"
+
 export interface IUser {
     id: number
     image?: any
@@ -6,4 +8,6 @@ export interface IUser {
     created_at: string
     password?: string
     confirmPassword?: string
+    post?: IPost[]
+    cover_image?: any
 }

@@ -46,10 +46,14 @@ class User extends Authenticatable
     ];
 
     public function posts() {
-        return $this->hasMany(Post::class, 'user_id');
+        return $this->hasMany(Post::class, 'user_id')->orderBy('created_at', 'desc')->where([
+            ['flag', '=', true]
+        ]);
     }
 
     public function comment() {
-        return $this->hasMany(Comment::class, 'user_id');
+        return $this->hasMany(Comment::class, 'user_id')->orderBy('created_at', 'desc')->where([
+            ['flag', '=', true]
+        ]);
     }
 }

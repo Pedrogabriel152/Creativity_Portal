@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { IResponse } from "../../interfaces/IResponse";
 import { UPDATEUSER } from "../Mutations/userMutation";
-import { updateUserVar, usersVar } from "../States/userSatate";
-import { GETUSERS } from "../Queries/userQuery";
+import { updateUserVar, userVar, usersVar } from "../States/userSatate";
+import { GETUSER, GETUSERS } from "../Queries/userQuery";
 import { IUsers } from "../../interfaces/IUsers";
+import { IUser } from "../../interfaces/IUser";
 
 export const useUpdateUSer = () => {
     return useMutation<{ editUser: IResponse }>(UPDATEUSER, {
@@ -26,3 +27,14 @@ export const useGetUsers = (name: string, name2: string) => {
         }
     });
 };
+
+export const useGetUser = (id: number) => {
+    return useQuery<{ user: IUser }>(GETUSER, {
+        variables: {
+            id: id
+        },
+        onCompleted(data) {
+            if(data) userVar(data.user);
+        }
+    });
+}

@@ -32,12 +32,20 @@ import ConfirmeModal from '../Components/ConfirmeModal';
 // Toatify
 import { toast } from 'react-toastify';
 import CardProfile from '../Components/CardProfile';
+import { useGetUser } from '../GraphQL/Hooks/userHook';
+import { userVar } from '../GraphQL/States/userSatate';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 
 export default function User() {
+    const {id} = useParams();
+    useGetUser(id? parseInt(id) : 0);
+    const user = useReactiveVar(userVar);
+
+    if(!user) return <div></div>
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
@@ -55,7 +63,7 @@ export default function User() {
                         },  
                     }}
                     >
-                        <CardProfile />
+                        <CardProfile user={user}/>
                     {/* <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
                     <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                         <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
