@@ -1,7 +1,4 @@
-// Mui material
 import { Box, Button, IconButton, Typography } from "@mui/material";
-
-// Interfaces
 import { IModal } from "../interfaces/IModal";
 
 const style = {

@@ -4,7 +4,7 @@ namespace App\GraphQL\Queries;
 
 use App\Services\UserService;
 
-final readonly class UserQuery
+final class UserQuery
 {
     private $userService;
 
@@ -20,7 +20,7 @@ final readonly class UserQuery
 
     public function getUser($_, array $args)
     {
-        $response = $this->userService->getUser();
+        $response = $this->userService->getUser($args['name']);
         return $response;
     }
 }

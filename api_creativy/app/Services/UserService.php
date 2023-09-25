@@ -42,9 +42,9 @@ class UserService
         }
     }
 
-    public function getUser() {
+    public function getUser(string $name) {
         try{
-            $user = Auth::guard('sanctum')->user();
+            $user = $this->userRepository->getUserByName($name);
 
             if(!$user){
                 throw new ErrorException('Usuário não encontrado', 404);
@@ -53,7 +53,7 @@ class UserService
             return $user;
 
         } catch (\Exception $ex) {
-            return null;
+            return [];
         }
     }
 }

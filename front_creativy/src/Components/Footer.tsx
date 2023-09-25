@@ -2,9 +2,20 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
-// Components
-import Copyright from './Copyright';
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href={process.env.REACT_APP_GITHUB_URL}>
+        Creativy Portal
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 interface FooterProps {
   description: string;

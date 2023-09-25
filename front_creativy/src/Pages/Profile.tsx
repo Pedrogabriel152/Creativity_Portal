@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
+import { sections } from '../Utils/variable';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -18,7 +19,6 @@ import { AccountProfile } from '../Components/AccountProfile';
 
 // Utils
 import { api } from '../Utils/Api';
-import { sections } from '../Utils/variable';
 
 // Interfaces
 import { IUser } from '../interfaces/IUser';
