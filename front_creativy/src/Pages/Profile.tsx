@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import { sections } from '../Utils/variable';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -58,7 +57,7 @@ export default function Profile() {
         <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
         <Container maxWidth="lg">
-            <Header title="Creativy Portal" sections={sections} />
+            <Header title="Creativy Portal" user={user} />
             <main>
                 <Box
                 component="main"

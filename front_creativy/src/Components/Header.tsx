@@ -11,17 +11,15 @@ import Link from '@mui/material/Link';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, InputBase, Modal, Paper } from '@mui/material';
 import SearchUsers from './SearchUsers';
+import { IUser } from '../interfaces/IUser';
 
 interface HeaderProps {
-  sections: ReadonlyArray<{
-    title: string;
-    url: string;
-  }>;
+  user: IUser
   title: string;
 }
 
 export default function Header(props: HeaderProps) {
-  const { sections, title } = props;
+  const { user, title } = props;
   const [name, setName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
@@ -39,6 +37,7 @@ export default function Header(props: HeaderProps) {
             placeholder="Buscar usuário"
             value={name}
             onChange={handleChange}
+            onClick={handleOpen}
             inputProps={{ 'aria-label': 'Buscar usuário' }}
           />
           <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleOpen}>
@@ -55,18 +54,36 @@ export default function Header(props: HeaderProps) {
         >
           {title}
         </Typography>
-        {sections.map((section) => (
-          <Link
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            sx={{ p: 1, flexShrink: 0 }}
-          >
-            {section.title}
-          </Link>
-        ))}
+        <Link
+          color="inherit"
+          noWrap
+          key={'Home'}
+          variant="body2"
+          href={'/'}
+          sx={{ p: 1, flexShrink: 0 }}
+        >
+          Home
+        </Link>
+        <Link
+          color="inherit"
+          noWrap
+          key={'Meus Posts'}
+          variant="body2"
+          href={'/my-posts'}
+          sx={{ p: 1, flexShrink: 0 }}
+        >
+          Meus Posts
+        </Link>
+        <Link
+          color="inherit"
+          noWrap
+          key={'Perfil'}
+          variant="body2"
+          href={`/user/${user.id}`}
+          sx={{ p: 1, flexShrink: 0 }}
+        >
+          Perfil
+        </Link>
         <IconButton>
           <NotificationsNoneIcon />
         </IconButton>

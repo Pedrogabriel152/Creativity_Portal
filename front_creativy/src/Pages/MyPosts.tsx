@@ -16,9 +16,6 @@ import CreatedPost from '../Components/CreatedPost';
 import FeaturedPost from '../Components/FeaturedPost';
 import Footer from '../Components/Footer';
 
-// Utils
-import { sections } from '../Utils/variable';
-
 // GraphQL
 import { useGetFeaturedPosts, useGetMainPost, useGetMyPosts } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
@@ -27,6 +24,7 @@ import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar } from '../GraphQL/S
 // Interfaces
 import { IPost } from '../interfaces/IPost';
 import { useNavigate } from 'react-router-dom';
+import { IUser } from '../interfaces/IUser';
 
 // Toastify
 import { toast } from 'react-toastify';
@@ -41,7 +39,7 @@ export default function MyPosts() {
     const [first, setFirst] = useState<number>(10);
     const { getLocalStorage } = useAuthContext();
     const auth = getLocalStorage();
-    const [user, setUser] = useState<number>(0);
+    const [user, setUser] = useState<IUser>();
     const navigate = useNavigate();
     const {loading: loadindMorePosts, error} = useGetMyPosts(auth?.user_id, first);
     const myPosts = useReactiveVar(getMyPostsVar);
@@ -57,12 +55,12 @@ export default function MyPosts() {
           headers: {
             Authorization: `Bearer ${auth?.token}`
           }
-        }).then(response => setUser(response.data.id))
+        }).then(response => setUser(response.data))
         .catch(error => {
           navigate('/login');
           toast.error('Entre na plataforma primeiro!');
         });
-    }, [auth]);
+    }, []);
 
     useEffect(() => {
         if(error){
@@ -73,7 +71,7 @@ export default function MyPosts() {
 
     const morePosts = () => {if(myPosts?.paginatorInfo.hasMorePages) setFirst(myPosts?.paginatorInfo.count+10);}
     
-    if(!myPosts) return <div></div>
+    if(!myPosts || !user) return <div></div>
 
     // TODO remove, this demo shouldn't need to reset the theme.
     const defaultTheme = createTheme();
@@ -82,7 +80,7 @@ export default function MyPosts() {
         <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
         <Container maxWidth="lg">
-            <Header title="Creativy Portal" sections={sections} />
+            <Header title="Creativy Portal" user={user} />
             <main>
             <Button variant="outlined" startIcon={<AddIcon />} sx={{marginBottom: 3, marginLeft: '75%'}} onClick={handleOpen}>
                 New Post

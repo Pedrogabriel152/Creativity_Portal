@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // Utils
 import { api } from '../Utils/Api';
-import { sections } from '../Utils/variable';
 
 // Mui Material
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,25 +15,21 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 
 // GraphQL
 import { useAuthContext } from '../Context/AuthContext';
-import { useLikeComment } from '../GraphQL/Hooks/commentHooks';
-import { updatedCommentsVar } from '../GraphQL/States/commentState';
 import { useDeletePost, useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
 import { deletedPostVar, getPostVar } from '../GraphQL/States/postState';
+import { useGetUser } from '../GraphQL/Hooks/userHook';
+import { userVar } from '../GraphQL/States/userSatate';
 
 // Components
 import Header from '../Components/Header';
-import Main from '../Components/Main';
 import Footer from '../Components/Footer';
-import Comments from '../Components/Comments';
 import CreatedPost from '../Components/CreatedPost';
 import ConfirmeModal from '../Components/ConfirmeModal';
+import CardProfile from '../Components/CardProfile';
 
 // Toatify
 import { toast } from 'react-toastify';
-import CardProfile from '../Components/CardProfile';
-import { useGetUser } from '../GraphQL/Hooks/userHook';
-import { userVar } from '../GraphQL/States/userSatate';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -41,8 +37,33 @@ const defaultTheme = createTheme();
 
 export default function User() {
     const {id} = useParams();
-    useGetUser(id? parseInt(id) : 0);
+    const {error} = useGetUser(id? parseInt(id) : 0);
     const user = useReactiveVar(userVar);
+    const { getLocalStorage } = useAuthContext();
+    const auth = getLocalStorage();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(auth) {
+            api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+            api.get('api/user', {
+            headers: {
+                Authorization: `Bearer ${auth?.token}`
+            }
+            }).then(response => {})
+            .catch(error => {
+                navigate('/login');
+                toast.error('Entre na plataforma primeiro!');
+            });
+        }
+      }, []);
+
+      useEffect(() => {
+        if(error) {
+            navigate('/login');
+            toast.error('Entre na plataforma primeiro!');
+        }
+      }, [error]); 
 
     if(!user) return <div></div>
 
@@ -50,12 +71,12 @@ export default function User() {
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
             <Container maxWidth="lg">
-                <Header title="Creativy Portal" sections={sections} />
+                <Header title="Creativy Portal" user={user} />
                 <main>
                 <Grid container spacing={5} sx={{ mt: 3 }}>
                     <Grid
                     item
-                    xs={6}
+                    xs={12}
                     md={12}
                     sx={{
                         '& .markdown': {

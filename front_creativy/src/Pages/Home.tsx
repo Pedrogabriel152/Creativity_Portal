@@ -16,7 +16,7 @@ import FeaturedPost from '../Components/FeaturedPost';
 import Footer from '../Components/Footer';
 
 // Utils
-import { sections } from '../Utils/variable';
+import { api } from '../Utils/Api';
 
 // GraphQL
 import { useGetFeaturedPosts, useGetMainPost } from '../GraphQL/Hooks/postHooks';
@@ -28,15 +28,38 @@ import { IPost } from '../interfaces/IPost';
 
 // Toastify
 import { toast } from 'react-toastify';
+import { IUser } from '../interfaces/IUser';
+
+// Context
+import { useAuthContext } from '../Context/AuthContext';
+
 
 
 const Home = () => {
+    const { getLocalStorage } = useAuthContext();
+    const auth = getLocalStorage();
     const [first, setFirst] = useState<number>(6);
     useGetMainPost();
     const {loading: loadindMorePosts, error, } = useGetFeaturedPosts(first);
     const mainPost = useReactiveVar(getMainPostVar);
     const featuredPosts = useReactiveVar(getFeaturedPostsVar);
+    const [user, setUser] = useState<IUser>();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(auth) {
+            api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
+            api.get('api/user', {
+            headers: {
+                Authorization: `Bearer ${auth?.token}`
+            }
+            }).then(response => setUser(response.data))
+            .catch(error => {
+                navigate('/login');
+                toast.error('Entre na plataforma primeiro!');
+            });
+        }
+      }, []);
 
     useEffect(() => {
         if(error){
@@ -47,7 +70,7 @@ const Home = () => {
 
     const morePosts = () => {if(featuredPosts?.paginatorInfo.hasMorePages) setFirst(featuredPosts?.paginatorInfo.count+6);}
 
-    if(!mainPost || !featuredPosts)  {
+    if(!mainPost || !featuredPosts || !user)  {
       return <div></div>
     }
     
@@ -58,7 +81,7 @@ const Home = () => {
         <ThemeProvider theme={defaultTheme}>
         <CssBaseline />
         <Container maxWidth="lg">
-            <Header title="Creativy Portal" sections={sections} />
+            <Header title="Creativy Portal" user={user} />
             <main>
             <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} id={mainPost.id}/>
             <Grid container spacing={4}>

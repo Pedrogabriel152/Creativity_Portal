@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 // Utils
 import { api } from '../Utils/Api';
-import { sections } from '../Utils/variable';
 
 // Mui Material
 import CssBaseline from '@mui/material/CssBaseline';
@@ -33,6 +32,9 @@ import ConfirmeModal from '../Components/ConfirmeModal';
 // Toatify
 import { toast } from 'react-toastify';
 
+// Interfaes
+import { IUser } from '../interfaces/IUser';
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -44,7 +46,7 @@ export default function Post() {
   const {loading: loadindMoreComment} = useGetPost(id? parseInt(id) : 0, first);
   const post = useReactiveVar(getPostVar);
   const auth = getLocalStorage();
-  const [user, setUser] = React.useState<number>(0);
+  const [user, setUser] = React.useState<IUser>();
   const [likeComment, {loading}] = useLikeComment(id? parseInt(id) : 0, first);
   const [likePost] = useLikePost();
   const likePostResponse = useReactiveVar(updatedCommentsVar);
@@ -61,12 +63,12 @@ export default function Post() {
       headers: {
         Authorization: `Bearer ${auth?.token}`
       }
-    }).then(response => setUser(response.data.id))
+    }).then(response => setUser(response.data))
     .catch(error => {
       navigate('/login');
       toast.error('Entre na plataforma primeiro!');
     });
-  }, [auth]);
+  }, []);
 
   React.useEffect(() => {}, [first, loading, likeCommentResponse, likeCommentResponse, user]);
 
@@ -112,7 +114,7 @@ export default function Post() {
     navigate('/');
   }
 
-  if(!post) {
+  if(!post || !user) {
     return <div></div>
   }
 
@@ -120,7 +122,7 @@ export default function Post() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header title="Creativy Portal" sections={sections} />
+        <Header title="Creativy Portal" user={user} />
         <main>
           <Grid container spacing={5} sx={{ mt: 3 }}>
             <Grid
@@ -139,7 +141,7 @@ export default function Post() {
                 <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
               </Typography>
               </Link>
-              {post?.user_id === user && (
+              {post?.user_id === user.id && (
                 <>
                 <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>
                   <EditNoteIcon fontSize="inherit"/>
@@ -150,8 +152,8 @@ export default function Post() {
                 </>
               )}              
             </Grid>
-            <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
-            <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>
+            <Main auth={auth} post={post} user={user.id} first={first} likePostFunc={likePostFunc}/>
+            <Comments user={user?.id} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>
           </Grid>
         </main>
       </Container>
