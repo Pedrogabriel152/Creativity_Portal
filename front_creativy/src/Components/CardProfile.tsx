@@ -2,8 +2,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Avatar, Box, CardActionArea, Stack } from '@mui/material';
+import { Avatar, Box, Button, CardActionArea, IconButton, Stack } from '@mui/material';
 import { IUser } from '../interfaces/IUser';
+import EditIcon from '@mui/icons-material/Edit';
+import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
 
 interface ICardProfile {
   user: IUser
@@ -24,6 +26,10 @@ export default function CardProfile({user}: ICardProfile) {
           <Typography gutterBottom variant="h5" component="div" sx={{ padding: '0px', marginTop: -6}}>
             {user.name}
           </Typography>
+          <Button component="label" variant="text" startIcon={<EditIcon />} size='small' onClick={() => {}}>
+            Editar perfil
+            <VisuallyHiddenInput type="button" />
+          </Button>
         </Stack>
     </CardContent>
     </Card>

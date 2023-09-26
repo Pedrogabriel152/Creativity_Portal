@@ -22,9 +22,16 @@ export default function Header(props: HeaderProps) {
   const { user, title } = props;
   const [name, setName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const [autoFoco, setAutoFoco] = useState<boolean>(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+    setAutoFoco(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setAutoFoco(false);
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()));
 
@@ -36,6 +43,7 @@ export default function Header(props: HeaderProps) {
             sx={{ ml: 1, flex: 1 }}
             placeholder="Buscar usuário"
             value={name}
+            autoFocus={autoFoco}
             onChange={handleChange}
             onClick={handleOpen}
             inputProps={{ 'aria-label': 'Buscar usuário' }}
