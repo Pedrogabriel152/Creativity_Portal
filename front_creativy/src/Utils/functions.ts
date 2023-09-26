@@ -23,6 +23,3 @@ export const dateFormater = (create_at: string, format?: 'numerica') => {
     return dateFomarted;
 }
 
-export const getLocalStorage = () => {
-    
-}

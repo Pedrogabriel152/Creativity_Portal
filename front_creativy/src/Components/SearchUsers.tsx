@@ -13,7 +13,7 @@ interface ISearch {
 
 export default function SearchUsers({name, closeOpen}: ISearch) {
     const [show, setShow] = useState(false);
-    useGetUsers(`%${name}%`, `%${name.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toLowerCase())}%`);
+    useGetUsers(`%${name.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase())}%`, `%${name.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toLowerCase())}%`);
     const users = useReactiveVar(usersVar);
 
     const handleClick = () => {

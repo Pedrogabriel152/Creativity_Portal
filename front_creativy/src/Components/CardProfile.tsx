@@ -6,12 +6,15 @@ import { Avatar, Box, Button, CardActionArea, IconButton, Stack } from '@mui/mat
 import { IUser } from '../interfaces/IUser';
 import EditIcon from '@mui/icons-material/Edit';
 import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
+import { useState } from 'react';
 
 interface ICardProfile {
   user: IUser
 }
 //sx={{ width: '30%', marginLeft: '40%', textAlign: 'center', alignItems: 'center' }}
 export default function CardProfile({user}: ICardProfile) {
+  const [open, setOpen] = useState<boolean>(false);
+  
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent sx={{ width: '100%' }}>

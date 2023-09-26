@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
-use Faker\Provider\pt_BR\Text;
 
 class AuthController extends Controller
 {

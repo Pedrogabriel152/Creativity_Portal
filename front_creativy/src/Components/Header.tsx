@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useState } from 'react';
+import { ChangeEvent, Fragment, useRef, useState } from 'react';
 
 // Mui Material
 import Toolbar from '@mui/material/Toolbar';
@@ -22,18 +22,17 @@ export default function Header(props: HeaderProps) {
   const { user, title } = props;
   const [name, setName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
-  const [autoFoco, setAutoFoco] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleOpen = () => {
     setOpen(true);
-    setAutoFoco(true);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
-  const handleClose = () => {
-    setOpen(false);
-    setAutoFoco(false);
-  };
+  const handleClose = () => setOpen(false);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()));
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value);
 
   return (
     <Fragment>
@@ -43,9 +42,9 @@ export default function Header(props: HeaderProps) {
             sx={{ ml: 1, flex: 1 }}
             placeholder="Buscar usuário"
             value={name}
-            autoFocus={autoFoco}
             onChange={handleChange}
             onClick={handleOpen}
+            inputRef={inputRef}
             inputProps={{ 'aria-label': 'Buscar usuário' }}
           />
           <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleOpen}>
