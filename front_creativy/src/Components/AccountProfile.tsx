@@ -21,7 +21,7 @@ export const AccountProfile = ({user, setUser}: IAccount) => {
     const [image, setImage] = useState<any>('');
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.files){
+        if(e.target.files && e.target.files.length > 0){
             const image = e.target.files[0];
 
             if(image.type === 'image/jpeg' || image.type=== 'image/png') {

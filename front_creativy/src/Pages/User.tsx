@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Utils
 import { api } from '../Utils/Api';
@@ -30,6 +30,7 @@ import CardProfile from '../Components/CardProfile';
 
 // Toatify
 import { toast } from 'react-toastify';
+import UserEditModal from '../Components/UserEditModal';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -42,6 +43,7 @@ export default function User() {
     const { getLocalStorage } = useAuthContext();
     const auth = getLocalStorage();
     const navigate = useNavigate();
+    const [open, setOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if(auth) {
@@ -58,12 +60,15 @@ export default function User() {
         }
       }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         if(error) {
             navigate('/login');
             toast.error('Entre na plataforma primeiro!');
-        }
-      }, [error]); 
+        }   
+    }, [error]); 
+
+    const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
 
     if(!user) return <div></div>
 
@@ -84,7 +89,7 @@ export default function User() {
                         },  
                     }}
                     >
-                        <CardProfile user={user}/>
+                        <CardProfile user={user} handleOpen={handleOpen}/>
                     {/* <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
                     <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
                         <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
@@ -111,6 +116,14 @@ export default function User() {
                 title="Footer"
                 description="Something here to give the footer a purpose!"
             />
+            <Modal keepMounted 
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="keep-mounted-modal-title"
+                aria-describedby="keep-mounted-modal-description"
+            >
+                <UserEditModal user={user} handleClose={handleClose}/>
+            </Modal>
         </ThemeProvider>
     );
 }

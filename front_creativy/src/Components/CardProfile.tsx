@@ -10,10 +10,10 @@ import { useState } from 'react';
 
 interface ICardProfile {
   user: IUser
+  handleOpen: () => void
 }
-//sx={{ width: '30%', marginLeft: '40%', textAlign: 'center', alignItems: 'center' }}
-export default function CardProfile({user}: ICardProfile) {
-  const [open, setOpen] = useState<boolean>(false);
+
+export default function CardProfile({user, handleOpen}: ICardProfile) {
   
   return (
     <Card sx={{ width: '100%' }}>
@@ -22,14 +22,14 @@ export default function CardProfile({user}: ICardProfile) {
           <CardMedia
             component="img"
             height="300"
-            image={`${process.env.REACT_APP_API_URL}${user.cover_image}`}
+            image={user.cover_image? `${process.env.REACT_APP_API_URL}${user.cover_image}` : '/padrao.jpeg'}
             alt={user.name}
           />
-          <Avatar src={`${process.env.REACT_APP_API_URL}${user.image}`} alt={user.name} sx={{ width: 150, height: 150, position: 'relative', top: '-67px' }}/>
+          <Avatar src={`${process.env.REACT_APP_API_URL}${user.image}`} alt={user.name} sx={{ width: 150, height: 150, position: 'relative', top: '-75px', fontSize: '3em' }}/>
           <Typography gutterBottom variant="h5" component="div" sx={{ padding: '0px', marginTop: -6}}>
             {user.name}
           </Typography>
-          <Button component="label" variant="text" startIcon={<EditIcon />} size='small' onClick={() => {}}>
+          <Button component="label" variant="text" startIcon={<EditIcon />} size='small' onClick={handleOpen}>
             Editar perfil
             <VisuallyHiddenInput type="button" />
           </Button>

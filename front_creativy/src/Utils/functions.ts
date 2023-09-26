@@ -22,4 +22,3 @@ export const dateFormater = (create_at: string, format?: 'numerica') => {
     const dateFomarted = format? ((newDate.getDate() + "/" + ((newDate.getMonth()+1)? "0"+(newDate.getMonth()+1) : newDate.getMonth()+1) + "/" + newDate.getFullYear())) : ((newDate.getDate() + " " + month[(newDate.getMonth())] + " " + newDate.getFullYear()));
     return dateFomarted;
 }
-
