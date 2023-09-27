@@ -1,4 +1,6 @@
 import { makeVar } from "@apollo/client";
+
+// Interfaces
 import { IResponse } from "../../interfaces/IResponse";
 import { IUsers } from "../../interfaces/IUsers";
 import { IUser } from "../../interfaces/IUser";

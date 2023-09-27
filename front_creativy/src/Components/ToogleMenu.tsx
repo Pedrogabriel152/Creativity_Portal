@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+// Mui Material
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -6,13 +8,21 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button, ListItemIcon, ListItemText, Modal, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+
+// Components
+import ModalComment from './ModalComment';
 import ConfirmeModal from './ConfirmeModal';
+
+// GraphQL
+import { useDeleteComment, useUpdateComment } from '../GraphQL/Hooks/commentHooks';
+
+// Styles
 import { styleModal } from '../Styles/StyleModal';
 import { StyledTextarea } from '../Styles/TextArea';
-import ModalComment from './ModalComment';
-import { IComment } from '../interfaces/IComment';
-import { useDeleteComment, useUpdateComment } from '../GraphQL/Hooks/commentHooks';
+
+// Interfaces
 import { ICommentInput } from '../interfaces/ICommentInput';
+import { IComment } from '../interfaces/IComment';
 
 const ITEM_HEIGHT = 48;
 

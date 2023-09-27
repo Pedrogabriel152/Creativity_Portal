@@ -1,15 +1,24 @@
-import { Avatar, Box, Button, CardActions, CardMedia, Divider, Grid, IconButton, ImageListItem, TextField, Typography } from "@mui/material";
-import { styleModal } from "../Styles/StyleModal";
+
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { IUser } from "../interfaces/IUser";
-import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
-import CloseIcon from '@mui/icons-material/Close';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+// GraphQL
+import { Avatar, Box, Button, CardActions, CardMedia, Divider, Grid, IconButton, ImageListItem, TextField, Typography } from "@mui/material";
 import { useUpdateUSer } from "../GraphQL/Hooks/userHook";
 import { useReactiveVar } from "@apollo/client";
 import { updateUserVar } from "../GraphQL/States/userSatate";
+import CloseIcon from '@mui/icons-material/Close';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+// Toastify
+import { toast } from "react-toastify";
+
+// Interfaces
+import { IUser } from "../interfaces/IUser";
+
+// Styles
+import { styleModal } from "../Styles/StyleModal";
+import { VisuallyHiddenInput } from "../Styles/VisuallyHiddenInput";
 
 interface IUserEditModal {
     user: IUser

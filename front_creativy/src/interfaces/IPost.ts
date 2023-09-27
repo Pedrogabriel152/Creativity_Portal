@@ -1,4 +1,3 @@
-import { IComment } from "./IComment"
 import { ICommentPaginator } from "./ICommentPaginator"
 
 export interface IPost {

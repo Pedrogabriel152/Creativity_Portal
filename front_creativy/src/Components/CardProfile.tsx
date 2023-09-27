@@ -1,14 +1,16 @@
+// Interfaces
+import { IUser } from '../interfaces/IUser';
+
+// Mui Material
+import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Avatar, Box, Button, CardActionArea, IconButton, Stack } from '@mui/material';
-import { IUser } from '../interfaces/IUser';
-import EditIcon from '@mui/icons-material/Edit';
+
+// Styles
 import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
-import { useEffect, useState } from 'react';
-import { useReactiveVar } from '@apollo/client';
-import { updateUserVar } from '../GraphQL/States/userSatate';
 
 interface ICardProfile {
   user: IUser

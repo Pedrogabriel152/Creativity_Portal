@@ -9,36 +9,30 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, Card, CardContent, IconButton, Link, Modal, Stack, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import { Avatar, Card, CardContent, Link, Modal, Typography } from '@mui/material';
 
 // GraphQL
 import { useAuthContext } from '../Context/AuthContext';
-import { useDeletePost, useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
-import { deletedPostVar, getPostVar, likePostVar } from '../GraphQL/States/postState';
 import { useGetUser } from '../GraphQL/Hooks/userHook';
 import { updateUserVar, userVar } from '../GraphQL/States/userSatate';
 
 // Components
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import CreatedPost from '../Components/CreatedPost';
-import ConfirmeModal from '../Components/ConfirmeModal';
 import CardProfile from '../Components/CardProfile';
+import UserEditModal from '../Components/UserEditModal';
+import PostCard from '../Components/PostCard';
 
 // Toatify
 import { toast } from 'react-toastify';
-import UserEditModal from '../Components/UserEditModal';
+
+// Interfaces
 import { IUser } from '../interfaces/IUser';
 import { IPost } from '../interfaces/IPost';
-import PostCard from '../Components/PostCard';
-import Main from '../Components/Main';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
 
 export default function User() {
     const {id} = useParams();
