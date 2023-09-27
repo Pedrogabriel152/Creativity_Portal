@@ -5,6 +5,13 @@ export const UPDATEUSER = gql`
         editUser(user: $user) {
             code
             message
+            user {
+                id
+                name
+                image
+                cover_image
+                email
+            }
         }
     }
 `;

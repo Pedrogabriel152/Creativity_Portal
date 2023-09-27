@@ -54,7 +54,7 @@ class UserRepository
                 $extension = $image->extension();
                 $imageName = md5($image->getClientOriginalName() . strtotime("now")).".".$extension;
                 $image->move(public_path("img/users/cover/$user->id"), $imageName);
-                $user->image = "img/users/cover/$user->id/$imageName";     
+                $user->cover_image = "img/users/cover/$user->id/$imageName";     
             }
             $user->save();
             return $user;

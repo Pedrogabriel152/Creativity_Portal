@@ -47,6 +47,7 @@ interface Response {
 type ResponseUser implements Response {
   code: Int!
   message: String!
+  user: User
 }
 
 extend type Query {

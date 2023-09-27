@@ -6,15 +6,17 @@ import { Avatar, Box, Button, CardActionArea, IconButton, Stack } from '@mui/mat
 import { IUser } from '../interfaces/IUser';
 import EditIcon from '@mui/icons-material/Edit';
 import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useReactiveVar } from '@apollo/client';
+import { updateUserVar } from '../GraphQL/States/userSatate';
 
 interface ICardProfile {
   user: IUser
   handleOpen: () => void
+  userId: number
 }
 
-export default function CardProfile({user, handleOpen}: ICardProfile) {
-  
+export default function CardProfile({user, handleOpen, userId}: ICardProfile) {  
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent sx={{ width: '100%' }}>
@@ -29,10 +31,12 @@ export default function CardProfile({user, handleOpen}: ICardProfile) {
           <Typography gutterBottom variant="h5" component="div" sx={{ padding: '0px', marginTop: -6}}>
             {user.name}
           </Typography>
-          <Button component="label" variant="text" startIcon={<EditIcon />} size='small' onClick={handleOpen}>
-            Editar perfil
-            <VisuallyHiddenInput type="button" />
-          </Button>
+          {user.id == userId && (
+            <Button component="label" variant="text" startIcon={<EditIcon />} size='small' onClick={handleOpen}>
+              Editar perfil
+              <VisuallyHiddenInput type="button" />
+            </Button>
+          )}
         </Stack>
     </CardContent>
     </Card>

@@ -6,6 +6,7 @@ export interface IResponse {
     message: string
     comments?: IComment[]
     users?: IUser[] 
+    user?: IUser
     paginatorInfo?: {
         hasMorePages: boolean
         count: number

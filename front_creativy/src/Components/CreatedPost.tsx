@@ -188,6 +188,7 @@ export default function CreatedPost({title, post}: ICreated) {
             value={newPost.subtitle}
             onChange={handleTextAreaOnChange}
             placeholder="Legenda"
+            name="subtitle"
             sx={{ width: '100%', resize: 'none' }}
           />
           <Button

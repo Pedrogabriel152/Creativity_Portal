@@ -20,7 +20,7 @@ interface IAccount {
 }
 
 export const AccountProfileDetails = ({user, setUser}: IAccount) => {
-  const [ updateUser ] = useUpdateUSer();
+  const [ updateUser ] = useUpdateUSer(user.id);
   const updateUserResponse = useReactiveVar(updateUserVar);
 
   useEffect(() => {

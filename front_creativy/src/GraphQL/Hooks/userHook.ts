@@ -6,13 +6,18 @@ import { GETUSER, GETUSERS } from "../Queries/userQuery";
 import { IUsers } from "../../interfaces/IUsers";
 import { IUser } from "../../interfaces/IUser";
 
-export const useUpdateUSer = () => {
+export const useUpdateUSer = (id: number) => {
     return useMutation<{ editUser: IResponse }>(UPDATEUSER, {
         onCompleted(data) {
             if (data) {
                 updateUserVar(data.editUser);
             }
         },
+        refetchQueries: [
+            {query: GETUSER, variables: {
+                id,
+            }}
+        ],
     });
 };
 

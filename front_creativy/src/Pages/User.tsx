@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, IconButton, Link, Modal, Typography } from '@mui/material';
+import { Avatar, Card, CardContent, IconButton, Link, Modal, Stack, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
@@ -19,7 +19,7 @@ import { useDeletePost, useGetPost, useLikePost } from '../GraphQL/Hooks/postHoo
 import { useReactiveVar } from '@apollo/client';
 import { deletedPostVar, getPostVar } from '../GraphQL/States/postState';
 import { useGetUser } from '../GraphQL/Hooks/userHook';
-import { userVar } from '../GraphQL/States/userSatate';
+import { updateUserVar, userVar } from '../GraphQL/States/userSatate';
 
 // Components
 import Header from '../Components/Header';
@@ -31,6 +31,10 @@ import CardProfile from '../Components/CardProfile';
 // Toatify
 import { toast } from 'react-toastify';
 import UserEditModal from '../Components/UserEditModal';
+import { IUser } from '../interfaces/IUser';
+import { IPost } from '../interfaces/IPost';
+import PostCard from '../Components/PostCard';
+import Main from '../Components/Main';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -44,6 +48,11 @@ export default function User() {
     const auth = getLocalStorage();
     const navigate = useNavigate();
     const [open, setOpen] = useState<boolean>(false);
+    const [user_id, setUserId] = useState<number>(0);
+    const [userLog, setUserLog] = useState<IUser>();
+    const updateUserResponse = useReactiveVar(updateUserVar);
+
+    useEffect(() => {}, [updateUserResponse]);
 
     useEffect(() => {
         if(auth) {
@@ -52,31 +61,34 @@ export default function User() {
             headers: {
                 Authorization: `Bearer ${auth?.token}`
             }
-            }).then(response => {})
+            }).then(response => {
+                setUserId(response.data.id);
+                setUserLog(response.data);
+            })
             .catch(error => {
                 navigate('/login');
                 toast.error('Entre na plataforma primeiro!');
             });
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         if(error) {
             navigate('/login');
             toast.error('Entre na plataforma primeiro!');
         }   
-    }, [error]); 
+    }, [updateUserResponse, error]); 
 
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true);
 
-    if(!user) return <div></div>
+    if(!user || !userLog) return <div></div>
 
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
             <Container maxWidth="lg">
-                <Header title="Creativy Portal" user={user} />
+                <Header title="Creativy Portal" user={userLog} />
                 <main>
                 <Grid container spacing={5} sx={{ mt: 3 }}>
                     <Grid
@@ -87,28 +99,13 @@ export default function User() {
                         '& .markdown': {
                         py: 3,
                         },  
-                    }}
+                    }}  
                     >
-                        <CardProfile user={user} handleOpen={handleOpen}/>
-                    {/* <Link sx={{textDecoration: 'none', color: '#000'}} href={`/user/${post.user_id}`}>
-                    <Typography variant="subtitle2" gutterBottom sx={{display: 'flex'}}>
-                        <Avatar alt={post.user?.name} src={post.user?.image? `${process.env.REACT_APP_API_URL}${post.user?.image}`:''} />
-                        <span style={{marginLeft: '10px', textAlign: 'center', paddingTop:'10px'}}>{post.user?.name}</span>
-                    </Typography>
-                    </Link>
-                    {post?.user_id === user && (
-                        <>
-                        <IconButton aria-label="load" size='large' style={{ color: 'blue' }} onClick={handleOpen}>
-                        <EditNoteIcon fontSize="inherit"/>
-                        </IconButton>
-                        <IconButton aria-label="load" size='large' style={{ color: 'red', marginRight: '0px' }} onClick={handleOpenDelete}>
-                        <DeleteIcon fontSize="inherit"/>
-                        </IconButton>
-                        </>
-                    )}               */}
+                        <CardProfile user={updateUserResponse?.user? updateUserResponse.user : user} handleOpen={handleOpen} userId={user_id}/>
+                        {user.posts?.map((post: IPost) => (
+                            <PostCard post={post} user={userLog.id}/>                          
+                        ))}
                     </Grid>
-                    {/* <Main auth={auth} post={post} user={user} first={first} likePostFunc={likePostFunc}/>
-                    <Comments user={user} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/> */}
                 </Grid>
                 </main>
             </Container>
@@ -122,7 +119,7 @@ export default function User() {
                 aria-labelledby="keep-mounted-modal-title"
                 aria-describedby="keep-mounted-modal-description"
             >
-                <UserEditModal user={user} handleClose={handleClose}/>
+                <UserEditModal user={updateUserResponse?.user? updateUserResponse.user : user} handleClose={handleClose}/>
             </Modal>
         </ThemeProvider>
     );

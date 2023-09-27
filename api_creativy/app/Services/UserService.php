@@ -31,13 +31,14 @@ class UserService
 
             return [
                 'message' => "Usuário atualizado com sucesso",
-                'code' => 200
+                'code' => 200,
+                'user' => $updateUser
             ];
 
         } catch (\Exception $ex) {
             return [
                 'message' => $ex->getMessage(),
-                'code' => $ex->getCode()
+                'code' => $ex->getCode(),
             ];
         }
     }

@@ -26,6 +26,7 @@ export const GETUSER = gql`
             name
             image
             cover_image
+            email
             posts {
                 id
                 title

@@ -8,6 +8,6 @@ export interface IUser {
     created_at: string
     password?: string
     confirmPassword?: string
-    post?: IPost[]
+    posts?: IPost[]
     cover_image?: any
 }
