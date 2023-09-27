@@ -15,6 +15,7 @@ import { FEATUREDPOSTS, GETMAINPOST, GETMYPOSTS, GETPOST } from "../Queries/post
 
 // Mutations
 import { CREATEPOST, DELETEPOST, LIKEPOST, UPDATEPOST } from "../Mutations/postMutation";
+import { GETUSER } from "../Queries/userQuery";
 
 export const useGetMainPost = () => {
     return useQuery<{ mainPost: IMainPost }>(GETMAINPOST, {
@@ -22,8 +23,7 @@ export const useGetMainPost = () => {
             if (data) {
                 getMainPostVar(data.mainPost);
             }
-        },
-        fetchPolicy: 'cache-and-network',
+        }
     });
 };
 
@@ -36,8 +36,7 @@ export const useGetFeaturedPosts = (first: number) => {
             if (data) {
                 getFeaturedPostsVar(data.featuredPosts);
             }
-        },
-        fetchPolicy: 'cache-and-network',
+        }
     });
 };
 
@@ -53,18 +52,22 @@ export const useGetPost = (id: number, first: number) => {
                 getCommentsVar(data.post.comments)
                 getPostVar(data.post);
             }
-        },
-        fetchPolicy: 'cache-and-network',
+        }
     });
 };
 
-export const useLikePost = () => {
+export const useLikePost = (id?: number) => {
     return useMutation<{ likePost: IResponse }>(LIKEPOST, {
         onCompleted(data) {
             if (data) {
                 likePostVar(data.likePost);
             }
         },
+        refetchQueries: [
+            {query: GETUSER, variables: {
+                id: id
+            }}
+        ]
     });
 };
 
@@ -77,11 +80,9 @@ export const useGetMyPosts = (user_id: number, first: number) => {
         },
         onCompleted(data) {
             if (data) {
-                console.log('Aquwhgsididgu',data)
                 getMyPostsVar(data.posts);
             }
         },
-        fetchPolicy: 'cache-and-network',
     });
 };
 
@@ -97,7 +98,6 @@ export const useCreatePost = () => {
                 first: 8
             }}, // DocumentNode object parsed with gql
         ],
-        fetchPolicy: "network-only"
     });
 }
 
@@ -113,7 +113,6 @@ export const useDeletePost = () => {
                 first: 8
             }}, // DocumentNode object parsed with gql
         ],
-        fetchPolicy: "network-only"
     });
 }
 
@@ -129,7 +128,6 @@ export const useUpdatePost = () => {
                 first: 8
             }}, // DocumentNode object parsed with gql
         ],
-        fetchPolicy: "network-only"
     });
 }
 

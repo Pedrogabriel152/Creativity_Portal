@@ -17,7 +17,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useAuthContext } from '../Context/AuthContext';
 import { useDeletePost, useGetPost, useLikePost } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
-import { deletedPostVar, getPostVar } from '../GraphQL/States/postState';
+import { deletedPostVar, getPostVar, likePostVar } from '../GraphQL/States/postState';
 import { useGetUser } from '../GraphQL/Hooks/userHook';
 import { updateUserVar, userVar } from '../GraphQL/States/userSatate';
 
@@ -79,6 +79,7 @@ export default function User() {
         }   
     }, [updateUserResponse, error]); 
 
+
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true);
 
@@ -102,7 +103,7 @@ export default function User() {
                     }}  
                     >
                         <CardProfile user={updateUserResponse?.user? updateUserResponse.user : user} handleOpen={handleOpen} userId={user_id}/>
-                        {user.posts?.map((post: IPost) => (
+                        {user.posts?.map((post: IPost, index: number) => (
                             <PostCard post={post} user={userLog.id}/>                          
                         ))}
                     </Grid>

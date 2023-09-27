@@ -56,6 +56,7 @@ export default function Post() {
   const deletePostResponse = useReactiveVar(deletedPostVar);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openDelete, setOpenDelete] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
     api.defaults.headers.Authorization = `Bearer ${auth?.token}`;
@@ -114,6 +115,12 @@ export default function Post() {
     navigate('/');
   }
 
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }
+
   if(!post || !user) {
     return <div></div>
   }
@@ -152,8 +159,8 @@ export default function Post() {
                 </>
               )}              
             </Grid>
-            <Main auth={auth} post={post} user={user.id} first={first} likePostFunc={likePostFunc}/>
-            <Comments user={user?.id} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update}/>
+            <Main auth={auth} post={post} user={user.id} first={first} likePostFunc={likePostFunc} handleFocus={handleFocus}/>
+            <Comments user={user?.id} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update} inputRef={inputRef}/>
           </Grid>
         </main>
       </Container>

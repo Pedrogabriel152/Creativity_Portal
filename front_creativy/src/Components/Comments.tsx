@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 
 // Material UI
 import Box from '@mui/material/Box';
@@ -40,9 +40,10 @@ interface IComments {
   likeCommentFunc: (id: number, post_id: number) => void
   first: number
   update: boolean
+  inputRef: RefObject<HTMLInputElement | null>
 }
 
-export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update}: IComments) {
+export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update, inputRef}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
   const {error} = useGetComments(id? parseInt(id) : 0, first);
@@ -210,6 +211,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
               onChange={handleChange}
               value={text}
               sx={{height: 50}}
+              inputRef={inputRef}
             />
             <button type="submit" style={{border: 'none', background: 'transparent'}}>
               <ListItemButton sx={{paddingLeft: 3, '&:hover': {background: 'transparent'}}} autoFocus={false}>

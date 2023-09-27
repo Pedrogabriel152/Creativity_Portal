@@ -84,6 +84,7 @@ export const GETPOST = gql`
             }
             user_post{
                 user_id
+                post_id
             }
         }
     }

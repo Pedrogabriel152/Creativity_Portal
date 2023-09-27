@@ -27,9 +27,10 @@ interface IMain {
   auth: IAuth
   first: number
   likePostFunc: (id: number) => void
+  handleFocus: () => void
 }
 
-export default function Main({post, user, auth, first, likePostFunc}: IMain) {
+export default function Main({post, user, auth, first, likePostFunc, handleFocus}: IMain) {
   const userPost = post.user_post?.filter(user => user.user_id === auth.user_id);
   useGetPost(post.id, first);
   const postUpdate = useReactiveVar(getPostVar);
@@ -68,10 +69,7 @@ export default function Main({post, user, auth, first, likePostFunc}: IMain) {
         />
       </Card>
       <Button variant="outlined" startIcon={like ?  <FavoriteIcon /> : <FavoriteBorderIcon />} style={{marginTop: '8px'}} onClick={() => {likePostFunc(post.id); updateLike();}} />
-       <Button variant="outlined" startIcon={ <MessageIcon />} style={{marginTop: '8px', marginLeft: '10px'}}/>
-      <Button variant="outlined" startIcon={<SendIcon />} style={{marginTop: '8px', marginLeft: '10px'}}>
-        Compartilhar
-      </Button>
+       <Button variant="outlined" startIcon={ <MessageIcon />} style={{marginTop: '8px', marginLeft: '10px'}} onClick={handleFocus}/>
     </Grid>
   );
 }
