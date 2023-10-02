@@ -51,7 +51,7 @@ export default function EmailRecoverPassword() {
             toast.success('Email enviado');
         })
         .catch(error => {
-            toast.error(error.response.data.message);
+            toast.error("Tente novamente mais tarde");
         })
     };
 
@@ -71,7 +71,7 @@ export default function EmailRecoverPassword() {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                Email para a recuperação
+                Email para redefinição de senha
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -93,7 +93,7 @@ export default function EmailRecoverPassword() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                Recuperar a senha
+                Enviar
                 </Button>
                 <Grid container>
                     <Grid item xs>

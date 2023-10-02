@@ -38,14 +38,9 @@ export default function ForgotPassword() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const newUser: ILogin = {
-        email: `${data.get('email')}`,
-        password: `${data.get('password')}`,
-        }
 
-        api.get('/sanctum/csrf-cookie').then(response => { 
         api.post('/api/forgot-password', {
-            password: newUser.password,
+            password: `${data.get('password')}`,
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -54,13 +49,12 @@ export default function ForgotPassword() {
             removeLocalStorage();
             saveLocalStorage(res);
             navigate('/');
-            toast.success('Bem vindo de volta!');
+            toast.success('Senha auterada com sucesso');
         })
         .catch(error => {
             removeLocalStorage();
             toast.error(error.response.data.message);
         })
-        });
     };
 
     return (

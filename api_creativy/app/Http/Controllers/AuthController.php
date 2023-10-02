@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use ErrorException;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 
@@ -85,15 +87,36 @@ class AuthController extends Controller
     }
 
     public function forgotPassword(Request $request) {
-        $request->validate(['email' => 'required|email']);
- 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-    
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        try {
+            if(!$request->password) {
+                return throw new ErrorException('O campo de senha é obrigatório', 500);
+            }
+
+            $user = Auth::guard('sanctum')->user();
+
+            if(!$user) {
+                return throw new ErrorException('Falha a atualizar a senha', 500);
+            }
+
+            $updateUser = $this->userRepository->updatePassword($user, $request->password);
+
+            if(!$updateUser) {
+                return throw new ErrorException('Falha a atualizar a senha', 500);
+            }
+
+            $token = TokenService::createToken($user, 8);
+
+            return response()->json([
+                'message' => 'Senha alterada com sucesso',
+                'user_id' => $user->id,
+                'token' => $token
+            ], 200);
+            
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => 'Falha a atualizar a senha',
+            ], 500);
+        }
     }
 
     public function emailRecoverPassword(Request $request) {

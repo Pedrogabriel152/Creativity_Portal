@@ -60,4 +60,14 @@ class UserRepository
             return $user;
         });
     }
+
+    public function updatePassword(User $user, string $password) {
+        return DB::transaction(function () use ($user, $password) {
+            $hash = password_hash($password, PASSWORD_BCRYPT);
+            $user->reset_token = null;
+            $user->password = $hash;
+            $user->save();
+            return $user;
+        });
+    }
 }
