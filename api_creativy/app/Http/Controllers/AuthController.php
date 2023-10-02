@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
@@ -93,5 +94,26 @@ class AuthController extends Controller
         return $status === Password::RESET_LINK_SENT
             ? back()->with(['status' => __($status)])
             : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function emailRecoverPassword(Request $request) {
+        $email = $request->email;
+
+        $user = $this->userRepository->getUserByEmail($email);
+
+        if (! $user) {
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
+
+        $token = TokenService::createToken($user, 1);
+
+        $user->update(['reset_token' => $token]);
+
+        Mail::send('forgot_password', ['token' => $token, 'user' => $user], function ($m) use ($user) {
+            $m->to($user->email);
+            $m->subject('Redefinição de senha');
+        });
+
+        return response()->json(['message' => 'E-mail de redefinição de senha enviado'], 200);
     }
 }

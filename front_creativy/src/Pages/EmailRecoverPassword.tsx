@@ -27,36 +27,32 @@ import { removeLocalStorage, saveLocalStorage } from '../Utils/functions';
 
 // Toastify
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function EmailRecoverPassword() {
-    const navigate = useNavigate();
+    const [email, setEmail] = useState<string>('');
+
+    const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+    }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const newUser: ILogin = {
-            email: `${data.get('email')}`,
-            password: `${data.get('password')}`,
-        }
 
-        api.get('/sanctum/csrf-cookie').then(response => { 
-        api.post('/api/forgot-password', {
-            password: newUser.password,
+        if(!email) return toast.error('Preencha todos os campos');
+ 
+        api.post('/api/email-recover-password', {
+            email:email,
         })
         .then(res => {
-            removeLocalStorage();
-            saveLocalStorage(res);
-            navigate('/');
-            toast.success('Bem vindo de volta!');
+            toast.success('Email enviado');
         })
         .catch(error => {
-            removeLocalStorage();
             toast.error(error.response.data.message);
         })
-        });
     };
 
     return (
@@ -88,6 +84,8 @@ export default function EmailRecoverPassword() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    value={email}
+                    onChange={handleOnChange}
                 />
                 <Button
                     type="submit"
