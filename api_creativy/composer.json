@@ -13,6 +13,8 @@
         "mll-lab/graphql-php-scalars": "^6.2",
         "mll-lab/laravel-graphql-playground": "^1.1",
         "nuwave/lighthouse": "^6.16",
+        "symfony/http-client": "^6.3",
+        "symfony/mailgun-mailer": "^6.3",
         "webonyx/graphql-php": "^15.6"
     },
     "require-dev": {

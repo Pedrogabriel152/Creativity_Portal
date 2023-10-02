@@ -1,5 +1,3 @@
-
-
 import { useNavigate } from 'react-router-dom';
 
 // Interfaces
@@ -115,7 +113,7 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/email-recover-password" variant="body2">
                   Esqueceu a senha?
                 </Link>
               </Grid>
