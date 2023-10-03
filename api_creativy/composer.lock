@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c8b76121dfc39b79ae34895e7e69c37",
+    "content-hash": "1c6266d32adfdf8c488564962f62d4bb",
     "packages": [
         {
             "name": "brick/math",
@@ -431,6 +431,52 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
+        },
+        {
+            "name": "emarref/jwt",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emarref/jwt.git",
+                "reference": "79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emarref/jwt/zipball/79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4",
+                "reference": "79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "ext-openssl": "Enables more token encryption options"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Emarref\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malcolm Fell",
+                    "email": "emarref@gmail.com"
+                }
+            ],
+            "description": "A JWT implementation",
+            "support": {
+                "issues": "https://github.com/emarref/jwt/issues",
+                "source": "https://github.com/emarref/jwt/tree/master"
+            },
+            "time": "2016-09-05T20:33:06+00:00"
         },
         {
             "name": "fruitcake/php-cors",

@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use ErrorException;
+use Emarref\Jwt\Jwt;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
     private $userRepository;
+    private $jwt;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->jwt = new Jwt();
     }
 
     public function register(Request $request) {
@@ -87,12 +89,20 @@ class AuthController extends Controller
     }
 
     public function forgotPassword(Request $request) {
-        try {
+        // try {
             if(!$request->password) {
                 return throw new ErrorException('O campo de senha é obrigatório', 500);
             }
 
-            $user = Auth::guard('sanctum')->user();
+            $jwt = new Jwt();
+            $token = TokenService::getToken($request);
+            $deserialzedToken = $jwt->deserialize($token);
+            $userByToken = json_decode($deserialzedToken->getPayload()->jsonSerialize());
+            $user = $this->userRepository->getUserByID($userByToken?->user?->id);
+            TokenService::verifyToken($token, $user);
+            dd($token);
+
+            // $user = Auth::guard('sanctum')->user();
 
             if(!$user) {
                 return throw new ErrorException('Falha a atualizar a senha', 500);
@@ -112,11 +122,11 @@ class AuthController extends Controller
                 'token' => $token
             ], 200);
             
-        } catch (\Exception $ex) {
-            return response()->json([
-                'message' => 'Falha a atualizar a senha',
-            ], 500);
-        }
+        // } catch (\Exception $ex) {
+        //     return response()->json([
+        //         'message' => 'Falha a atualizar a senha',
+        //     ], 500);
+        // }
     }
 
     public function emailRecoverPassword(Request $request) {
@@ -128,7 +138,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Usuário não encontrado'], 404);
         }
 
-        $token = TokenService::createToken($user, 1);
+        $token = TokenService::createTokenPassword($user);
 
         $user->update(['reset_token' => $token]);
 
@@ -137,6 +147,6 @@ class AuthController extends Controller
             $m->subject('Redefinição de senha');
         });
 
-        return response()->json(['message' => 'E-mail de redefinição de senha enviado'], 200);
+        return response()->json(['message' => 'E-mail de redefinição de senha enviado', 'token' => $token], 200);
     }
 }
