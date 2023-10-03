@@ -7,7 +7,6 @@ use Emarref\Jwt\Jwt;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -18,7 +17,6 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->userRepository = new UserRepository();
-        $this->jwt = new Jwt();
     }
 
     public function register(Request $request) {
@@ -89,26 +87,27 @@ class AuthController extends Controller
     }
 
     public function forgotPassword(Request $request) {
-        // try {
+        try {
             if(!$request->password) {
                 return throw new ErrorException('O campo de senha é obrigatório', 500);
             }
 
-            $jwt = new Jwt();
             $token = TokenService::getToken($request);
-            $deserialzedToken = $jwt->deserialize($token);
-            $userByToken = json_decode($deserialzedToken->getPayload()->jsonSerialize());
-            $user = $this->userRepository->getUserByID($userByToken?->user?->id);
-            TokenService::verifyToken($token, $user);
-            dd($token);
+            // dd($token);
+            $user_id= TokenService::verifyToken($token);
 
-            // $user = Auth::guard('sanctum')->user();
+            if(!$user_id) {
+                return throw new ErrorException('Acesso negado', 500);
+            }
+
+            $user = $this->userRepository->getUserByID($user_id);
 
             if(!$user) {
                 return throw new ErrorException('Falha a atualizar a senha', 500);
             }
 
             $updateUser = $this->userRepository->updatePassword($user, $request->password);
+            $updateUser->update(['reset_token' => null]);
 
             if(!$updateUser) {
                 return throw new ErrorException('Falha a atualizar a senha', 500);
@@ -122,11 +121,11 @@ class AuthController extends Controller
                 'token' => $token
             ], 200);
             
-        // } catch (\Exception $ex) {
-        //     return response()->json([
-        //         'message' => 'Falha a atualizar a senha',
-        //     ], 500);
-        // }
+        } catch (\Exception $ex) {
+            return response()->json([
+                'message' => $ex->getMessage(),//'Falha a atualizar a senha',
+            ], 500);
+        }
     }
 
     public function emailRecoverPassword(Request $request) {

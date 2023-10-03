@@ -54,7 +54,6 @@ class TokenService
         $jwt = new \Emarref\Jwt\Jwt();
 
         $tokenSeguro = $jwt->serialize($token, $encryption);
-        dd($tokenSeguro);
 
         return $tokenSeguro;
     }
@@ -72,12 +71,13 @@ class TokenService
         
         try {
             $jwt->verify($deserialzedToken, $context);
+            return json_decode($deserialzedToken->getPayload()->jsonSerialize())->user->id;
         } catch (VerificationException $e) {
-            echo $e->getMessage();
+            return false;
         }
     }
 
     public static function getUserByToken(){
-        
+
     }
 }

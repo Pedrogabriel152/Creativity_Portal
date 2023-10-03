@@ -38,6 +38,13 @@ export default function ForgotPassword() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        console.log(token)
+
+        if(!data.get('password')) return toast.error('A senha é obrigatória!');
+
+        if(!data.get('confirmPassword')) return toast.error('A confirmação da senha é obrigatória!')
+
+        if(data.get('password') !== data.get('confirmPassword')) return toast.error('As senhas precisam ser igauis!');
 
         api.post('/api/forgot-password', {
             password: `${data.get('password')}`,
@@ -73,7 +80,7 @@ export default function ForgotPassword() {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                Login
+                Redefinição de Senha
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
