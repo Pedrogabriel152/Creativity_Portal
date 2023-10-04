@@ -64,6 +64,7 @@ export default function SignUp() {
             .then((res: any) => {
                 removeLocalStorage();
                 saveLocalStorage(res);
+                console.log(res.data)
                 navigate('/');
                 toast.success('Bem vindo ao Creativy Portal!');
             })

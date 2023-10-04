@@ -46,11 +46,10 @@ export default function ForgotPassword() {
 
         if(data.get('password') !== data.get('confirmPassword')) return toast.error('As senhas precisam ser igauis!');
 
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+
         api.post('/api/forgot-password', {
             password: `${data.get('password')}`,
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
         })
         .then(res => {
             removeLocalStorage();

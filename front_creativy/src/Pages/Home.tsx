@@ -32,6 +32,7 @@ import { IUser } from '../interfaces/IUser';
 
 // Context
 import { useAuthContext } from '../Context/AuthContext';
+import PostCard from '../Components/PostCard';
 
 
 
@@ -86,7 +87,8 @@ const Home = () => {
             <MainFeaturedPost image={mainPost.image} subtitle={mainPost.subtitle} title={mainPost.title} id={mainPost.id}/>
             <Grid container spacing={4}>
                 {featuredPosts.data.map((post: IPost) => (
-                <FeaturedPost key={post.id} post={post} />
+                // <FeaturedPost key={post.id} post={post} />
+                    <PostCard post={post} user={post.id}/>  
                 ))}
             </Grid>
             {featuredPosts?.paginatorInfo?.hasMorePages?

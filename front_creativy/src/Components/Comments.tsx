@@ -31,6 +31,7 @@ import { IAuth } from '../interfaces/IAuth';
 import { ICommentInput } from '../interfaces/ICommentInput';
 import { toast } from 'react-toastify';
 import ToogleMenu from './ToogleMenu';
+import { IUser } from '../interfaces/IUser';
 
 interface IComments {
   user: number
@@ -41,9 +42,10 @@ interface IComments {
   first: number
   update: boolean
   inputRef: RefObject<HTMLInputElement | null>
+  userLog: IUser
 }
 
-export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update, inputRef}: IComments) {
+export default function Comments({ user, auth, loadindMoreComment, setFirst, likeCommentFunc, first, update, inputRef, userLog}: IComments) {
   const {id} = useParams();
   const [text, setText] = useState<string>('');
   const {error} = useGetComments(id? parseInt(id) : 0, first);
@@ -92,6 +94,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
   const handleClose = () => setOpenEdit(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
+  console.log(userLog)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -152,7 +155,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                     : <FavoriteBorderIcon color="error"/>     
                   }
                 </ListItemButton>
-                {comment?.user_id == parseInt(id? id : '0') && (
+                {comment?.user_id == userLog.id && (
                   <>
                   <ToogleMenu comment={comment} first={first} post_id={comment.post_id}/>
                   </>
@@ -174,7 +177,7 @@ export default function Comments({ user, auth, loadindMoreComment, setFirst, lik
                       : <FavoriteBorderIcon color="error"/>     
                     }
                   </ListItemButton>
-                  {comment?.user_id == parseInt(id? id : '0') && (
+                  {comment?.user_id == userLog.id && (
                     <>
                     <ToogleMenu comment={comment} first={first} post_id={comment.post_id}/>
                     </>

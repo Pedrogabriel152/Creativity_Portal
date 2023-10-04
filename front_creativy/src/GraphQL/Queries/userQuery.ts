@@ -33,6 +33,8 @@ export const GETUSER = gql`
                 subtitle
                 created_at
                 image
+                like
+                comment
                 user_post{
                     user_id
                     post_id

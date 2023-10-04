@@ -45,6 +45,7 @@ export default function User() {
     const [user_id, setUserId] = useState<number>(0);
     const [userLog, setUserLog] = useState<IUser>();
     const updateUserResponse = useReactiveVar(updateUserVar);
+    const [likes, setLikes] = useState<boolean[]>([]);
 
     useEffect(() => {}, [updateUserResponse]);
 

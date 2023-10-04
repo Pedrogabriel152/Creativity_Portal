@@ -160,7 +160,7 @@ export default function Post() {
               )}              
             </Grid>
             <Main auth={auth} post={post} user={user.id} first={first} likePostFunc={likePostFunc} handleFocus={handleFocus}/>
-            <Comments user={user?.id} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update} inputRef={inputRef}/>
+            <Comments user={user?.id} auth={auth} setFirst={setFirst} loadindMoreComment={loadindMoreComment} likeCommentFunc={likeCommentFunc} first={first} update={update} inputRef={inputRef} userLog={user}/>
           </Grid>
         </main>
       </Container>

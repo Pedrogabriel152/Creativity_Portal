@@ -12,6 +12,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, InputBase, Modal, Paper } from '@mui/material';
 import SearchUsers from './SearchUsers';
 import { IUser } from '../interfaces/IUser';
+import { useNavigate } from 'react-router-dom';
+import { removeLocalStorage } from '../Utils/functions';
 
 interface HeaderProps {
   user: IUser
@@ -23,6 +25,7 @@ export default function Header(props: HeaderProps) {
   const [name, setName] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setOpen(true);
@@ -33,6 +36,11 @@ export default function Header(props: HeaderProps) {
   const handleClose = () => setOpen(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value);
+
+  const handleLogout = () => {
+    removeLocalStorage();
+    navigate('/login');
+  }
 
   return (
     <Fragment>
@@ -94,7 +102,7 @@ export default function Header(props: HeaderProps) {
         <IconButton>
           <NotificationsNoneIcon />
         </IconButton>
-        <Button variant="outlined" size="small">
+        <Button variant="outlined" size="small" onClick={handleLogout}>
           Sair
         </Button>
       </Toolbar>
