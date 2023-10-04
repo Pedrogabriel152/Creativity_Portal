@@ -7,7 +7,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Avatar, Box, Button, CardActionArea, IconButton, Stack } from '@mui/material';
+import { Avatar, Button, Stack } from '@mui/material';
 
 // Styles
 import { VisuallyHiddenInput } from '../Styles/VisuallyHiddenInput';

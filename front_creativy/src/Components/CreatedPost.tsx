@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 
 // Mui Material
-import { Box, Button, ImageListItem, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, ImageListItem, TextField, Typography } from "@mui/material";
 
 // GraphQL
 import { useCreatePost, useUpdatePost } from "../GraphQL/Hooks/postHooks";

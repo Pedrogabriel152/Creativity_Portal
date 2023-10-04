@@ -106,19 +106,6 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
                   value={user.name}
                 />
               </Grid>
-              {/* <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={user.name}
-                />
-              </Grid> */}
               <Grid
                 xs={12}
                 md={6}
@@ -159,30 +146,6 @@ export const AccountProfileDetails = ({user, setUser}: IAccount) => {
                   value={user.confirmPassword}
                 />
               </Grid>
-              {/* <Grid
-                xs={12}
-                md={6}
-              > */}
-                {/* <TextField
-                  fullWidth
-                  label="Select State"
-                  name="state"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
-                >
-                  {states.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField> */}
-              {/* </Grid> */}
             </Grid>
           </Box>
         </CardContent>

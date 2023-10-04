@@ -1,10 +1,12 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
-import { IPost } from "../interfaces/IPost";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
+
+// Interfaces
+import { IPost } from "../interfaces/IPost";
 
 interface IPostCard {
     post: IPost

@@ -44,43 +44,43 @@ export const AccountProfile = ({user, setUser}: IAccount) => {
             <CardContent>
             <Box
                 sx={{
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column'
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column'
                 }}
             >
                 <Avatar
-                src={image? URL.createObjectURL(image) : user.image? `${process.env.REACT_APP_API_URL}${user.image}` : ''}
-                sx={{
-                    height: 80,
-                    mb: 2,
-                    width: 80
-                }}
+                    src={image? URL.createObjectURL(image) : user.image? `${process.env.REACT_APP_API_URL}${user.image}` : ''}
+                    sx={{
+                        height: 80,
+                        mb: 2,
+                        width: 80
+                    }}
                 />
                 <Typography
-                gutterBottom
-                variant="h5"
+                    gutterBottom
+                    variant="h5"
                 >
-                {user.name}
+                    {user.name}
                 </Typography>
                 <Typography
-                color="text.secondary"
-                variant="body2"
+                    color="text.secondary"
+                    variant="body2"
                 >
-                {user.email}
+                    {user.email}
                 </Typography>
                 <Typography
-                color="text.secondary"
-                variant="body2"
+                    color="text.secondary"
+                    variant="body2"
                 >
-                {dateFormater(user.created_at, "numerica")}
+                    {dateFormater(user.created_at, "numerica")}
                 </Typography>
             </Box>
             </CardContent>
             <Divider />
             <CardActions>
             <Button
-            component="label"
+                component="label"
                 fullWidth
                 variant="text"        
             >

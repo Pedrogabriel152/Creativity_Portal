@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
 // Material UI
 import Box from '@mui/material/Box';
@@ -11,8 +11,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import { CircularProgress, Grid, IconButton, Link, ListItemButton, TextField } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 
 // Icons
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -29,9 +27,13 @@ import { useCreateComment, useGetComments } from '../GraphQL/Hooks/commentHooks'
 import { IComment } from "../interfaces/IComment";
 import { IAuth } from '../interfaces/IAuth';
 import { ICommentInput } from '../interfaces/ICommentInput';
-import { toast } from 'react-toastify';
-import ToogleMenu from './ToogleMenu';
 import { IUser } from '../interfaces/IUser';
+
+// Toastify
+import { toast } from 'react-toastify';
+
+// Components
+import ToogleMenu from './ToogleMenu';
 
 interface IComments {
   user: number

@@ -22,7 +22,6 @@ export default function MainFeaturedPost(mainPost: IMainFeatured) {
         backgroundImage: mainPost.image? `url(${process.env.REACT_APP_API_URL}${mainPost.image})` : '',
       }}
     >
-      {/* Increase the priority of the hero background image */}
       {<img style={{ display: 'none' }} src={mainPost.image? mainPost.image : ''} alt={mainPost.title} />}
       <Box
         sx={{
