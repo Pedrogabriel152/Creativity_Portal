@@ -1,5 +1,5 @@
-import { Box, IconButton, Portal } from "@mui/material";
-import { useRef, useState } from "react";
+import { IconButton } from "@mui/material";
+import { useState } from "react";
 import { useGetUsers } from "../GraphQL/Hooks/userHook";
 import { useReactiveVar } from "@apollo/client";
 import { usersVar } from "../GraphQL/States/userSatate";

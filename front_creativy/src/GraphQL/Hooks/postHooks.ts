@@ -130,36 +130,3 @@ export const useUpdatePost = () => {
         ],
     });
 }
-
-// export const useCreateExpense = () => {
-//     const {getAuthentication} = useUserContext();
-//     const auth = getAuthentication();
-//     return useMutation<{createExpense: IResponse}>(CREATEEXPENSE, {
-//         onCompleted(data) {
-//             if(data){
-//                 createExpenseVar(data?.createExpense)
-//             }
-//         },
-//         refetchQueries: [
-//             {query: GETFINANCE, variables: {
-//                 user_id: auth?.user_id? auth.user_id : 0
-//             }},
-//             {query: GETEXPENSES, variables: {
-//                 user_id: auth?.user_id ? auth.user_id : 0,
-//                 first: 1
-//             }},
-//             {query: GETACTIVEEXPENSES, variables: {
-//                 user_id: auth?.user_id ? auth.user_id : 0,
-//                 first: 1
-//             }},
-//             {query: GETIDLEEXPENSES, variables: {
-//                 user_id: auth?.user_id ? auth.user_id : 0,
-//                 first: 1
-//             }},
-//             {query: GETFINANCIALSUMMARY, variables: {
-//                 user_id: auth?.user_id? auth.user_id : 0
-//             }},
-//             {query: GETMONTHLYSUMMARY, variables: {
-//                 user_id: auth?.user_id? auth.user_id : 0
-//             }}
-//         ]

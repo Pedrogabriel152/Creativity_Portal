@@ -1,4 +1,5 @@
 import { ChangeEvent, Fragment, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Mui Material
 import Toolbar from '@mui/material/Toolbar';
@@ -10,10 +11,15 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, InputBase, Modal, Paper } from '@mui/material';
+
+// Components
 import SearchUsers from './SearchUsers';
-import { IUser } from '../interfaces/IUser';
-import { useNavigate } from 'react-router-dom';
+
+// Utils
 import { removeLocalStorage } from '../Utils/functions';
+
+// Interfaces
+import { IUser } from '../interfaces/IUser';
 
 interface HeaderProps {
   user: IUser

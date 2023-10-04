@@ -17,9 +17,9 @@ import FeaturedPost from '../Components/FeaturedPost';
 import Footer from '../Components/Footer';
 
 // GraphQL
-import { useGetFeaturedPosts, useGetMainPost, useGetMyPosts } from '../GraphQL/Hooks/postHooks';
+import { useGetMyPosts } from '../GraphQL/Hooks/postHooks';
 import { useReactiveVar } from '@apollo/client';
-import { getFeaturedPostsVar, getMainPostVar, getMyPostsVar } from '../GraphQL/States/postState';
+import { getMyPostsVar } from '../GraphQL/States/postState';
 
 // Interfaces
 import { IPost } from '../interfaces/IPost';

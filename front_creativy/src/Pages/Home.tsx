@@ -12,7 +12,6 @@ import ReplayIcon from '@mui/icons-material/Replay';
 // Components
 import Header from '../Components/Header';
 import MainFeaturedPost from '../Components/MainFeaturedPost';
-import FeaturedPost from '../Components/FeaturedPost';
 import Footer from '../Components/Footer';
 
 // Utils

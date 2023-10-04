@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box, Button, ListItemIcon, ListItemText, Modal, TextField, Typography } from '@mui/material';
+import { ListItemIcon, ListItemText, Modal } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
@@ -15,10 +15,6 @@ import ConfirmeModal from './ConfirmeModal';
 
 // GraphQL
 import { useDeleteComment, useUpdateComment } from '../GraphQL/Hooks/commentHooks';
-
-// Styles
-import { styleModal } from '../Styles/StyleModal';
-import { StyledTextarea } from '../Styles/TextArea';
 
 // Interfaces
 import { ICommentInput } from '../interfaces/ICommentInput';

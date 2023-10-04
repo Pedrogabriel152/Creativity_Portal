@@ -7,7 +7,6 @@ import Divider from '@mui/material/Divider';
 import CardMedia from '@mui/material/CardMedia';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import SendIcon from '@mui/icons-material/Send';
 import MessageIcon from '@mui/icons-material/Message';
 import Button from '@mui/material/Button';
 import { Card } from '@mui/material';

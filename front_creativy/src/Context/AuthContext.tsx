@@ -1,5 +1,4 @@
-import { useState, createContext, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, createContext, useContext } from "react";
 
 // Utils
 import { api } from "../Utils/Api";

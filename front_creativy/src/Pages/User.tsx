@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Avatar, Card, CardContent, Link, Modal, Typography } from '@mui/material';
+import { Modal } from '@mui/material';
 
 // GraphQL
 import { useAuthContext } from '../Context/AuthContext';
