@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderShipped;
 use ErrorException;
-use Emarref\Jwt\Jwt;
 use Illuminate\Http\Request;
 use App\Services\TokenService;
 use App\Repositories\UserRepository;
@@ -130,6 +130,8 @@ class AuthController extends Controller
 
     public function emailRecoverPassword(Request $request) {
         $email = $request->email;
+        $subject = 'Redefinição de senha';
+        $view = 'forgot_password';
 
         $user = $this->userRepository->getUserByEmail($email);
 
@@ -141,10 +143,7 @@ class AuthController extends Controller
 
         $user->update(['reset_token' => $token]);
 
-        Mail::send('forgot_password', ['token' => $token, 'user' => $user], function ($m) use ($user) {
-            $m->to($user->email);
-            $m->subject('Redefinição de senha');
-        });
+        Mail::to($user)->send(new OrderShipped($subject, $view, $user, $token));
 
         return response()->json(['message' => 'E-mail de redefinição de senha enviado', 'token' => $token], 200);
     }
