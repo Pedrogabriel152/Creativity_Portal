@@ -13,9 +13,6 @@
     <p>
         Recebemos uma solicitação para restaurar sua senha de acesso em nosso site.
     </p>
-    {{-- <p>
-        Ela ocorreu em <strong>{{ $token->created_at }}</strong>.
-    </p> --}}
     <p>
         Se você reconhece essa ação, clique no botão abaixo para prosseguir:
     </p>
