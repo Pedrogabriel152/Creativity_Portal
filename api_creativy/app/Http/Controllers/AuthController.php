@@ -93,7 +93,6 @@ class AuthController extends Controller
             }
 
             $token = TokenService::getToken($request);
-            // dd($token);
             $user_id= TokenService::verifyToken($token);
 
             if(!$user_id) {
@@ -123,7 +122,7 @@ class AuthController extends Controller
             
         } catch (\Exception $ex) {
             return response()->json([
-                'message' => $ex->getMessage(),//'Falha a atualizar a senha',
+                'message' => $ex->getMessage(),
             ], 500);
         }
     }
